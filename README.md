@@ -4,7 +4,7 @@ Dans ce projet, il s'agit de concevoir et développer une application permettant
 7 Wonders Duel créé par Antoine Bauza et Bruno Cathala, et édité par Repos Production. Ce jeu,
 exclusivement pour deux joueurs, utilise des éléments de l'univers du jeu 7 Wonders tout en ajoutant
 certains mécanismes plus adaptés pour un jeu à deux. Pour découvrir ce jeu, vous pouvez consulter les
-règles du jeu. Il est conseillé de jouer quelques parties pour bien comprendre les diérents mécanismes
+règles du jeu. Il est conseillé de jouer quelques parties pour bien comprendre les différents mécanismes
 du jeu. Vous pouvez aussi regarder les nombreux tutoriels vidéo sur ce jeu.  
 
   
@@ -21,7 +21,7 @@ L'application doit permettre de paramétrer une partie :
 - activation d'une extension (si existante) ;  
 L'application doit disposer d'au moins 1 type d'IA. Pour cela, vous pourrez développer une IA très
 simple qui prend ses décisions au hasard en fonction des possibilités.  
-L'application doit permettre de jouer la partie, de vérier les actions des joueurs, et de déterminer le
+L'application doit permettre de jouer la partie, de vérifier les actions des joueurs, et de déterminer le
 gagnant.  
 Vous êtes libre d'organiser votre interface du moment qu'elle permet de piloter facilement l'application.
 Les visuels doivent être suisants pour comprendre l'état du jeu. Il n'est pas demandé d'utiliser les
@@ -83,7 +83,7 @@ ou un pourcentage d'état d'avancement pour les tâches en cours avec la durée 
 fournie par chacun des membres de groupe : vous êtes particulièrement attendu sur ce retour
 qui devra être complet à chaque fois.  
 - un bilan sur la cohésion de groupe et l'implication de chacun.  
-La liste des tâches s'anera au cours du temps, vous devrez être précis sur les tâches à court et
+La liste des tâches s'afinera au cours du temps, vous devrez être précis sur les tâches à court et
 moyen-terme par rapport au rendu du rapport.  
 1. Le premier compte-rendu proposera une première analyse des différents concepts qui apparaissent
 dans le jeu et qui devraient a priori apparaître a minima dans votre architecture. À ce stade, il
@@ -112,7 +112,7 @@ Le livrable nal est composé des éléments suivants :
 - Code source : l'ensemble du code source du projet. Attention, ne pas fournir d'excutable
 ou de chier objet.  
 - Vidéo de présentation avec commentaires audio : une video de présentation dans laquelle
-vous filmerez et commenterez votre application an de démontrer le bon fonctionnement de
+vous filmerez et commenterez votre application afin de démontrer le bon fonctionnement de
 chaque fonctionnalité attendue (max 10 min, 99 Mo).  
 - Rapport : Un rapport en format .pdf (max 20-25 pages) composée des parties suivantes :  
 - une synthèse de ce que permet votre application (en précisant parmi les opérations attendues
@@ -121,7 +121,7 @@ celles qui ont été implémentées et celles qui ne l'ont pas été) ;
 - une argumentation détaillée où vous montrerez que votre architecture permet facilement des
 évolutions (voir explications ci-dessus). Il est attendu de présenter des diagrammes UML qui
 illustrent correctement (et au bon niveau) les sous-parties que vous décrivez.  
-- une description détaillée du planning eectif de votre projet ;  
+- une description détaillée du planning effectif de votre projet ;  
 - une description détaillée de la contribution personnelle de chacun des membres du groupe sur
 les différents livrables (cette partie sera notamment utilisée pour la notation). Vous évaluerez
 en % la part de contribution de chaque membre sur l'ensemble du projet. Chaque membre
@@ -137,7 +137,7 @@ monde). Les éléments du livrable devront être déposés sur moodle dans la pa
 Tous les membres du groupe doivent participer à chacun des livrables en partageant le travail de
 manière équitable et en fournissant tous les éléments dont ils ont la charge. Un des membres du groupe
 sera désigné comme auteur responsable (au niveau du rendu) d'un des 4 rapports (comptes rendus
-intermédiaires et rapport nal) et de la vidéo. Chacun de ces rendus devra avoir un auteur responsable
+intermédiaires et rapport final) et de la vidéo. Chacun de ces rendus devra avoir un auteur responsable
 différent. La répartition de la responsabilité des livrables devra être reporté dans le rapport final.  
   
   
@@ -166,8 +166,8 @@ collaboratif.
 avec les diérentes entités de l'application qui est à développer. On ne perdra pas de vue que les
 questions développées dans ces TDs ne constituent pas une architecture forcément pertinente
 pour le projet.  
-- La partie dicile du projet est la conception de votre architecture : c'est là-dessus qu'il faut
-concentrer vos eorts et passer le plus de temps au départ. Une des dicultés est l'acquisition
+- La partie difficile du projet est la conception de votre architecture : c'est là-dessus qu'il faut
+concentrer vos efforts et passer le plus de temps au départ. Une des difficultés est l'acquisition
 des concepts orientés objets au fur et à mesure du semestre qui remettra certainement en cause
 votre architecture.  
 - Il est conseillé d'étudier au moins les design patterns suivants qui pourraient être utiles pour

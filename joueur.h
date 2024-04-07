@@ -1,7 +1,11 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
-
+#include <iostream>
 #include <string>
+#include "jetonProgres.h"
+#include "plateauJeu.h"
+#include "batiment.h"
+
 
 using namespace std;
 

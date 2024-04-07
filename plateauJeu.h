@@ -1,14 +1,16 @@
 #ifndef LO21_P24_PLATEAUJEU_H
 #define LO21_P24_PLATEAUJEU_H
 #include <iostream>
+#include "joueur.h"
 #include "batiment.h"
+#include "jetonProgres.h"
 
 class PlateauDeJeu {
 private:
     Batiment* tab;
     Batiment** defausse;
-    jetonsProgresPioche* piocheJeton;
-    jetonProgresPlateau* plateauJeton;
+    JetonProgres* piocheJeton;
+    JetonProgres* plateauJeton;
     size_t nb_cartes;
     size_t nb_jeton_pioche;
     size_t nb_jeton_plateau;
@@ -20,9 +22,9 @@ public:
     void setDispositionCartes(size_t i);
     void setJetonProgresPioche(size_t i);
     void setJetonProgresPlateau(size_t i);
-    Batiment getDispositionCarte() {return tab;}
-    jetonProgressPioche getJetonProgresPioche() {return piocheJeton;}
-    jetonProgresPlateau getJetonProgresPlateau() {return plateauJeton;}
+    Batiment* getDispositionCarte() {return tab;}
+    JetonProgres* getJetonProgresPioche() {return piocheJeton;}
+    JetonProgres* getJetonProgresPlateau() {return plateauJeton;}
     void prendreCarte(size_t i);
     void prendreJetonPioche(size_t i);
     void prendreJetonPlateau(size_t i);

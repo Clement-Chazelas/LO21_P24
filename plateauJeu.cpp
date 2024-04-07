@@ -2,6 +2,7 @@
 #include "joueur.h"
 #include "plateauJeu.h"
 #include "batiment.h"
+#include "jetonProgres.h"
 
 void PlateauDeJeu::prendreCarte(size_t i) {
     if(i >= nb_cartes){

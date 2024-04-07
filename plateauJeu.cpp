@@ -54,6 +54,7 @@ void PlateauDeJeu::setDefausse(Batiment& bat) {
     defausse[nb_defausse++] = &bat;
 }
 
+
 Batiment * PlateauDeJeu::piocher(int i) {
     if(i >= nb_defausse){
         throw "Erreur : cette carte n'est pas dans la pioche";

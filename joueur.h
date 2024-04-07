@@ -2,8 +2,8 @@
 #define JOUEUR_H
 #include <iostream>
 #include <string>
-#include "jetonProgres.h"
-#include "plateauJeu.h"
+//#include "jetonProgres.h"         Activer cette ligne fait buguer la même qui est dans plateauJeu
+//#include "plateauJeu.h"
 #include "batiment.h"
 
 

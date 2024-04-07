@@ -5,7 +5,6 @@
 #include "batiment.h"
 #include <iostream>
 #include <string>
-#include <utility>
 
 class JetonProgres{
 private:
@@ -13,8 +12,8 @@ private:
     std::string effet;
 public:
     JetonProgres(std::string n, std::string e) : nomJeton(std::move(n)), effet(std::move(e)) {};
-    std::string getNomJeton() {return nomJeton;}
-    std::string getEffetJeton() {return effet;}
+    std::string getNomJeton() const {return nomJeton;}
+    std::string getEffetJeton() const {return effet;}
 };
 
 #endif //LO21_P24_JETONPROGRES_H

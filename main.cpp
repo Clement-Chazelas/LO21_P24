@@ -1,12 +1,14 @@
 #include <iostream>
 #include "joueur.h"
 #include "merveille.h"
+#include "partie.h"
 
 using namespace std;
 
 int main()
 {
-    Joueur j("Chevalier", "Titouan");
+    Partie p("Ducasse", "Agathe", "Chazelas", "Clement");
+
     Merveille m1("Les Pyramides", 9);
     m1.ajoutCoutRessources(pierre, 3);
     m1.ajoutCoutRessources(papyrus, 1);
@@ -17,7 +19,7 @@ int main()
     m2.ajoutCoutRessources(brique, 1);
     m2.ajoutCoutRessources(papyrus, 2);
 
-    cout << j << endl;
+    cout << p << endl;
     cout << m1 << endl;
     cout << m2 << endl;
     return 0;

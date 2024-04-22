@@ -4,7 +4,7 @@
 using namespace std;
 
 ostream& operator<<(ostream& f, const Joueur& j) {
-    f << "Joueur : " << j.getPrenom() << " " << j.getNom() << " avec " << j.getnbPieces() << " Pieces" << endl;
+    f << "Joueur : " << j.getPrenom() << " " << j.getNom();
     return f;
 }
 

@@ -17,6 +17,8 @@ public:
     Partie(const string& n_j1, const string& p_j1, const string& n_j2, const string& p_j2);
     const Joueur& getJoueur1() const {return joueur1;}
     const Joueur& getJoueur2() const {return joueur2;}
+
+    int genererQuatreMerveilles();
 };
 
 ostream& operator<<(ostream& f, const Partie& p);

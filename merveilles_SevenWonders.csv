@@ -1,0 +1,13 @@
+nom;active;rejouer;points victoires;points combats;pieces rapportées;pieces sacagées;pierre;bois;argile;verre;papyrus
+Le sphinx;FALSE;TRUE;6;0;0;0;1;0;1;2;0
+Le Colosse;FALSE;FALSE;3;2;0;0;0;0;3;1;0
+Les Pyramides;FALSE;FALSE;9;0;0;0;3;0;0;0;1
+La Via Apia;FALSE;TRUE;3;0;3;3;2;0;2;0;1
+Le Grand Phare;FALSE;FALSE;4;0;0;0;1;1;0;0;2
+Le Piree;FALSE;TRUE;2;0;0;0;1;2;1;0;0
+La Grande Bibliotheque;FALSE;FALSE;4;0;0;0;0;3;0;1;1
+La Statue de Zeus;FALSE;FALSE;3;1;0;0;1;1;1;0;2
+Les Jardins suspendus;FALSE;TRUE;3;0;6;0;0;2;0;1;1
+Le Circus Maximus;FALSE;FALSE;3;1;0;0;0;0;2;2;1
+Le Temple d'Artemis;FALSE;TRUE;0;0;12;0;1;1;0;1;1
+Le Mausolee;FALSE;FALSE;2;0;0;0;2;1;0;1;0

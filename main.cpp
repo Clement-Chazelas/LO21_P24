@@ -1,7 +1,7 @@
 #include <iostream>
 #include "joueur.h"
-#include "merveille.h"
 #include "partie.h"
+#include "cartes.h"
 
 using namespace std;
 
@@ -9,15 +9,20 @@ int main()
 {
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement");
 
-    Merveille m1("Les Pyramides", 9);
-    m1.ajoutCoutRessources(pierre, 3);
-    m1.ajoutCoutRessources(papyrus, 1);
+
+    Merveille m1("Les Pyramides");
+    m1.ajouterCoutRessources(Ressources::pierre);
+    m1.ajouterCoutRessources(Ressources::pierre);
+    m1.ajouterCoutRessources(Ressources::pierre);
+    m1.ajouterCoutRessources(Ressources::papyrus);
+
 
     Merveille m2("La statue de Zeus", 3, 1);
-    m2.ajoutCoutRessources(pierre, 1);
-    m2.ajoutCoutRessources(bois, 1);
-    m2.ajoutCoutRessources(brique, 1);
-    m2.ajoutCoutRessources(papyrus, 2);
+    m2.ajouterCoutRessources(Ressources::pierre);
+    m2.ajouterCoutRessources(Ressources::bois);
+    m2.ajouterCoutRessources(Ressources::argile);
+    m2.ajouterCoutRessources(Ressources::papyrus);
+    m2.ajouterCoutRessources(Ressources::papyrus);
 
     cout << p << endl;
     cout << m1 << endl;

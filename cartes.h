@@ -11,7 +11,7 @@ class Carte {
 protected:
     string nom; //nom de la carte
     Ressources* coutRessources; //liste des ressources necessaires pour construire la merveille
-    unsigned int nbCout, nbCoutMax; //permet de controler la liste précédente
+    unsigned int nbCout, nbCoutMax; //permet de controler la liste prÃ©cÃ©dente
     unsigned int nbPointVictoire; //nb de points victoire que la carte rapporte une fois construite
 public:
     Carte();
@@ -27,13 +27,13 @@ public:
 
 class Merveille : public Carte {
 private:
-    bool active; //test si la merveille est activée ou non
-    bool rejouer; //permet d'indiquer si la merveille possède l'effet rejouer
+    bool active; //test si la merveille est activÃ©e ou non
+    bool rejouer; //permet d'indiquer si la merveille possÃ¨de l'effet rejouer
     Ressources* produitRessources; //liste des ressources produites par la merveille
-    unsigned int nbProd, nbProdMax; //permet de controler la liste précédente
-    unsigned int nbPointsCombat; //nb de points combats que la merveille rapporte une fois activée
-    unsigned int nbPiecesRapportees; //nb de pièces que la merveille rapporte quand elle est activée
-    unsigned int nbPiecesSacagees; //nb de piece perdues par l'adversaire quand elle est activée
+    unsigned int nbProd, nbProdMax; //permet de controler la liste prÃ©cÃ©dente
+    unsigned int nbPointsCombat; //nb de points combats que la merveille rapporte une fois activÃ©e
+    unsigned int nbPiecesRapportees; //nb de piÃ¨ces que la merveille rapporte quand elle est activÃ©e
+    unsigned int nbPiecesSacagees; //nb de piece perdues par l'adversaire quand elle est activÃ©e
 public:
     Merveille(string m, bool act=false, bool rej=false, unsigned int ptv=0,
               unsigned int ptc = 0, unsigned int pieceR = 0, unsigned int pieceS = 0) :
@@ -44,6 +44,7 @@ public:
     const unsigned int getNbPointsCombat() const {return nbPointsCombat;}
     const unsigned int getNbPiecesRapportees() const {return nbPiecesRapportees;}
     const unsigned int getNbPiecesSacagees() const {return nbPiecesSacagees;}
+    const bool getRejouer() const {return rejouer;}
     choisirBatimentADefausser();
     saccagerRessourceAdverse();
 };
@@ -53,7 +54,7 @@ ostream& operator<<(ostream& f, const Merveille& m);
 
 class Batiment : public Carte {
 private:
-    unsigned int coutPieces; //nb de pieces necessaires pour construire le bâtiment
+    unsigned int coutPieces; //nb de pieces necessaires pour construire le bÃ¢timent
     string coutChainage;
     string symboleChainage;
     bool facecachee;

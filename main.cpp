@@ -3,13 +3,14 @@
 #include "partie.h"
 #include "cartes.h"
 
+
 using namespace std;
 
 int main()
 {
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement");
 
-
+    /*
     Merveille m1("Les Pyramides");
     m1.ajouterCoutRessources(Ressources::pierre);
     m1.ajouterCoutRessources(Ressources::pierre);
@@ -27,5 +28,10 @@ int main()
     cout << p << endl;
     cout << m1 << endl;
     cout << m2 << endl;
+    */
+
+    p.genererQuatreMerveilles(); //et les afficher
+
     return 0;
 }
+

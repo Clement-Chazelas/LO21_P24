@@ -1,37 +1,22 @@
 #include <iostream>
-#include "joueur.h"
 #include "partie.h"
-#include "cartes.h"
-
+#include <string>
+#include "utils.h"
 
 using namespace std;
 
-int main()
-{
+int main() {
+
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement");
-
-    /*
-    Merveille m1("Les Pyramides");
-    m1.ajouterCoutRessources(Ressources::pierre);
-    m1.ajouterCoutRessources(Ressources::pierre);
-    m1.ajouterCoutRessources(Ressources::pierre);
-    m1.ajouterCoutRessources(Ressources::papyrus);
-
-
-    Merveille m2("La statue de Zeus", 3, 1);
-    m2.ajouterCoutRessources(Ressources::pierre);
-    m2.ajouterCoutRessources(Ressources::bois);
-    m2.ajouterCoutRessources(Ressources::argile);
-    m2.ajouterCoutRessources(Ressources::papyrus);
-    m2.ajouterCoutRessources(Ressources::papyrus);
-
     cout << p << endl;
-    cout << m1 << endl;
-    cout << m2 << endl;
-    */
 
-    p.genererQuatreMerveilles(); //et les afficher
+    p.genererHuitMerveilles(); //generation random parmis un csv
+
+    cout << p.getPlateau(); //on affiche les merveilles qu'il y a dans le plateau de jeu
+    // il faudra bien sur completer l'affichage du plateau au fur et a mesure
 
     return 0;
+}
+
 }
 

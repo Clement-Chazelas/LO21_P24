@@ -2,7 +2,6 @@
 #define PARTIE_H
 
 #include <iostream>
-
 #include "joueur.h"
 #include "plateauJeu.h"
 
@@ -14,13 +13,15 @@ class Partie
     PlateauDeJeu plateau;
     unsigned int age;
 public:
-    Partie(const string& n_j1, const string& p_j1, const string& n_j2, const string& p_j2);
+    Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2);
+    ~Partie()=default;
     const Joueur& getJoueur1() const {return joueur1;}
     const Joueur& getJoueur2() const {return joueur2;}
-
-    int genererQuatreMerveilles();
+    const PlateauDeJeu& getPlateau() const {return plateau;}
+    void genererHuitMerveilles();
+    void selectionDesMerveilles();
 };
 
-ostream& operator<<(ostream& f, const Partie& p);
+std::ostream& operator<<(std::ostream& f, const Partie& p);
 
 #endif // PARTIE_H

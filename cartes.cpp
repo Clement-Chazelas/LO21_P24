@@ -1,6 +1,5 @@
 #include "cartes.h"
-#include <string>
-#include <iostream>
+#include <string.h>
 
 using namespace std;
 
@@ -16,15 +15,13 @@ void Carte::ajouterCoutRessources(Ressources r) {
 }
 
 
-void Merveille::ajouterProduitRessources(Ressources r){
-    if (nbProd >= nbProdMax) {
-        Ressources* newlist = new Ressources[nbProdMax+5];
-        for (unsigned int i = 0; i<nbCout; i++)
-            newlist[i] = produitRessources[i];
-        Ressources* old = produitRessources; produitRessources = newlist; delete [] old;
-        nbProdMax += 5;
-    }
-    produitRessources[nbProd++] = r;
+Merveille::Merveille(const Merveille& mer) :
+    Carte(mer.getNom(), mer.getNbPointVictoire()), active(mer.getActive()), rejouer(mer.getRejouer()),
+    produitRessources(new Ressources[mer.getNbCout()]), nbProd(mer.getNbProd()),
+    nbProdMax(mer.getNbProdMax()), nbPointsCombat(mer.getNbPointsCombat()),
+    nbPiecesRapportees(mer.getNbPiecesRapportees()), nbPiecesSacagees(mer.getNbPiecesSacagees()) {
+        for (unsigned int i=0; i<nbCout; i++) coutRessources[i]=mer.getCoutRessources()[i];
+        for (unsigned int i=0; i<nbProd; i++) produitRessources[i]=mer.getProduitRessources()[i];
 }
 
 
@@ -46,7 +43,44 @@ string printRessource(const Ressources& r) {
         return "verre";
         break;
     }
+    return "inexistant";
 }
+
+
+Merveille& Merveille::operator=(const Merveille& mer) {
+    if (this!=&mer) {
+        nom=mer.getNom();
+        nbCout=mer.getNbCout();
+        nbPointVictoire= mer.getNbPointVictoire();
+        nbPointsCombat=mer.getNbPointsCombat();
+        active=mer.getActive();
+        rejouer=mer.getRejouer();
+        nbProd=mer.getNbProd();
+        nbProdMax=mer.getNbProdMax();
+        nbPiecesRapportees=mer.getNbPiecesRapportees();
+        nbPiecesSacagees=mer.getNbPiecesSacagees();
+        for (unsigned int i=0; i<nbCout; i++) {
+            coutRessources[i]=mer.getCoutRessources()[i];
+        }
+        for (unsigned int i=0; i<nbProd; i++) produitRessources[i]=mer.getProduitRessources()[i];
+    }
+    return *this;
+}
+
+
+
+
+void Merveille::ajouterProduitRessources(Ressources r){
+    if (nbProd >= nbProdMax) {
+        Ressources* newlist = new Ressources[nbProdMax+5];
+        for (unsigned int i = 0; i<nbCout; i++)
+            newlist[i] = produitRessources[i];
+        Ressources* old = produitRessources; produitRessources = newlist; delete [] old;
+        nbProdMax += 5;
+    }
+    produitRessources[nbProd++] = r;
+}
+
 
 ostream& operator<<(ostream& f, const Merveille& m) {
     f << "Merveille : " << m.getNom() << std::endl;
@@ -65,6 +99,9 @@ ostream& operator<<(ostream& f, const Merveille& m) {
     }
     if (m.getNbPiecesSacagees()!=0) {
         f << std::endl << "Cette merveille sacage " << m.getNbPiecesSacagees() << " pieces a l'adversaire";
+    }
+    if (m.getRejouer()==true) {
+        f << std::endl << "Cette merveille a l'effet rejouer";
     }
     return f << std::endl;
 }

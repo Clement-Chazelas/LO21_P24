@@ -20,17 +20,19 @@ private:
     unsigned int nbMerveilles;
 public:
     Joueur(std::string n, std::string p, unsigned int m=7) :  merveilles(new Merveille[4]), nom(n), prenom(p), nbPieces(m), nbMerveilles(0) {}
-    ~Joueur() {/*delete[] merveilles;*/} //Je fais volontairement une fuite memoire car je n'ai pas trouve pourquoi la suppression du tableau merveille fais crasher le programme
+    ~Joueur() {delete[] merveilles;}
     Joueur(const Joueur& j)=delete;
+
+    //getters
     std::string getNom() const {return nom;}
     std::string getPrenom() const {return prenom;}
     unsigned int getnbPieces() const {return nbPieces;}
+    unsigned int getNbMerveilles() const {return nbMerveilles;}
+    const Merveille* const getMerveilles() const {return merveilles;}
 
     void gainPieces(unsigned int n) {nbPieces+=n;}
     void pertePieces(unsigned int n) {if (n>nbPieces) nbPieces=0; else nbPieces-=n;}
-
-    void ajouterMerveille(Merveille& mer);
-
+    void ajouterMerveille(const Merveille& mer);
 };
 
 std::ostream& operator<<(std::ostream& f, const Joueur& j);

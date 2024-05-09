@@ -178,14 +178,37 @@ ostream& operator<<(ostream& f, const Merveille& m) {
     return f << std::endl;
 }
 
+void Batiment::afficher(std::ostream& f) const {f << "~~~Batiment : "<< nom << "~~~" << std::endl;}
+
+void BatimentRessource::afficher(std::ostream& f) const {f << "\033[0;37m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Ressource produite : " << printRessource(ressourceProduite) << std::endl;}
+
+void BatimentCivil::afficher(std::ostream& f) const {f << "\033[0;34m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl;}
+
+void BatimentScientifique::afficher(std::ostream& f) const {f << "\033[0;32m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Symbole scientifique : " << printSymbole(symbole) << std::endl;}
+
+void BatimentCommercial::afficher(std::ostream& f) const {
+    f << "\033[0;33m~~~Batiment : "<< nom << "~~~\033[0m";
+    if (nbRessourcesStockees!=0) {
+        f << "\nRessources stockees : ";
+        for (unsigned int i=0; i<nbRessourcesStockees; i++) f << printRessource(ressourcesStockees[i]);
+    }
+    f << std::endl;
+}
+
+void BatimentMilitaire::afficher(std::ostream& f) const {f << "\033[0;31m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Points de combats : " << pointsCombats << std::endl;}
+
+
 std::ostream& operator<<(std::ostream& f, const Batiment& bat) {
     bat.afficher(f);
-    f << "Points de victoire: " << bat.getNbPointVictoire() << " - ";
-    f << "Cout en pieces: " << bat.getCoutPieces() << "   ";
+    if (bat.getNbPointVictoire()!=0) f << "Points de victoire: " << bat.getNbPointVictoire() << "   ";
+    if (bat.getCoutPieces()!=0) f << "Cout en pieces: " << bat.getCoutPieces() << "   ";
     if (bat.getCoutChainage()!="NULL") f << "Chainage requis: " << bat.getCoutChainage() << "   ";
     if (bat.getSymboleChainage()!="NULL") f << "Symbole de chainage: " << bat.getSymboleChainage() << "   ";
     if (!bat.getFaceCachee()) f << "Face cachee: " << (bat.getFaceCachee() ? "Oui" : "Non");
+    if (bat.getNbCout()!=0) {
+        f << "\nCout Ressource : ";
+        for (unsigned int i=0; i<bat.getNbCout(); i++) f << "# " << printRessource(bat.getCoutRessources()[i]);
+    }
     f << "\n" << std::endl;
     return f;
 }
-

@@ -93,7 +93,7 @@ public:
     std::string getSymboleChainage() const {return symboleChainage;}
     bool getFaceCachee() const {return faceCachee;}
 
-    virtual void afficher(std::ostream& f) const {f << "~~~Batiment : "<< nom << "~~~" << std::endl;} //Virtual pour le polymorphisme (cf. cours à venir)
+    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours à venir)
 };
 
 std::ostream& operator<<(std::ostream& f, const Batiment& bat);
@@ -113,7 +113,7 @@ public:
     Ressources getRessourceProduite() const {return ressourceProduite;}
     unsigned int getNbRessourcesProduites() const {return nbRessourcesProduites;}
 
-    void afficher(std::ostream& f) const {f << "\033[1;33m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Ressource produite : " << printRessource(ressourceProduite) << std::endl;}
+    void afficher(std::ostream& f) const;
 };
 
 std::ostream& operator<<(std::ostream& f, const BatimentRessource& bat);
@@ -127,7 +127,7 @@ public:
     BatimentCivil& operator=(const BatimentCivil& other);
     ~BatimentCivil()=default;
 
-    void afficher(std::ostream& f) const {f << "\033[0;34m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl;}
+    void afficher(std::ostream& f) const;
 };
 
 
@@ -143,7 +143,7 @@ public:
     //getters
     SymboleScientifique getSymbole() const {return symbole;}
 
-    void afficher(std::ostream& f) const {f << "\033[0;32m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Symbole scientifique : " << printSymbole(symbole) << std::endl;}
+    void afficher(std::ostream& f) const;
 };
 
 
@@ -173,11 +173,7 @@ public:
     Ressources* getRessourcesStockees() const {return ressourcesStockees;}
 
     void AjouterRessourcesStockees(Ressources res);
-    void afficher(std::ostream& f) const {
-        f << "\033[0;33m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Ressources stockees : ";
-        for (unsigned int i=0; i<nbRessourcesStockees; i++) f << printRessource(ressourcesStockees[i]);
-        f << std::endl;
-    }
+    void afficher(std::ostream& f) const;
 };
 
 
@@ -193,9 +189,7 @@ public:
     //getters
     unsigned int getNbPointsCombats() const {return pointsCombats;}
 
-    void afficher(std::ostream& f) const {f << "\033[0;31m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl;}
+    void afficher(std::ostream& f) const;
 };
-
-#endif
 
 #endif

@@ -164,7 +164,7 @@ void Partie::genererAgeUn() {
 
 
 std::ostream& operator<<(std::ostream& f, const Partie& p) {
-    f << "Partie --> " << p.getJoueur1().getNom() << " VS " << p.getJoueur2().getNom();
+    f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " VS " << p.getJoueur2().getNom() << "\033[0m";
     return f;
 }
 

@@ -1,0 +1,24 @@
+nom;type;cout piece;cout chainage;symbole chainage;points victoires;points de combat;Ressource produite;nombre res produites;Symbole Scientifique;Pieces rapportes;Ressources…
+Briqueterie;Ressource;2;NULL;NULL;0;0;Argile;2;NULL;0;NULL
+Carriere;Ressource;2;NULL;NULL;0;0;Pierre;2;NULL;0;NULL
+Scierie;Ressource;2;NULL;NULL;0;0;Bois;2;NULL;0;NULL
+Souflerie;Ressource;0;NULL;NULL;0;0;Verre;1;NULL;0;NULL
+Sechoir;Ressource;0;NULL;NULL;0;0;Papyrus;1;NULL;0;NULL
+Temple;Civil;0;Lune;Soleil;4;0;NULL;0;NULL;0;Bois/Papyrus
+Tribunal;Civil;0;NULL;NULL;5;0;NULL;0;NULL;0;Bois/Bois/Verre
+Statue;Civil;0;Masque;Pilier;4;0;NULL;0;NULL;0;Argile/Argile
+Rostres;Civil;0;NULL;Temple;4;0;NULL;0;NULL;0;Pierre/Bois
+Aqueduc;Civil;0;Goutte;NULL;5;0;NULL;0;NULL;0;Pierre/Pierre/Pierre
+Bibliotheque;Scientifique;0;Livre;NULL;2;0;NULL;0;Plume;0;Pierre/Bois/Verre
+Dispensaire;Scientifique;0;Roue crantee;NULL;2;0;NULL;0;Mortier;0;Argile/Argile/Pierre
+Laboratoire;Scientifique;0;NULL;Lampe;1;0;NULL;0;Plomb;0;Bois/Verre/Verre
+Ecole;Scientifique;0;NULL;Lyre;1;0;NULL;0;Roue;0;Bois/Papyrus/Papyrus
+Forum;Commercial;3;NULL;NULL;0;0;Verre/Papyrus;1;NULL;0;Argile
+Caravanserail;Commercial;2;NULL;NULL;0;0;Bois/Argile/Pierre;1;NULL;0;Verre
+Brasserie;Commercial;0;NULL;Tonneau;0;0;NULL;0;NULL;6;Papyrus
+Douane;Commercial;4;NULL;NULL;0;0;Verre/Papyrus;2;NULL;0;NULL
+Baraquement;Militaire;3;Epee;NULL;0;1;NULL;0;NULL;0;NULL
+Haras;Militaire;0;Fer a cheval;NULL;0;1;NULL;0;NULL;0;Argile/Bois
+Champs de tir;Militaire;0;NULL;Cible;0;2;NULL;0;NULL;0;Pierre/Bois/Papyrus
+Muraille;Militaire;0;NULL;NULL;0;2;NULL;0;NULL;0;Pierre/Pierre
+Place d'arme;Militaire;0;NULL;Casque;0;2;NULL;0;NULL;0;Argile/Argile/Verre

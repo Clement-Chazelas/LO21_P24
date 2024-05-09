@@ -1,0 +1,28 @@
+nom;type;cout piece;cout chainage;points victoires;points de combat;Type pour Avantages;Symbole Scientifique;Ressources…
+Jardins;Civil;0;Pilier;6;0;NULL;NULL;Argile/Argile/Bois/Bois
+Pantheon;Civil;0;Soleil;6;0;NULL;NULL;Argile/Bois/Papyrus/Papyrus
+Obelisque;Civil;0;NULL;5;0;NULL;NULL;Pierre/Pierre/Verre
+Senat;Civil;0;Temple;5;0;NULL;NULL;Argile/Argile/Pierre/Papyrus
+Hotel de Ville;Civil;0;NULL;7;0;NULL;NULL;Pierre/Pierre/Pierre/Bois/Bois
+Palace;Civil;0;NULL;7;0;NULL;NULL;Argile/Pierre/Bois/Verre/Verre
+Observatoire;Scientifiques;0;Lampe;2;0;NULL;NULL;Pierre/Papyrus/Papyrus
+Academie;Scientifiques;0;NULL;3;0;NULL;NULL;Pierre/Bois/Verre/Verre
+Etude;Scientifiques;0;NULL;3;0;NULL;NULL;Bois/Bois/Verre/Papyrus
+Universite;Scientifiques;0;Lyre;2;0;NULL;NULL;Argile/Verre/Papyrus
+Port;Commercial;0;NULL;3;0;Primaire;NULL;Bois/Verre/Papyrus
+Phare;Commercial;0;Amphore;3;0;Commercial;NULL;Argile/Argile/Verre
+Armurerie;Commercial;0;NULL;3;0;Militaire;NULL;Pierre/Pierre/Verre
+Chambre de Commerce;Commercial;0;NULL;3;0;Manufacture;NULL;Papyrus/Papyrus
+Arene;Commercial;0;Tonneau;3;0;Merveille;NULL;Argile/Pierre/Bois
+Fortifications;Militaire;0;Tour d'observation;0;2;NULL;NULL;Pierre/Pierre/Argile/Papyrus
+Pretoire;Militaire;8;NULL;0;3;NULL;NULL;NULL
+Atelier de Siege;Militaire;0;Cible;0;2;NULL;NULL;Bois/Bois/Bois/Verre
+Arsenal;Militaire;0;NULL;0;3;NULL;NULL;Argile/Argile/Argile/Bois/Bois
+Cirque;Militaire;0;Casque;0;2;NULL;NULL;Argile/Argile/Pierre/Pierre
+Guilde des Magistrats;Guilde;0;NULL;0;0;Civil;NULL;Bois/Bois/Argile/Papyrus
+Guilde des Scientifiques;Guilde;0;NULL;0;0;Scientifique;NULL;Argile/Argile/Bois/Bois
+Guilde des Batisseurs;Guilde;0;NULL;0;0;Merveille;NULL;Pierre/Pierre/Argile/Bois/Verre
+Guilde des Armateurs;Guilde;0;NULL;0;0;Ressource;NULL;Argile/Pierre/Verre/Papyrus
+Guilde des Usuriers;Guilde;0;NULL;0;0;Pieces;NULL;Pierre/Pierre/Bois/Bois
+Guilde des Tacticiens;Guilde;0;NULL;0;0;Militaire;NULL;Pierre/Pierre/Argile/Papyrus
+Guilde des Commercants;Guilde;0;NULL;0;0;Commercial;NULL;Argile/Bois/Verre/Papyrus

@@ -68,19 +68,19 @@ SymboleScientifique qStringToSymboleScientifique(QString str) {
 string printRessource(const Ressources& r) {
     switch (r) {
     case Ressources::bois:
-        return "bois";
+        return "Bois";
         break;
     case Ressources::pierre:
-        return "pierre";
+        return "Pierre";
         break;
     case Ressources::argile:
-        return "brique";
+        return "Argile";
         break;
     case Ressources::papyrus:
-        return "papyrus";
+        return "Papyrus";
         break;
     case Ressources::verre:
-        return "verre";
+        return "Verre";
         break;
     }
     return "inexistant";

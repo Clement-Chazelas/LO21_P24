@@ -10,6 +10,7 @@ class PlateauDeJeu {
 private:
     Batiment** defausse;
     Batiment** tab; //Les batiments sont de tailles differents => il faut passer par un tableau de pointeur
+    Batiment* structure[7][13];
     JetonProgres* piocheJeton;
     JetonProgres* plateauJeton;
     Merveille* selectionMerveille;
@@ -25,7 +26,7 @@ public:
     ~PlateauDeJeu() {delete[] defausse; delete[] tab; delete[] piocheJeton; delete[] plateauJeton; delete[] selectionMerveille;}
 
     //getters
-    Batiment** getBat() const {return tab;}
+    Batiment** getTab() const {return tab;}
     Batiment** getDispositionCarte() const {return tab;}
     JetonProgres* getJetonProgresPioche() const {return piocheJeton;}
     JetonProgres* getJetonProgresPlateau() const {return plateauJeton;}
@@ -48,10 +49,14 @@ public:
     void ajouterMerveillePlateau(Merveille& mer);
 
     //Pour les batiments
-    void prendreCarte(size_t i);
+    void prendreBatimentPlateau(size_t i);
     void ajouterBatimentPlateau(Batiment* bat);
     Batiment* piocher(int i);
     void melangerBatiments();
+    void genererStructureAge1();
+    void afficherStructureAge1();
+    void afficherSelectionnableAge1();
+    Batiment* choisirBatiment(bool j2=false);
 
     //Pour les jetons
     void prendreJetonPioche(size_t i);
@@ -61,4 +66,3 @@ public:
 std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla);
 
 #endif //LO21_P24_PLATEAUJEU_H
-

@@ -112,3 +112,4 @@ string printSymbole(const SymboleScientifique& s) {
     }
     return "inexistant";
 }
+

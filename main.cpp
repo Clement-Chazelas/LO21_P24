@@ -31,3 +31,16 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
+/*
+To Do list :
+    - Generation age III
+    - Gestion du masquage des batiments
+    - Generation aleatoire des jetons scientifique sur et hors plateau
+    - Ajout des methodes joueurs pour calculer le cout d'achat
+    - Ajout des methodes joueurs pour calculer l'argent gagnées par une defausse
+    - Finaliser l'ajout des attributs spéciaux des merveilles (ressources disponibles, choix du jeton, choix dans la defausse...
+    - Gestion du conflit militaire
+    - mthode pour calculer les points de victoires en parcourant les cartes de la cite
+    ...
+*/
+

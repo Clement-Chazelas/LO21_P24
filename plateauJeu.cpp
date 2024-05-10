@@ -13,11 +13,17 @@ PlateauDeJeu::PlateauDeJeu(size_t c, size_t pio, size_t pla)
     : nb_batiment_plateau(0), nb_jeton_pioche(pio), nb_jeton_plateau(pla), nb_defausse(0), nb_max_defausse(10),
     defausse(new Batiment*[c]), tab(new Batiment*[c]),
     piocheJeton(new JetonProgres[pio]), plateauJeton(new JetonProgres[pla]),
-    selectionMerveille(new Merveille[8]), emplacementPionMilitaire(0), nb_merveille_plateau(0) {}  //Rajouter l'initialisation avec un fichier csv
+    selectionMerveille(new Merveille[8]), emplacementPionMilitaire(0), nb_merveille_plateau(0) {
+    for (size_t i = 0; i < 7; ++i) {
+        for (size_t j = 0; j < 13; ++j) {
+            structure[i][j]=nullptr;
+        }
+    }
+}
 
 
 
-void PlateauDeJeu::prendreCarte(size_t i) {
+void PlateauDeJeu::prendreBatimentPlateau(size_t i) {
     if(i >= nb_batiment_plateau){
         throw "Erreur : cette carte n'est pas sur le plateau";
     }
@@ -105,6 +111,67 @@ void PlateauDeJeu::melangerBatiments() {
     }
 }
 
+void PlateauDeJeu::genererStructureAge1() {
+    bool modele[7][13]={
+                        {false, false, false, false, false, true, false, true, false, false, false, false, false},
+                        {false, false, false, false, true, false, true, false, true, false, false, false, false},
+                        {false, false,false, true, false, true, false, true, false, true, false, false, false,},
+                        {false, false,true, false, true, false, true, false, true, false, true, false,false},
+                        {false, true, false, true, false, true, false, true, false, true, false, true, false},
+                        {false, false, false, false, false, false, false, false, false, false, false, false, false},
+                        {false, false, false, false, false, false, false, false, false, false, false, false, false}
+                                                                                              };
+    unsigned int nbBatInseres=0;
+    for (unsigned int i=0; i<5; i++) {
+        for (unsigned int j=1; j<12; j++) {
+            if (modele[i][j]) {
+                structure[i][j]=tab[nbBatInseres++];
+            }
+        }
+    }
+}
+
+void PlateauDeJeu::afficherStructureAge1() {
+    for (unsigned int i=0; i<5; i++) {
+        for (unsigned int j=1; j<12; j++) {
+            if (structure[i][j]!=nullptr) {
+                std::cout << *(structure[i][j]);
+            }
+        }
+        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+    }
+}
+
+void PlateauDeJeu::afficherSelectionnableAge1() {
+    std::cout << "\n ____________Batiments a selectionner : _________\n";
+    for (unsigned int i=0; i<5; i++) {
+        for (unsigned int j=1; j<12; j++) {
+            if (structure[i][j]!=nullptr && structure[i+1][j-1]==nullptr && structure[i+1][j+1]==nullptr) {
+                std::cout << i << " " << j << " " << *(structure[i][j]);
+            }
+        }
+    }
+}
+
+
+Batiment* PlateauDeJeu::choisirBatiment(bool j2) {
+    bool ok2;
+    QString windowJoueur;
+    if (j2) windowJoueur="Joueur 2";
+    else windowJoueur="Joueur 1";
+    QString batimentChoisie = QInputDialog::getText(nullptr, windowJoueur, "Batiment choisie :", QLineEdit::Normal, "", &ok2);
+    for (unsigned int i=0; i<5; i++) {
+        for (unsigned int j=1; j<12; j++) {
+            if (structure[i][j]!=nullptr && structure[i+1][j-1]==nullptr && structure[i+1][j+1]==nullptr && batimentChoisie.toStdString()==structure[i][j]->getNom()) {
+                Batiment* temp=structure[i][j];
+                structure[i][j]=nullptr;
+                nb_batiment_plateau--;
+                return temp;
+            }
+        }
+    }
+    throw "Le batiment choisie n'existe pas sur le plateau de jeu ou n'est pas accessible";
+}
 
 
 Merveille PlateauDeJeu::choisirMerveille(bool j2) {
@@ -152,6 +219,6 @@ std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {
     f << "Merveilles sur le plateau : " << std::endl;
     for (unsigned int i=0; i<pla.getNb_merveille_plateau(); i++) f << pla.getSelectionMerveille()[i] << std::endl;
     f << "Batiments sur le plateau : " << std::endl;
-    for (unsigned int i=0; i<pla.getNb_batiment_plateau(); i++) f << *(pla.getBat()[i]);
+    for (unsigned int i=0; i<pla.getNb_batiment_plateau(); i++) f << *(pla.getTab()[i]);
     return f;
 }

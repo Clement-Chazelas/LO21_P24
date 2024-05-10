@@ -153,6 +153,11 @@ void BatimentCommercial::AjouterRessourcesStockees(Ressources r) {
 }
 
 
+void BatimentCommercial::AjouterRessourcesDisponibles(Ressources r) {
+    ressourcesDisponibles[nbRessourcesDisponibles++]=r;
+}
+
+
 ostream& operator<<(ostream& f, const Merveille& m) {
     f << "___Merveille : " << m.getNom() << "___";
     if (!m.getActive()) f << " (inactive)";
@@ -188,9 +193,14 @@ void BatimentScientifique::afficher(std::ostream& f) const {f << "\033[0;32m~~~B
 
 void BatimentCommercial::afficher(std::ostream& f) const {
     f << "\033[0;33m~~~Batiment : "<< nom << "~~~\033[0m";
+    if (piecesRapportees!=0) f << "\nPieces rapportees : " << piecesRapportees;
     if (nbRessourcesStockees!=0) {
         f << "\nRessources stockees : ";
-        for (unsigned int i=0; i<nbRessourcesStockees; i++) f << printRessource(ressourcesStockees[i]);
+        for (unsigned int i=0; i<nbRessourcesStockees; i++) f << " # " << printRessource(ressourcesStockees[i]);
+    }
+    if (nbRessourcesDisponibles!=0) {
+        f << "\nRessources disponibles : ";
+        for (unsigned int i=0; i<nbRessourcesDisponibles; i++) f << " # " << printRessource(ressourcesDisponibles[i]);
     }
     f << std::endl;
 }
@@ -207,7 +217,7 @@ std::ostream& operator<<(std::ostream& f, const Batiment& bat) {
     if (!bat.getFaceCachee()) f << "Face cachee: " << (bat.getFaceCachee() ? "Oui" : "Non");
     if (bat.getNbCout()!=0) {
         f << "\nCout Ressource : ";
-        for (unsigned int i=0; i<bat.getNbCout(); i++) f << "# " << printRessource(bat.getCoutRessources()[i]);
+        for (unsigned int i=0; i<bat.getNbCout(); i++) f << " # " << printRessource(bat.getCoutRessources()[i]);
     }
     f << "\n" << std::endl;
     return f;

@@ -26,3 +26,4 @@ std::string printRessource(const Ressources& r);
 std::string printSymbole(const SymboleScientifique& r);
 
 #endif // UTILS_H
+

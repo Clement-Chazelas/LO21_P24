@@ -173,6 +173,7 @@ public:
     Ressources* getRessourcesStockees() const {return ressourcesStockees;}
 
     void AjouterRessourcesStockees(Ressources res);
+    void AjouterRessourcesDisponibles(Ressources res);
     void afficher(std::ostream& f) const;
 };
 

@@ -19,12 +19,14 @@ public:
     //getters
     const Joueur& getJoueur1() const {return joueur1;}
     const Joueur& getJoueur2() const {return joueur2;}
-    const PlateauDeJeu& getPlateau() const {return plateau;}
+    PlateauDeJeu& getPlateau() {return plateau;}
 
     void genererHuitMerveilles();
     void genererAgeUn();
+    void genererAgeDeux();
     void afficherMerveillesRestantes(bool salve2=false) const;
     void selectionDesMerveilles();
+    void selectionDesBatiments();
 };
 
 std::ostream& operator<<(std::ostream& f, const Partie& p);

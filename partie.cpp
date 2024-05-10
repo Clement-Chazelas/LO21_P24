@@ -94,6 +94,21 @@ void Partie::selectionDesMerveilles() { // Méthode a finir
     }
 }
 
+void Partie::selectionDesBatiments() {
+    try {
+        bool j2=false;
+        while (plateau.getNb_batiment_plateau()>0) {
+            plateau.afficherSelectionnableAge1();
+            if (!j2) {joueur1.ajouterBatiment(plateau.choisirBatiment()); std::cout << joueur1 << std::endl;}
+            else {joueur2.ajouterBatiment(plateau.choisirBatiment(j2)); std::cout << joueur2 << std::endl;}
+            j2=!j2;
+        }
+    }
+    catch (const char* mes) {
+        std::cout << mes << std::endl;
+    }
+}
+
 void Partie::genererAgeUn() {
     // Chemin vers le fichier CSV
     QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge1_SevenWonders.csv"; //changer l'adresse !
@@ -108,7 +123,7 @@ void Partie::genererAgeUn() {
     QTextStream in(&file);
     QString line = in.readLine();
     int counter=0;
-    std::set<int> numbers=generateRdmSet(23, 4);
+    std::set<int> numbers=generateRdmSet(23, 3);
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (numbers.find(counter++)==numbers.end()) {
@@ -153,6 +168,107 @@ void Partie::genererAgeUn() {
             case TypeBatiment::Militaire: {
                 BatimentMilitaire* bM=new BatimentMilitaire(nom, coutPiece, "NULL", symboleChainage, true, ptc);
                 if (coutRessourceStr!="NULL") bM->ajouterCoutRessources(qStringToRessource(coutRessourceStr));
+                plateau.ajouterBatimentPlateau(bM);
+                break; }
+            }
+        }
+    }
+    file.close();
+    plateau.melangerBatiments();
+}
+
+
+void Partie::genererAgeDeux() {
+    // Chemin vers le fichier CSV
+    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge2_SevenWonders.csv"; //changer l'adresse !
+
+    // Ouverture du fichier en lecture seule
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Impossible d'ouvrir le fichier :" << file.errorString();
+    }
+
+    // Lecture du contenu du fichier ligne par ligne
+    QTextStream in(&file);
+    QString line = in.readLine();
+    int counter=0;
+    std::set<int> numbers=generateRdmSet(23, 3);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (numbers.find(counter++)==numbers.end()) {
+            QStringList values = line.split(";");
+            std::string nom=values.value(0).toStdString();
+            TypeBatiment type=qStringToTypeBatiment(values.value(1));
+            unsigned int coutPiece=values.value(2).toUInt();
+            std::string coutChainage=values.value(3).toStdString();
+            std::string symboleChainage=values.value(4).toStdString();
+            unsigned int ptv=values.value(5).toUInt();
+            unsigned int ptc=values.value(6).toUInt();
+            QString resStr=values.value(7);
+            QStringList res;
+            unsigned int nbResS=0;
+            bool stock=true;
+            if (resStr=="NULL") stock=false;
+            else {res=resStr.split("/");}
+            unsigned int nbRessourceProd=values.value(8).toUInt();
+            SymboleScientifique symboleScientifique=qStringToSymboleScientifique(values.value(9));
+            unsigned int piecesRapportes=values.value(10).toUInt();
+            QString coutRessourceStr=values.value(11);
+            QStringList coutRessource = coutRessourceStr.split("/");
+            switch (type) {
+            case TypeBatiment::Ressource: {
+                BatimentRessource* bR=new BatimentRessource(nom, coutPiece, coutChainage, symboleChainage, true, qStringToRessource(res.at(0)), nbRessourceProd);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bR->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bR);
+                break; }
+            case TypeBatiment::Civil: {
+                BatimentCivil* bCi=new BatimentCivil(nom, coutPiece, coutChainage, symboleChainage, true, ptv);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bCi->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bCi);
+                break; }
+            case TypeBatiment::Scientifique: {
+                BatimentScientifique* bS=new BatimentScientifique(nom, coutPiece, coutChainage, symboleChainage, true, symboleScientifique, ptv);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bS->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bS);
+                break; }
+            case TypeBatiment::Commercial: {
+                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, coutChainage, symboleChainage, true, nbResS, 0, piecesRapportes, TypeBatiment::undefined);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bCo->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                if (nbRessourceProd==2) {
+                    for (const QString &item : res) {
+                        bCo->AjouterRessourcesStockees(qStringToRessource(item));
+                    }
+                }
+                if (nbRessourceProd==1) {
+                    for (const QString &item : res) {
+                        bCo->AjouterRessourcesDisponibles(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bCo);
+                break; }
+            case TypeBatiment::Militaire: {
+                BatimentMilitaire* bM=new BatimentMilitaire(nom, coutPiece, coutChainage, symboleChainage, true, ptc);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bM->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
                 plateau.ajouterBatimentPlateau(bM);
                 break; }
             }

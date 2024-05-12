@@ -21,11 +21,11 @@ unsigned int min(unsigned int a, size_t b) {
     return b;
 }
 
-std::set<int> generateRdmSet(unsigned int max, unsigned int sizeSet) { //Genere un ensemble de sizeSet entiers differents compris entre 1 et max
-    if (sizeSet>max) throw "Impossible de generer un ensemble aleatoire avec une borne sup inferieur au nombre d'element"; //But : selectionner les cartes non utilisées
+std::set<int> generateRdmSet(unsigned int max, unsigned int sizeSet, unsigned int min) { //Genere un ensemble de sizeSet entiers differents compris entre min et max
+    if (sizeSet>max-min) throw "Impossible de generer un ensemble aleatoire avec une plage inferieur au nombre d'element"; //But : selectionner les cartes non utilisées
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, max);
+    std::uniform_int_distribution<> dis(min, max);
 
     std::set<int> numbers; // Utiliser un ensemble pour garantir des valeurs uniques
 
@@ -42,7 +42,10 @@ TypeBatiment qStringToTypeBatiment(QString str) {
     else if (str=="Scientifique") return TypeBatiment::Scientifique;
     else if (str=="Commercial") return TypeBatiment::Commercial;
     else if (str=="Militaire") return TypeBatiment::Militaire;
-    else throw "Le type de batiment n'existe pas";
+    else if (str=="Guilde") return TypeBatiment::Guilde;
+    else if (str=="Merveille") return TypeBatiment::Merveille;
+    else if (str=="Pieces") return TypeBatiment::Pieces;
+    else return TypeBatiment::undefined;
 }
 
 Ressources qStringToRessource(QString str) {
@@ -108,6 +111,36 @@ string printSymbole(const SymboleScientifique& s) {
         break;
     case SymboleScientifique::Roue:
         return "Roue";
+        break;
+    }
+    return "inexistant";
+}
+
+string printTypeBatiment(const TypeBatiment& s) {
+    switch (s) {
+    case TypeBatiment::Ressource:
+        return "Ressource";
+        break;
+    case TypeBatiment::Civil:
+        return "Civil";
+        break;
+    case TypeBatiment::Scientifique:
+        return "Scientifique";
+        break;
+    case TypeBatiment::Commercial:
+        return "Commercial";
+        break;
+    case TypeBatiment::Militaire:
+        return "Militaire";
+        break;
+    case TypeBatiment::Guilde:
+        return "Guilde";
+        break;
+    case TypeBatiment::Merveille:
+        return "Merveille";
+        break;
+    case TypeBatiment::Pieces:
+        return "Pieces";
         break;
     }
     return "inexistant";

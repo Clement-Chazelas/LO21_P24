@@ -72,12 +72,12 @@ void PlateauDeJeu::ajouterBatimentPlateau(Batiment* bat) {
 
 Merveille PlateauDeJeu::prendreMerveillePlateau(size_t i) {
     if(i >= nb_merveille_plateau || i>4){
-        throw "Erreur : cette merveille n'est pas sur le plateau";
+        throw "Erreur : cette merveille n'est pas sur le plateau"; //le choix des merveilles se fait de 4 en 4 donc on a sur le plateau au plus 4 merveilles à ce moment
     }
     else{
         Merveille merveilleChoisie(selectionMerveille[i]);
         for(i; i < 4; i++){
-            selectionMerveille[i] = selectionMerveille[i+1];
+            selectionMerveille[i] = selectionMerveille[i+1]; //on supprime la merveille dans la liste des merveilles que l'on peut selectionner car elle a été choisie par un joueur
         }
         nb_merveille_plateau--;
         return merveilleChoisie;
@@ -87,9 +87,9 @@ Merveille PlateauDeJeu::prendreMerveillePlateau(size_t i) {
 
 void PlateauDeJeu::melangerMerveilles() {
     // Initialisation du générateur de nombres aléatoires
-    std::srand(std::time(nullptr));
+    std::srand(std::time(nullptr)); //permet une graine différente à chaque fois
     for (unsigned int i=nb_merveille_plateau-1; i>0; i--) {
-        unsigned int j=std::rand()%(i+1);
+        unsigned int j=std::rand()%(i+1); //génère un nb aléatoire dans la plage 0 à i inclu
         if (i!=j) {
             Merveille temp(selectionMerveille[i]);
             selectionMerveille[i]=selectionMerveille[j];
@@ -187,14 +187,15 @@ Merveille PlateauDeJeu::choisirMerveille(bool j2) {
 }
 
 void PlateauDeJeu::setDefausse(Batiment& bat) {
+    
     if( nb_defausse >= nb_max_defausse){
-        Batiment** newdefausse = new Batiment*[nb_max_defausse*2];
+        Batiment** newdefausse = new Batiment*[nb_max_defausse*2 + 1]; //augmentation même si nb_max_defausse = 0
         for(int i = 0; i < nb_defausse; i++){
             newdefausse[i] = defausse[i];
         }
         Batiment **old = defausse;
         defausse = newdefausse;
-        nb_max_defausse*=2;
+        nb_max_defausse = nb_max_defausse * 2 + 1;
         delete[] old;
     }
     defausse[nb_defausse++] = &bat;

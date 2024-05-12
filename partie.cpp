@@ -123,7 +123,7 @@ void Partie::genererAgeUn() {
     QTextStream in(&file);
     QString line = in.readLine();
     int counter=0;
-    std::set<int> numbers=generateRdmSet(23, 3);
+    std::set<int> numbers=generateRdmSet(22, 3);
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (numbers.find(counter++)==numbers.end()) {
@@ -192,7 +192,7 @@ void Partie::genererAgeDeux() {
     QTextStream in(&file);
     QString line = in.readLine();
     int counter=0;
-    std::set<int> numbers=generateRdmSet(23, 3);
+    std::set<int> numbers=generateRdmSet(22, 3);
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (numbers.find(counter++)==numbers.end()) {
@@ -273,6 +273,103 @@ void Partie::genererAgeDeux() {
                 break; }
             }
         }
+    }
+    file.close();
+    plateau.melangerBatiments();
+}
+
+
+void Partie::genererAgeTrois() {
+    // Chemin vers le fichier CSV
+    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge3_SevenWonders.csv"; //changer l'adresse !
+
+    // Ouverture du fichier en lecture seule
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Impossible d'ouvrir le fichier :" << file.errorString();
+    }
+
+    // Lecture du contenu du fichier ligne par ligne
+    QTextStream in(&file);
+    QString line = in.readLine();
+    int counter=0;
+    std::set<int> numbers=generateRdmSet(19, 3);
+    std::set<int> numbersGuildes=generateRdmSet(26, 4, 20);
+    for (std::set<int>::iterator it = numbers.begin(); it != numbers.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+    for (std::set<int>::iterator it = numbersGuildes.begin(); it != numbersGuildes.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (numbers.find(counter)==numbers.end() && numbersGuildes.find(counter)==numbersGuildes.end()) {
+            QStringList values = line.split(";");
+            std::string nom=values.value(0).toStdString();
+            TypeBatiment type=qStringToTypeBatiment(values.value(1));
+            unsigned int coutPiece=values.value(2).toUInt();
+            std::string coutChainage=values.value(3).toStdString();
+            unsigned int ptv=values.value(4).toUInt();
+            unsigned int ptc=values.value(5).toUInt();
+            TypeBatiment typePourAvantage=qStringToTypeBatiment(values.value(6));
+            SymboleScientifique symboleScientifique=qStringToSymboleScientifique(values.value(7));
+            QString coutRessourceStr=values.value(8);
+            QStringList coutRessource = coutRessourceStr.split("/");
+            switch (type) {
+            case TypeBatiment::Ressource: {
+                throw "Un batiment ressource ne peut pas etre genere durant l'age III";
+                break; }
+            case TypeBatiment::Civil: {
+                BatimentCivil* bCi=new BatimentCivil(nom, coutPiece, coutChainage, "NULL", true, ptv);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bCi->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bCi);
+                std::cout << *bCi << std::endl;break; }
+            case TypeBatiment::Scientifique: {
+                BatimentScientifique* bS=new BatimentScientifique(nom, coutPiece, coutChainage, "NULL", true, symboleScientifique, ptv);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bS->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bS);
+                std::cout << *bS << std::endl;break; }
+            case TypeBatiment::Commercial: {
+                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, coutChainage, "NULL", true, 0, 0, 0, TypeBatiment::undefined);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bCo->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                bCo->setTypePourGainPieces(typePourAvantage);
+                plateau.ajouterBatimentPlateau(bCo);
+                std::cout << *bCo << std::endl;break; }
+            case TypeBatiment::Militaire: {
+                BatimentMilitaire* bM=new BatimentMilitaire(nom, coutPiece, coutChainage, "NULL", true, ptc);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bM->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bM);
+                std::cout << *bM << std::endl;break; }
+            case TypeBatiment::Guilde: {
+                BatimentGuilde* bG=new BatimentGuilde(nom, coutPiece, coutChainage, "NULL", true, ptc, typePourAvantage);
+                if (coutRessourceStr!="NULL") {
+                    for (const QString &item : coutRessource) {
+                        bG->ajouterCoutRessources(qStringToRessource(item));
+                    }
+                }
+                plateau.ajouterBatimentPlateau(bG);
+                std::cout << *bG << std::endl;break; }
+            }
+        }
+        else std::cout << counter << std::endl;
+        counter++;
     }
     file.close();
     plateau.melangerBatiments();

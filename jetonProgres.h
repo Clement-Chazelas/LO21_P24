@@ -7,12 +7,14 @@ class JetonProgres{
 private:
     std::string nomJeton;
     std::string effet;
+    int pointsVictoire;
 public:
     JetonProgres()=default;
-    JetonProgres(std::string n, std::string e) : nomJeton(std::move(n)), effet(std::move(e)) {}
+    JetonProgres(std::string n, std::string e, int p) : nomJeton(std::move(n)), effet(std::move(e)), pointsVictoire(p) {}
     ~JetonProgres()=default;
     std::string getNomJeton() const {return nomJeton;}
     std::string getEffetJeton() const {return effet;}
+    int getPointsVictoire() const {return pointsVictoire;}
 };
 
 #endif //LO21_P24_JETONPROGRES_H

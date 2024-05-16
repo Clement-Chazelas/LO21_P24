@@ -1,0 +1,11 @@
+﻿nom;effet;points de victoire
+Agriculture;Le joueur prend immédiatement 6 pièces de la banque. Le jeton rapporte 4 points de victoire;4
+Architecture;Les prochaines Merveilles construites par le joueur lui coûteront 2 ressources de moins. À chaque construction, le joueurest libre de choisir sur quelles ressources porte la réduction;0
+Economie;Le joueur récupère l’argent dépensé par son adversaire lorsqu’il achète des ressources;0
+Loi;Ce jeton rapporte un symbole scientifique;0
+Maçonnerie;Les prochaines cartes bleues construites par le joueur lui coûteront 2 ressources de moins. À chaque construction, le joueur est libre de choisir sur quelles ressources porte la réduction;0
+Mathématiques;À la fin de la partie, le joueur marque 3 points de victoire pour chaque jeton Progrès en sa possession. Ce Progrès rapporte lui-même 3 points de victoire;3
+Philosophie;Le jeton rapporte 7 points de victoire;7
+Stratégie;À partir du momentoù le joueur possède la Stratégie, les prochaines cartes rouges qu’il construit bénéficieront de 1 bouclier supplémentaire;0
+Théologie;Les prochaines Merveilles construites par le joueur sont considérées comme ayant toutes l’effet « Rejouer »;0
+Urbanisme;Le joueur prend immédiatement 6 pièces de la banque. Chaque fois que le joueur construit un Bâtiment gratuitement par chaînage (condition de construction gratuite), il reçoit 4 pièces;0

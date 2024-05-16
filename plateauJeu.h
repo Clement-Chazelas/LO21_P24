@@ -59,6 +59,7 @@ public:
     Batiment* choisirBatiment(bool j2=false);
 
     //Pour les jetons
+    void genererJetons();
     void prendreJetonPioche(size_t i);
     void prendreJetonPlateau(size_t i);
 };

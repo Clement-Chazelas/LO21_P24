@@ -5,6 +5,7 @@
 #include <set>
 #include "cartes.h"
 #include "utils.h"
+#include "QInputDialog"
 
 
 Partie::Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2)
@@ -98,15 +99,37 @@ void Partie::selectionDesBatiments() {
     try {
         bool j2=false;
         while (plateau.getNb_batiment_plateau()>0) {
-            plateau.afficherSelectionnable();
             if (!j2) {
+                std::cout << joueur1 << std::endl;
+                plateau.afficherSelectionnable();
+                bool ok2;
                 Batiment* bat(plateau.choisirBatiment());
-                joueur1.ajouterBatiment(bat);
-                std::cout << joueur1 << std::endl << joueur1.coutAchat(bat, joueur2) << std::endl;
+                // Demander au joueur de choisir une option
+                QStringList options;
+                options << "Construire" << "Defausser" << "Construire Merveille";
+                QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
+                if (choix=="Construire") {
+                    joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
+                    joueur1.ajouterBatiment(bat);
+                }
+                else if (choix=="Defausser") joueur1.gainPieces(joueur1.gainDefausse());
+                else if (choix=="Construire Merveille") joueur1.choisirMerveilleInactive();
             }
             else {
+                std::cout << joueur2 << std::endl;
+                plateau.afficherSelectionnable();
+                bool ok2;
                 Batiment* bat(plateau.choisirBatiment(j2));
-                joueur2.ajouterBatiment(bat);
+                // Demander au joueur de choisir une option
+                QStringList options;
+                options << "Construire" << "Defausser" << "Construire Merveille";
+                QString choix = QInputDialog::getItem(nullptr, "Joueur 2", "Choisissez une option:", options, 0, false, &ok2);
+                if (choix=="Construire") {
+                    joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
+                    joueur2.ajouterBatiment(bat);
+                }
+                else if (choix=="Defausser") joueur2.gainPieces(joueur2.gainDefausse());
+                else if (choix=="Construire Merveille") joueur2.choisirMerveilleInactive();
                 std::cout << joueur2 << std::endl << joueur2.coutAchat(bat, joueur1) << std::endl;
             }
             j2=!j2;
@@ -389,4 +412,5 @@ std::ostream& operator<<(std::ostream& f, const Partie& p) {
     f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " VS " << p.getJoueur2().getNom() << "\033[0m";
     return f;
 }
+
 

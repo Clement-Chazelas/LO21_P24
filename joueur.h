@@ -39,6 +39,7 @@ public:
     void ajouterBatiment(Batiment* bat);
     unsigned int gainDefausse();
     unsigned int coutAchat(Batiment* bat, const Joueur& adversaire);
+    unsigned int compterPointsVictoires() const;
 };
 
 std::ostream& operator<<(std::ostream& f, const Joueur& j);

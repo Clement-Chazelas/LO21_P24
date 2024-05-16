@@ -40,9 +40,11 @@ public:
     unsigned int gainDefausse();
     unsigned int coutAchat(Batiment* bat, const Joueur& adversaire);
     unsigned int compterPointsVictoires() const;
+    void choisirMerveilleInactive();
 };
 
 std::ostream& operator<<(std::ostream& f, const Joueur& j);
 
 #endif // JOUEUR_H
+
 

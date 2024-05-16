@@ -24,6 +24,7 @@ public:
     void genererHuitMerveilles();
     void genererAgeUn();
     void genererAgeDeux();
+    void genererAgeTrois();
     void afficherMerveillesRestantes(bool salve2=false) const;
     void selectionDesMerveilles();
     void selectionDesBatiments();

@@ -1,4 +1,4 @@
-nom;type;cout piece;cout chainage;symbole chainage;points victoires;points de combat;Ressource produite;nombre res produites;Symbole Scientifique;Pieces rapportes;Ressources…
+nom;type;cout piece;cout chainage;symbole chainage;points victoires;points de combat;Ressource produite;nombre res produites;Symbole Scientifique;Pieces rapportes;Ressourcesï¿½
 Briqueterie;Ressource;2;NULL;NULL;0;0;Argile;2;NULL;0;NULL
 Carriere;Ressource;2;NULL;NULL;0;0;Pierre;2;NULL;0;NULL
 Scierie;Ressource;2;NULL;NULL;0;0;Bois;2;NULL;0;NULL

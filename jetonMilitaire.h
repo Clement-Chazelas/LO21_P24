@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include "joueur.h"
-#include "plateauJeu.h"
 
 class JetonMilitaire{
 private:
@@ -16,7 +15,7 @@ public:
     int getEmplacement() const {return emplacement;}
     int getPertePiece() const {return pertePiece;}
     bool getUtilise() const {return utilise;}
-    void utiliserJeton(int i,Joueur& joueur) {
+    void utiliserJeton(int i, Joueur& joueur) {
         if(!utilise && emplacement == i) {
             joueur.pertePieces(pertePiece);
             utilise = true;

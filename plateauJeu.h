@@ -10,7 +10,7 @@ class PlateauDeJeu {
 private:
     Batiment** defausse;
     Batiment** tab; //Les batiments sont de tailles differents => il faut passer par un tableau de pointeur
-    Batiment* structure[7][13];
+    Batiment* structure[8][13];
     JetonProgres* piocheJeton;
     JetonProgres* plateauJeton;
     Merveille* selectionMerveille;
@@ -34,6 +34,7 @@ public:
     unsigned int getNb_batiment_plateau() const {return nb_batiment_plateau;}
     Merveille* getSelectionMerveille() const {return selectionMerveille;}
     Batiment* getDefausse() {return *defausse;}
+    int getEmplacementPionMilitaire() const {return emplacementPionMilitaire;}
 
     //setters
     void setDispositionCartes(size_t i);
@@ -41,6 +42,7 @@ public:
     void setJetonProgresPlateau(size_t i);
     void setDefausse(Batiment& bat);      //Défausser
     void setPionMilitaire(int i) {emplacementPionMilitaire += i ;if(emplacementPionMilitaire >= 10 || emplacementPionMilitaire <= -10){/*DECLENCHER_FIN_PARTIE*/};}     //Remplacerr le déclenchement par la méthode de fin
+    void deplacerPionMilitaire(int i) {emplacementPionMilitaire+=i;}
 
     //Pour les merveilles
     Merveille prendreMerveillePlateau(size_t i);
@@ -54,12 +56,13 @@ public:
     Batiment* piocher(int i);
     void melangerBatiments();
     void genererStructureAge1();
-    void afficherStructureAge1();
-    void afficherSelectionnableAge1();
+    void genererStructureAge2();
+    void genererStructureAge3();
+    void afficherStructure();
+    void afficherSelectionnable();
     Batiment* choisirBatiment(bool j2=false);
 
     //Pour les jetons
-    void genererJetons();
     void prendreJetonPioche(size_t i);
     void prendreJetonPlateau(size_t i);
 };

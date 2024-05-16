@@ -1,4 +1,4 @@
-nom;type;cout piece;symbole chainage;points victoires;points de combat;Ressource produite;Symbole Scientifique;Pieces rapportes;Ressources…
+nom;type;cout piece;symbole chainage;points victoires;points de combat;Ressource produite;Symbole Scientifique;Pieces rapportes;Ressourcesâ€¦
 Chantier;Ressource;0;NULL;0;0;Bois;NULL;0;NULL
 Bassin Argileux;Ressource;0;NULL;0;0;Argile;NULL;0;NULL
 Gisement;Ressource;0;NULL;0;0;Pierre;NULL;0;NULL
@@ -11,8 +11,8 @@ Autel;Civil;0;Lune;3;0;NULL;NULL;0;NULL
 Theatre;Civil;0;Masque;3;0;NULL;NULL;0;NULL
 Bains;Civil;0;Goutte;3;0;NULL;NULL;0;Pierre
 Officine;Scientifique;2;Roue crantee;0;0;NULL;Mortier;0;NULL
-Atelier;Scientifique;0;NULL;1;0;NULL;Plomb;0;NULL
-Apothicaire;Scientifique;0;NULL;1;0;NULL;Roue;0;NULL
+Atelier;Scientifique;0;NULL;1;0;NULL;Plomb;0;Papyrus
+Apothicaire;Scientifique;0;NULL;1;0;NULL;Roue;0;Verre
 Scriptorium;Scientifique;2;Livre;0;0;NULL;Plume;0;NULL
 Depot de Pierre;Commercial;3;NULL;0;0;Pierre;NULL;0;NULL
 Taverne;Commercial;0;Amphore;0;0;NULL;NULL;4;NULL

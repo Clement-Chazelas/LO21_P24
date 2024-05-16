@@ -14,10 +14,10 @@ int main(int argc, char *argv[]) {
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement");
     cout << p << endl;
 
-    /*
+    /**/
     p.genererHuitMerveilles(); //generation random parmis un csv pour choisir 8 merveilles
     p.selectionDesMerveilles(); //Choix successifs des merveilles
-    */
+
 
     p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
     p.getPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1

@@ -207,6 +207,7 @@ void BatimentCommercial::afficher(std::ostream& f) const {
 
 void BatimentMilitaire::afficher(std::ostream& f) const {f << "\033[0;31m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Points de combats : " << pointsCombats << std::endl;}
 
+void BatimentGuilde::afficher(std::ostream& f) const {f << "\033[0;35m~~~Batiment : "<< nom << "~~~\033[0m" << std::endl << "Type pour avantages : " << printTypeBatiment(typePourAvantages) << std::endl;}
 
 std::ostream& operator<<(std::ostream& f, const Batiment& bat) {
     bat.afficher(f);

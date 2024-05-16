@@ -24,9 +24,8 @@ unsigned int min(unsigned int a, size_t b) {
 std::set<int> generateRdmSet(unsigned int max, unsigned int sizeSet, unsigned int min) { //Genere un ensemble de sizeSet entiers differents compris entre min et max
     if (sizeSet>max-min) throw "Impossible de generer un ensemble aleatoire avec une plage inferieur au nombre d'element"; //But : selectionner les cartes non utilisées
     std::random_device rd;
-    std::mt19937 gen(rd()); //rd() permet d'obtenir une graine aléatoire utilisée pour initialiser le generateur de nombre pseudo-aléatoire gen
-    //indispensable car si on a toujours la même graine on a toujours la même sequence de nb
-    std::uniform_int_distribution<> dis(min, max); //à chaque fois que dis est appelée, un nouveau nombre dans la plage (min, max) est généré
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(min, max);
 
     std::set<int> numbers; // Utiliser un ensemble pour garantir des valeurs uniques
 

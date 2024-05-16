@@ -41,8 +41,6 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
                 if (cite[i]->getRessourceProduite()==res[counter]) {
                     res[counter]=Ressources::undefined;
                     found=true;
-                    for (unsigned int i=0; i<bat->getNbCout(); i++) std::cout << printRessource(res[i]) << " ! ";
-
                 }
                 counter++;
             }
@@ -73,6 +71,17 @@ unsigned int Joueur::compterPointsVictoires() const {
 }
 
 
+unsigned int Joueur::checkVictoireScientifique() const {
+    std::set<SymboleScientifique> science;
+    for (unsigned int i=0; i<nbBatiments; i++) {
+        if (cite[i]->getType()=="BatimentScientifique") {
+            science.insert(cite[i]->getSymbole());
+        }
+    }
+    return science.size();
+}
+
+
 void Joueur::choisirMerveilleInactive() {
     bool ok;
     QString merveilleChoisie = QInputDialog::getText(nullptr, QString::fromStdString(nom), "Merveille a activer :", QLineEdit::Normal, "", &ok);
@@ -83,7 +92,7 @@ void Joueur::choisirMerveilleInactive() {
 
 
 ostream& operator<<(ostream& f, const Joueur& j) {
-    f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << " - PV : " << j.compterPointsVictoires() << " - Pieces : " << j.getnbPieces() << "===" << endl;
+    f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << " - PV : " << j.compterPointsVictoires() << " - Pieces : " << j.getnbPieces() << " - Science : " << j.checkVictoireScientifique() << "/6 ===" << endl;
     f << "Merveilles dans sa cite : " << endl;
     for (unsigned int i=0; i<j.getNbMerveilles(); i++) f << j.getMerveilles()[i];
     f << "Batiments dans sa cite : " << endl;

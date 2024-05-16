@@ -1,14 +1,14 @@
-nom;type;cout piece;cout chainage;points victoires;points de combat;Type pour Avantages;Symbole Scientifique;Ressources…
+nom;type;cout piece;cout chainage;points victoires;points de combat;Type pour Avantages;Symbole Scientifique;Ressourcesï¿½
 Jardins;Civil;0;Pilier;6;0;NULL;NULL;Argile/Argile/Bois/Bois
 Pantheon;Civil;0;Soleil;6;0;NULL;NULL;Argile/Bois/Papyrus/Papyrus
 Obelisque;Civil;0;NULL;5;0;NULL;NULL;Pierre/Pierre/Verre
 Senat;Civil;0;Temple;5;0;NULL;NULL;Argile/Argile/Pierre/Papyrus
 Hotel de Ville;Civil;0;NULL;7;0;NULL;NULL;Pierre/Pierre/Pierre/Bois/Bois
 Palace;Civil;0;NULL;7;0;NULL;NULL;Argile/Pierre/Bois/Verre/Verre
-Observatoire;Scientifiques;0;Lampe;2;0;NULL;NULL;Pierre/Papyrus/Papyrus
-Academie;Scientifiques;0;NULL;3;0;NULL;NULL;Pierre/Bois/Verre/Verre
-Etude;Scientifiques;0;NULL;3;0;NULL;NULL;Bois/Bois/Verre/Papyrus
-Universite;Scientifiques;0;Lyre;2;0;NULL;NULL;Argile/Verre/Papyrus
+Observatoire;Scientifique;0;Lampe;2;0;NULL;Sphere armillaire;Pierre/Papyrus/Papyrus
+Academie;Scientifique;0;NULL;3;0;NULL;Cadran solaire;Pierre/Bois/Verre/Verre
+Etude;Scientifique;0;NULL;3;0;NULL;Cadran solaire;Bois/Bois/Verre/Papyrus
+Universite;Scientifique;0;Lyre;2;0;NULL;Sphere armillaire;Argile/Verre/Papyrus
 Port;Commercial;0;NULL;3;0;Primaire;NULL;Bois/Verre/Papyrus
 Phare;Commercial;0;Amphore;3;0;Commercial;NULL;Argile/Argile/Verre
 Armurerie;Commercial;0;NULL;3;0;Militaire;NULL;Pierre/Pierre/Verre

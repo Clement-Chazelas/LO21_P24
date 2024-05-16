@@ -5,7 +5,7 @@
 #include <QString>
 #include <string>
 
-enum class Ressources {bois, pierre, argile, verre, papyrus};
+enum class Ressources {bois, pierre, argile, verre, papyrus, undefined};
 enum class TypeBatiment {Ressource, Civil, Scientifique, Commercial, Militaire, Guilde, Merveille, Pieces, undefined};
 enum class SymboleScientifique {Sphere_armillaire, Balance, Cadran_solaire, Mortier, Plomb, Plume, Roue, undefined};
 

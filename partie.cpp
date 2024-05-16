@@ -24,7 +24,7 @@ void Partie::genererHuitMerveilles() {
     // Lecture du contenu du fichier ligne par ligne
     QTextStream in(&file);
     int counter=0;
-    std::set<int> numbers=generateRdmSet(12, 8);
+    std::set<int> numbers=generateRdmSet(12, 8, 1);
     while (!in.atEnd()) {
         QString line = in.readLine();
         if (numbers.find(counter++)!=numbers.end()) {
@@ -98,9 +98,17 @@ void Partie::selectionDesBatiments() {
     try {
         bool j2=false;
         while (plateau.getNb_batiment_plateau()>0) {
-            plateau.afficherSelectionnableAge1();
-            if (!j2) {joueur1.ajouterBatiment(plateau.choisirBatiment()); std::cout << joueur1 << std::endl;}
-            else {joueur2.ajouterBatiment(plateau.choisirBatiment(j2)); std::cout << joueur2 << std::endl;}
+            plateau.afficherSelectionnable();
+            if (!j2) {
+                Batiment* bat(plateau.choisirBatiment());
+                joueur1.ajouterBatiment(bat);
+                std::cout << joueur1 << std::endl << joueur1.coutAchat(bat, joueur2) << std::endl;
+            }
+            else {
+                Batiment* bat(plateau.choisirBatiment(j2));
+                joueur2.ajouterBatiment(bat);
+                std::cout << joueur2 << std::endl << joueur2.coutAchat(bat, joueur1) << std::endl;
+            }
             j2=!j2;
         }
     }
@@ -108,6 +116,7 @@ void Partie::selectionDesBatiments() {
         std::cout << mes << std::endl;
     }
 }
+
 
 void Partie::genererAgeUn() {
     // Chemin vers le fichier CSV
@@ -160,7 +169,7 @@ void Partie::genererAgeUn() {
                 plateau.ajouterBatimentPlateau(bS);
                 break; }
             case TypeBatiment::Commercial: {
-                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, "NULL", symboleChainage, true, nbResS, 0, piecesRapportes, TypeBatiment::undefined);
+                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, "NULL", symboleChainage, true, piecesRapportes, TypeBatiment::undefined);
                 if (coutRessourceStr!="NULL") bCo->ajouterCoutRessources(qStringToRessource(coutRessourceStr));
                 plateau.ajouterBatimentPlateau(bCo);
                 if (stock) bCo->AjouterRessourcesStockees(res);
@@ -244,7 +253,7 @@ void Partie::genererAgeDeux() {
                 plateau.ajouterBatimentPlateau(bS);
                 break; }
             case TypeBatiment::Commercial: {
-                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, coutChainage, symboleChainage, true, nbResS, 0, piecesRapportes, TypeBatiment::undefined);
+                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, coutChainage, symboleChainage, true, piecesRapportes, TypeBatiment::undefined);
                 if (coutRessourceStr!="NULL") {
                     for (const QString &item : coutRessource) {
                         bCo->ajouterCoutRessources(qStringToRessource(item));
@@ -339,7 +348,7 @@ void Partie::genererAgeTrois() {
                 plateau.ajouterBatimentPlateau(bS);
                 std::cout << *bS << std::endl;break; }
             case TypeBatiment::Commercial: {
-                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, coutChainage, "NULL", true, 0, 0, 0, TypeBatiment::undefined);
+                BatimentCommercial* bCo=new BatimentCommercial(nom, coutPiece, coutChainage, "NULL", true, 0, TypeBatiment::undefined);
                 if (coutRessourceStr!="NULL") {
                     for (const QString &item : coutRessource) {
                         bCo->ajouterCoutRessources(qStringToRessource(item));

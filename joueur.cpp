@@ -70,7 +70,7 @@ unsigned int Joueur::compterPointsVictoires() const {
 }
 
 ostream& operator<<(ostream& f, const Joueur& j) {
-    f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << "===" << endl;
+    f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << " - PV : " << j.compterPointsVictoires() << "===" << endl;
     f << "Merveilles dans sa cite : " << endl;
     for (unsigned int i=0; i<j.getNbMerveilles(); i++) f << j.getMerveilles()[i];
     f << "Batiments dans sa cite : " << endl;

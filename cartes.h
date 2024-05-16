@@ -10,7 +10,7 @@ class Carte {
 protected:
     std::string nom; //nom de la carte
     Ressources* coutRessources; //liste des ressources necessaires pour construire la merveille
-    unsigned int nbCout, nbCoutMax; //permet de controler la liste précédente
+    unsigned int nbCout, nbCoutMax; //permet de controler la liste pr�c�dente
     unsigned int nbPointVictoire; //nb de points victoire que la carte rapporte une fois construite
 public:
     Carte() : nom("unknown"), coutRessources(new Ressources[NMAX]), nbCout(0), nbCoutMax(NMAX), nbPointVictoire(0) {}
@@ -37,13 +37,14 @@ public:
 
 class Merveille : public Carte {
 private:
-    bool active; //test si la merveille est activée ou non
-    bool rejouer; //permet d'indiquer si la merveille possède l'effet rejouer
+    bool active; //test si la merveille est activ�e ou non
+    bool rejouer; //permet d'indiquer si la merveille poss�de l'effet rejouer
     Ressources* produitRessources; //liste des ressources produites par la merveille
-    unsigned int nbProd, nbProdMax; //permet de controler la liste précédente
-    unsigned int nbPointsCombat; //nb de points combats que la merveille rapporte une fois activée
-    unsigned int nbPiecesRapportees; //nb de pièces que la merveille rapporte quand elle est activée
-    unsigned int nbPiecesSacagees; //nb de piece perdues par l'adversaire quand elle est activée
+    unsigned int nbProd, nbProdMax; //permet de controler la liste pr�c�dente
+    unsigned int nbPointsCombat; //nb de points combats que la merveille rapporte une fois activ�e
+    unsigned int nbPiecesRapportees; //nb de pi�ces que la merveille rapporte quand elle est activ�e
+    unsigned int nbPiecesSacagees; //nb de piece perdues par l'adversaire quand elle est activ�e
+
 public:
     Merveille() : active(false), rejouer(false), produitRessources(nullptr), nbProd(0), nbProdMax(0), nbPointsCombat(0), nbPiecesRapportees(0), nbPiecesSacagees(0) {}
     Merveille(std::string m, bool act=false, bool rej=false, unsigned int ptv=0,
@@ -64,6 +65,9 @@ public:
     const unsigned int getNbProdMax() const {return nbProdMax;}
     const Ressources* getProduitRessources() const {return produitRessources;}
 
+    //setter
+    void setActive(bool b) {active=b;}
+
     void ajouterProduitRessources(Ressources r);
     choisirBatimentADefausser();
     saccagerRessourceAdverse();
@@ -74,7 +78,7 @@ std::ostream& operator<<(std::ostream& f, const Merveille& m);
 
 class Batiment : public Carte {
 private:
-    unsigned int coutPieces; //nb de pieces necessaires pour construire le bâtiment
+    unsigned int coutPieces; //nb de pieces necessaires pour construire le b�timent
     std::string coutChainage;
     std::string symboleChainage;
     bool faceCachee;
@@ -94,8 +98,10 @@ public:
     bool getFaceCachee() const {return faceCachee;}
 
     virtual Ressources getRessourceProduite() const {return Ressources::undefined;}
-    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours à venir)
+    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours � venir)
     virtual std::string getType() const=0;
+    virtual SymboleScientifique getSymbole() const {return SymboleScientifique::undefined;}
+    virtual unsigned int getNbPointsCombats() const {return 0;}
 };
 
 std::ostream& operator<<(std::ostream& f, const Batiment& bat);
@@ -157,7 +163,7 @@ class BatimentCommercial : public Batiment {
     TypeBatiment typePourGainPieces; //Cette attribut sera utile pour l'age 3 uniquement
     Ressources* ressourcesStockees; //Liste des ressources pour lesquelles il faudra payer une pieces (tailleListe <= 2)
     unsigned int nbRessourcesStockees;
-    Ressources* ressourcesDisponibles; //Liste des ressources parmis lesquels un seul peut être chosie (il faudra egalement rajouter cette attribut aux merveilles dans le futur)
+    Ressources* ressourcesDisponibles; //Liste des ressources parmis lesquels un seul peut �tre chosie (il faudra egalement rajouter cette attribut aux merveilles dans le futur)
     unsigned int nbRessourcesDisponibles;
 public:
     BatimentCommercial(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, unsigned int pR, TypeBatiment type)
@@ -220,3 +226,4 @@ public:
 };
 
 #endif
+

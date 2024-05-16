@@ -93,7 +93,9 @@ public:
     std::string getSymboleChainage() const {return symboleChainage;}
     bool getFaceCachee() const {return faceCachee;}
 
+    virtual Ressources getRessourceProduite() const {return Ressources::undefined;}
     virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours à venir)
+    virtual std::string getType() const=0;
 };
 
 std::ostream& operator<<(std::ostream& f, const Batiment& bat);
@@ -114,6 +116,7 @@ public:
     unsigned int getNbRessourcesProduites() const {return nbRessourcesProduites;}
 
     void afficher(std::ostream& f) const;
+    virtual std::string getType() const {return "BatimentRessource";}
 };
 
 std::ostream& operator<<(std::ostream& f, const BatimentRessource& bat);
@@ -128,6 +131,7 @@ public:
     ~BatimentCivil()=default;
 
     void afficher(std::ostream& f) const;
+    virtual std::string getType() const {return "BatimentCivil";}
 };
 
 
@@ -144,6 +148,7 @@ public:
     SymboleScientifique getSymbole() const {return symbole;}
 
     void afficher(std::ostream& f) const;
+    virtual std::string getType() const {return "BatimentScientifique";}
 };
 
 
@@ -155,10 +160,9 @@ class BatimentCommercial : public Batiment {
     Ressources* ressourcesDisponibles; //Liste des ressources parmis lesquels un seul peut être chosie (il faudra egalement rajouter cette attribut aux merveilles dans le futur)
     unsigned int nbRessourcesDisponibles;
 public:
-    BatimentCommercial(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc,
-                       unsigned int nbResS, unsigned int nbResD, unsigned int pR, TypeBatiment type)
+    BatimentCommercial(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, unsigned int pR, TypeBatiment type)
         : Batiment(nom, cp, cchain, schain, fc), nbRessourcesStockees(0), nbRessourcesDisponibles(0),
-        ressourcesStockees(new Ressources[nbResS]), ressourcesDisponibles(new Ressources[nbResD]),
+        ressourcesStockees(new Ressources[3]), ressourcesDisponibles(new Ressources[3]),
         typePourGainPieces(type), piecesRapportees(pR) {}
     BatimentCommercial(const BatimentCommercial& other);
     BatimentCommercial& operator=(const BatimentCommercial& other);
@@ -172,9 +176,13 @@ public:
     Ressources* getRessourcesDisponibles() const {return ressourcesDisponibles;}
     Ressources* getRessourcesStockees() const {return ressourcesStockees;}
 
+    //setter
+    void setTypePourGainPieces(TypeBatiment t) {typePourGainPieces=t;}
+
     void AjouterRessourcesStockees(Ressources res);
     void AjouterRessourcesDisponibles(Ressources res);
     void afficher(std::ostream& f) const;
+    virtual std::string getType() const {return "BatimentCommercial";}
 };
 
 
@@ -191,6 +199,24 @@ public:
     unsigned int getNbPointsCombats() const {return pointsCombats;}
 
     void afficher(std::ostream& f) const;
+    virtual std::string getType() const {return "BatimentMilitaire";}
+};
+
+
+class BatimentGuilde : public Batiment {
+    TypeBatiment typePourAvantages;
+public:
+    BatimentGuilde(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, unsigned int ptc, TypeBatiment type)
+        : Batiment(nom, cp, cchain, schain, fc), typePourAvantages(type) {}
+
+    //getters
+    TypeBatiment getTypePourAvantages() const {return typePourAvantages;}
+
+    //setters
+    void setTypePourAvantages(TypeBatiment t) {typePourAvantages=t;}
+
+    void afficher(std::ostream& f) const;
+    virtual std::string getType() const {return "BatimentGuilde";}
 };
 
 #endif

@@ -29,3 +29,4 @@ std::string printTypeBatiment(const TypeBatiment& s);
 
 #endif // UTILS_H
 
+

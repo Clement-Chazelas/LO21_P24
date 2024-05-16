@@ -5,11 +5,6 @@
 #include <algorithm> // Pour std::random_shuffle
 #include <ctime>     // Pour std::time
 #include <cstdlib>   // Pour std::rand et std::srand
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <random>
 
 
 using namespace std;
@@ -264,64 +259,6 @@ Batiment* PlateauDeJeu::piocher(int i) {
         return bat;
     }
 }
-
-
-void PlateauDeJeu::genererJetons() {
-    std::vector<JetonProgres> jetons;
-
-    std::ifstream fichier("jeton_progres_SevenWonders.csv");
-
-    std::string ligne;
-    while (std::getline(fichier, ligne)) {
-        std::istringstream ss(ligne);
-        std::string token;
-        std::vector<std::string> tokens;
-
-        // Diviser la ligne en tokens séparés par des virgules
-        while (std::getline(ss, token, ',')) {
-            tokens.push_back(token);
-        }
-
-        // Vérifier si la ligne contient suffisamment de tokens pour créer un objet JetonProgres
-        if (tokens.size() == 3) {
-            std::string nom = tokens[0];
-            std::string effet = tokens[1];
-            int points = std::stoi(tokens[2]); // Convertir la chaîne en entier
-
-            // Créer un objet JetonProgres et l'ajouter au vecteur
-            JetonProgres jeton(nom, effet, points);
-            jetons.push_back(jeton);
-        } else {
-            std::cerr << "Ligne invalide dans le fichier CSV" << std::endl;
-        }
-    }
-
-    fichier.close();
-
-    // Fonction pour distribuer les jetons aléatoirement dans les tableaux piocheJeton et plateauJeton
-
-    nb_jeton_pioche = 3;
-    nb_jeton_plateau = 5;
-
-    // Mélanger aléatoirement les jetons
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(jetons.begin(), jetons.end(), g);
-
-    // Distribuer les jetons dans les tableaux piocheJeton et plateauJeton
-    for (int i = 0; i < nb_jeton_pioche; ++i) {
-        piocheJeton[i] = jetons[i];
-    }
-
-    for (int i = 0; i < nb_jeton_plateau; ++i) {
-        plateauJeton[i] = jetons[nb_jeton_pioche + i];
-    }
-}
-
-
-
-
-
 
 
 std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {

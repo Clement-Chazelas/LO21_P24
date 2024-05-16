@@ -58,6 +58,16 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
     return total;
 }
 
+unsigned int Joueur::compterPointsVictoires() const {
+    unsigned int total=0;
+    for (unsigned int i=0; i<nbBatiments; i++) {
+        total+=cite[i]->getNbPointVictoire();
+    }
+    for (unsigned int i=0; i<nbMerveilles; i++) {
+        total+=merveilles[i].getNbPointVictoire();
+    }
+    return total;
+}
 
 ostream& operator<<(ostream& f, const Joueur& j) {
     f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << "===" << endl;

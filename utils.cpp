@@ -145,4 +145,3 @@ string printTypeBatiment(const TypeBatiment& s) {
     }
     return "inexistant";
 }
-

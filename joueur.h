@@ -37,6 +37,8 @@ public:
     void pertePieces(unsigned int n) {if (n>nbPieces) nbPieces=0; else nbPieces-=n;}
     void ajouterMerveille(const Merveille& mer);
     void ajouterBatiment(Batiment* bat);
+    unsigned int gainDefausse();
+    unsigned int coutAchat(Batiment* bat, const Joueur& adversaire);
 };
 
 std::ostream& operator<<(std::ostream& f, const Joueur& j);

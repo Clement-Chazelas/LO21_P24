@@ -98,7 +98,8 @@ void Partie::selectionDesMerveilles() { // Méthode a finir
 void Partie::selectionDesBatiments() {
     try {
         bool j2=false;
-        while (plateau.getNb_batiment_plateau()>0) {
+        bool running=true;
+        while (plateau.getNb_batiment_plateau()>0 && running) {
             if (!j2) {
                 std::cout << joueur1 << std::endl;
                 plateau.afficherSelectionnable();
@@ -111,6 +112,11 @@ void Partie::selectionDesBatiments() {
                 if (choix=="Construire") {
                     joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
                     joueur1.ajouterBatiment(bat);
+                    plateau.deplacerPionMilitaire(bat->getNbPointsCombats());
+                    if (joueur1.checkVictoireScientifique()==6) {
+                        std::cout << "Le joueur 1 a gagne par la victoire scientifique !" << std::endl;
+                        running = false;
+                    }
                 }
                 else if (choix=="Defausser") joueur1.gainPieces(joueur1.gainDefausse());
                 else if (choix=="Construire Merveille") joueur1.choisirMerveilleInactive();
@@ -127,11 +133,25 @@ void Partie::selectionDesBatiments() {
                 if (choix=="Construire") {
                     joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
                     joueur2.ajouterBatiment(bat);
+                    plateau.deplacerPionMilitaire(-bat->getNbPointsCombats());
+                    if (joueur2.checkVictoireScientifique()==6) {
+                        std::cout << "Le joueur 2 a gagne par la victoire scientifique !" << std::endl;
+                        running = false;
+                    }
                 }
                 else if (choix=="Defausser") joueur2.gainPieces(joueur2.gainDefausse());
                 else if (choix=="Construire Merveille") joueur2.choisirMerveilleInactive();
                 std::cout << joueur2 << std::endl << joueur2.coutAchat(bat, joueur1) << std::endl;
             }
+            if (plateau.getEmplacementPionMilitaire()>=9) {
+                std::cout << "Le joueur 1 a gagne par la victoire militaire !" << std::endl;
+                running=false;
+            }
+            else if (plateau.getEmplacementPionMilitaire()<=-9) {
+                std::cout << "Le joueur 2 a gagne par la victoire militaire !" << std::endl;
+                running=false;
+            }
+            std::cout << "!!! Plateau Militaire !!! : " << plateau.getEmplacementPionMilitaire() << std::endl;
             j2=!j2;
         }
     }

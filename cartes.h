@@ -10,7 +10,7 @@ class Carte {
 protected:
     std::string nom; //nom de la carte
     Ressources* coutRessources; //liste des ressources necessaires pour construire la merveille
-    unsigned int nbCout, nbCoutMax; //permet de controler la liste pr�c�dente
+    unsigned int nbCout, nbCoutMax; //permet de controler la liste précédente
     unsigned int nbPointVictoire; //nb de points victoire que la carte rapporte une fois construite
 public:
     Carte() : nom("unknown"), coutRessources(new Ressources[NMAX]), nbCout(0), nbCoutMax(NMAX), nbPointVictoire(0) {}
@@ -37,20 +37,23 @@ public:
 
 class Merveille : public Carte {
 private:
-    bool active; //test si la merveille est activ�e ou non
-    bool rejouer; //permet d'indiquer si la merveille poss�de l'effet rejouer
+    bool active; //test si la merveille est activée ou non
+    bool rejouer; //permet d'indiquer si la merveille possède l'effet rejouer
     Ressources* produitRessources; //liste des ressources produites par la merveille
-    unsigned int nbProd, nbProdMax; //permet de controler la liste pr�c�dente
-    unsigned int nbPointsCombat; //nb de points combats que la merveille rapporte une fois activ�e
-    unsigned int nbPiecesRapportees; //nb de pi�ces que la merveille rapporte quand elle est activ�e
-    unsigned int nbPiecesSacagees; //nb de piece perdues par l'adversaire quand elle est activ�e
+    unsigned int nbProd, nbProdMax; //permet de controler la liste précédente
+    unsigned int nbPointsCombat; //nb de points combats que la merveille rapporte une fois activée
+    unsigned int nbPiecesRapportees; //nb de pièces que la merveille rapporte quand elle est activée
+    unsigned int nbPiecesSacagees; //nb de piece perdues par l'adversaire quand elle est activée
+    bool choixDefausse;
+    TypeBatiment batimentSacagee;
+    bool choixJeton;
 
 public:
-    Merveille() : active(false), rejouer(false), produitRessources(nullptr), nbProd(0), nbProdMax(0), nbPointsCombat(0), nbPiecesRapportees(0), nbPiecesSacagees(0) {}
+    Merveille() : active(false), rejouer(false), produitRessources(nullptr), nbProd(0), nbProdMax(0), nbPointsCombat(0), nbPiecesRapportees(0), nbPiecesSacagees(0), batimentSacagee(TypeBatiment::undefined), choixDefausse(false), choixJeton(false) {}
     Merveille(std::string m, bool act=false, bool rej=false, unsigned int ptv=0,
-              unsigned int ptc = 0, unsigned int pieceR = 0, unsigned int pieceS = 0) :
-                  Carte(m, ptv), active(act), rejouer(rej), produitRessources(nullptr), nbProd(0),
-        nbProdMax(NMAX), nbPointsCombat(ptc), nbPiecesRapportees(pieceR), nbPiecesSacagees(pieceS){}
+              unsigned int ptc = 0, unsigned int pieceR = 0, unsigned int pieceS = 0, unsigned int nbRes=0, TypeBatiment bc=TypeBatiment::undefined, bool cd=false, bool cj=false) :
+                  Carte(m, ptv), active(act), rejouer(rej), nbProd(0),
+        nbProdMax(nbRes), nbPointsCombat(ptc), nbPiecesRapportees(pieceR), nbPiecesSacagees(pieceS), produitRessources(new Ressources[nbRes]), batimentSacagee(bc), choixDefausse(cd), choixJeton(cj) {}
     Merveille(const Merveille& mer);
     Merveille& operator=(const Merveille& mer);
     ~Merveille() {delete[] produitRessources;}
@@ -64,9 +67,14 @@ public:
     const unsigned int getNbProd() const {return nbProd;}
     const unsigned int getNbProdMax() const {return nbProdMax;}
     const Ressources* getProduitRessources() const {return produitRessources;}
+    bool getChoixDefausse() const {return choixDefausse;}
+    bool getChoixJeton() const {return choixJeton;}
+    TypeBatiment getBatimentSacagee() const {return batimentSacagee;}
 
     //setter
     void setActive(bool b) {active=b;}
+    void setChoixDefausse(bool cd) {choixDefausse=cd;}
+    void setChoixJeton(bool cj) {choixJeton=cj;}
 
     void ajouterProduitRessources(Ressources r);
     choisirBatimentADefausser();
@@ -78,7 +86,7 @@ std::ostream& operator<<(std::ostream& f, const Merveille& m);
 
 class Batiment : public Carte {
 private:
-    unsigned int coutPieces; //nb de pieces necessaires pour construire le b�timent
+    unsigned int coutPieces; //nb de pieces necessaires pour construire le bâtiment
     std::string coutChainage;
     std::string symboleChainage;
     bool faceCachee;
@@ -98,7 +106,7 @@ public:
     bool getFaceCachee() const {return faceCachee;}
 
     virtual Ressources getRessourceProduite() const {return Ressources::undefined;}
-    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours � venir)
+    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours à venir)
     virtual std::string getType() const=0;
     virtual SymboleScientifique getSymbole() const {return SymboleScientifique::undefined;}
     virtual unsigned int getNbPointsCombats() const {return 0;}
@@ -123,6 +131,10 @@ public:
 
     void afficher(std::ostream& f) const;
     virtual std::string getType() const {return "BatimentRessource";}
+    std::string getTypeRessource() const {
+        if (ressourceProduite==Ressources::papyrus || ressourceProduite==Ressources::verre) return "RessourcePrimaire";
+        else return "RessourceManufacturee";
+    }
 };
 
 std::ostream& operator<<(std::ostream& f, const BatimentRessource& bat);
@@ -163,7 +175,7 @@ class BatimentCommercial : public Batiment {
     TypeBatiment typePourGainPieces; //Cette attribut sera utile pour l'age 3 uniquement
     Ressources* ressourcesStockees; //Liste des ressources pour lesquelles il faudra payer une pieces (tailleListe <= 2)
     unsigned int nbRessourcesStockees;
-    Ressources* ressourcesDisponibles; //Liste des ressources parmis lesquels un seul peut �tre chosie (il faudra egalement rajouter cette attribut aux merveilles dans le futur)
+    Ressources* ressourcesDisponibles; //Liste des ressources parmis lesquels un seul peut être chosie (il faudra egalement rajouter cette attribut aux merveilles dans le futur)
     unsigned int nbRessourcesDisponibles;
 public:
     BatimentCommercial(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, unsigned int pR, TypeBatiment type)

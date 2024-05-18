@@ -64,6 +64,7 @@ void PlateauDeJeu::ajouterMerveillePlateau(Merveille& mer) {
     selectionMerveille[nb_merveille_plateau++]=mer;
 }
 
+
 void PlateauDeJeu::ajouterBatimentPlateau(Batiment* bat) {
     if (nb_batiment_plateau>=20) throw "Pas assez d'espace memoire alloue pour les batiments";
     tab[nb_batiment_plateau++]=bat;
@@ -268,5 +269,6 @@ std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {
     for (unsigned int i=0; i<pla.getNb_batiment_plateau(); i++) f << *(pla.getTab()[i]);
     return f;
 }
+
 
 

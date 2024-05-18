@@ -45,6 +45,8 @@ TypeBatiment qStringToTypeBatiment(QString str) {
     else if (str=="Guilde") return TypeBatiment::Guilde;
     else if (str=="Merveille") return TypeBatiment::Merveille;
     else if (str=="Pieces") return TypeBatiment::Pieces;
+    else if (str=="Primaire") return TypeBatiment::Primaire;
+    else if (str=="Manufacturee") return TypeBatiment::Manufacturee;
     else return TypeBatiment::undefined;
 }
 
@@ -141,6 +143,12 @@ string printTypeBatiment(const TypeBatiment& s) {
         break;
     case TypeBatiment::Pieces:
         return "Pieces";
+        break;
+    case TypeBatiment::Primaire:
+        return "Primaire";
+        break;
+    case TypeBatiment::Manufacturee:
+        return "Manufacturee";
         break;
     }
     return "inexistant";

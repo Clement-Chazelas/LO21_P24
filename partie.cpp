@@ -42,14 +42,25 @@ void Partie::genererHuitMerveilles() {
             unsigned int nbArgile=values.value(9).toUInt();
             unsigned int nbVerre=values.value(10).toUInt();
             unsigned int nbPapyrus=values.value(11).toUInt();
+            QString resStr=values.value(12);
+            QStringList res;
+            unsigned int nbResS=0;
+            if (resStr!="NULL") {
+                res=resStr.split("/");
+                nbResS=res.size();
+            }
+            TypeBatiment tb=qStringToTypeBatiment(values.value(13));
 
-            Merveille m(nom, active, rejouer, ptv, ptc, pR, pS);
+            Merveille m(nom, active, rejouer, ptv, ptc, pR, pS, nbResS, tb);
 
             for (unsigned int i=0; i<nbPierre; i++) m.ajouterCoutRessources(Ressources::pierre);
             for (unsigned int i=0; i<nbBois; i++) m.ajouterCoutRessources(Ressources::bois);
             for (unsigned int i=0; i<nbArgile; i++) m.ajouterCoutRessources(Ressources::argile);
             for (unsigned int i=0; i<nbVerre; i++) m.ajouterCoutRessources(Ressources::verre);
             for (unsigned int i=0; i<nbPapyrus; i++) m.ajouterCoutRessources(Ressources::papyrus);
+            for (unsigned int i=0; i< nbResS; i++) m.ajouterProduitRessources(qStringToRessource(res[i]));
+            if (nom=="Le Mausolee") m.setChoixDefausse(true);
+            if (nom=="La Grande Bibliotheque") m.setChoixJeton(true);
             plateau.ajouterMerveillePlateau(m);
         }
     }
@@ -432,5 +443,6 @@ std::ostream& operator<<(std::ostream& f, const Partie& p) {
     f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " VS " << p.getJoueur2().getNom() << "\033[0m";
     return f;
 }
+
 
 

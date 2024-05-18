@@ -18,7 +18,9 @@ Merveille::Merveille(const Merveille& mer) :
     Carte(mer), active(mer.getActive()), rejouer(mer.getRejouer()),
     produitRessources(new Ressources[mer.getNbProdMax()]), nbProd(mer.getNbProd()),
     nbProdMax(mer.getNbProdMax()), nbPointsCombat(mer.getNbPointsCombat()),
-    nbPiecesRapportees(mer.getNbPiecesRapportees()), nbPiecesSacagees(mer.getNbPiecesSacagees()) {
+    nbPiecesRapportees(mer.getNbPiecesRapportees()), nbPiecesSacagees(mer.getNbPiecesSacagees()),
+    batimentSacagee(mer.getBatimentSacagee()), choixDefausse(mer.getChoixDefausse()), choixJeton(mer.getChoixJeton()) {
+    std::cout << "entree recopie" << std::endl;
         for (unsigned int i=0; i<nbCout; i++) coutRessources[i]=mer.getCoutRessources()[i];
         for (unsigned int i=0; i<nbProd; i++) produitRessources[i]=mer.getProduitRessources()[i];
 }
@@ -63,6 +65,7 @@ Carte& Carte::operator=(const Carte& other) {
 
 Merveille& Merveille::operator=(const Merveille& mer) {
     if (this!=&mer) {
+        std::cout << "entree affectation" << std::endl;
         Carte::operator=(mer);
         nbPointsCombat=mer.getNbPointsCombat();
         active=mer.getActive();
@@ -71,7 +74,15 @@ Merveille& Merveille::operator=(const Merveille& mer) {
         nbProdMax=mer.getNbProdMax();
         nbPiecesRapportees=mer.getNbPiecesRapportees();
         nbPiecesSacagees=mer.getNbPiecesSacagees();
-        for (unsigned int i=0; i<nbProd; i++) produitRessources[i]=mer.getProduitRessources()[i];
+        batimentSacagee=mer.getBatimentSacagee();
+        choixDefausse=mer.getChoixDefausse();
+        choixJeton=mer.getChoixJeton();
+        delete[] produitRessources;
+        produitRessources=new Ressources[nbProdMax];
+        for (unsigned int i=0; i<nbProd; i++) {
+            std::cout << i << std::endl;
+            produitRessources[i]=mer.getProduitRessources()[i];
+        }
     }
     return *this;
 }
@@ -137,7 +148,7 @@ BatimentMilitaire& BatimentMilitaire::operator=(const BatimentMilitaire& other) 
 }
 
 
-void Merveille::ajouterProduitRessources(Ressources r){
+void Merveille::ajouterProduitRessources(Ressources r) {
     if (nbProd >= nbProdMax) {
         Ressources* newlist = new Ressources[nbProdMax+5];
         for (unsigned int i = 0; i<nbCout; i++)
@@ -179,6 +190,14 @@ ostream& operator<<(ostream& f, const Merveille& m) {
     }
     if (m.getRejouer()==true) {
         f << std::endl << "Cette merveille a l'effet rejouer";
+    }
+    if (m.getChoixDefausse()) f << std::endl << "Cette merveille permet de choisir un batiment dans la defausse";
+    if (m.getBatimentSacagee()==TypeBatiment::Primaire) f << std::endl << "Cette merveille permet de detruire une ressource primaire a l'adversaire";
+    else if (m.getBatimentSacagee()==TypeBatiment::Manufacturee) f << std::endl << "Cette merveille permet de detruire un produit manufacture a l'adversaire";
+    if (m.getChoixJeton()) f << std::endl << "Cette merveille permet de choisir un jeton progres";
+    if (m.getNbProd()!=0) {
+        f << "\nRessources disponibles : ";
+        for (unsigned int i=0; i<m.getNbProd(); i++) f << " # " << printRessource(m.getProduitRessources()[i]);
     }
     return f << std::endl;
 }

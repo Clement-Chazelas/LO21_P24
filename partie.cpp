@@ -111,6 +111,7 @@ void Partie::selectionDesBatiments() {
         bool j2=false;
         bool running=true;
         while (plateau.getNb_batiment_plateau()>0 && running) {
+            std::cout << *this << std::endl;
             if (!j2) {
                 std::cout << joueur1 << std::endl;
                 plateau.afficherSelectionnable();
@@ -121,13 +122,16 @@ void Partie::selectionDesBatiments() {
                 options << "Construire" << "Defausser" << "Construire Merveille";
                 QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
                 if (choix=="Construire") {
-                    joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
-                    joueur1.ajouterBatiment(bat);
-                    plateau.deplacerPionMilitaire(bat->getNbPointsCombats());
-                    if (joueur1.checkVictoireScientifique()==6) {
-                        std::cout << "Le joueur 1 a gagne par la victoire scientifique !" << std::endl;
-                        running = false;
+                    if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
+                        joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
+                        joueur1.ajouterBatiment(bat);
+                        plateau.deplacerPionMilitaire(bat->getNbPointsCombats());
+                        if (joueur1.checkVictoireScientifique()==6) {
+                            std::cout << "Le joueur 1 a gagne par la victoire scientifique !" << std::endl;
+                            running = false;
+                        }
                     }
+                    else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
                 }
                 else if (choix=="Defausser") joueur1.gainPieces(joueur1.gainDefausse());
                 else if (choix=="Construire Merveille") joueur1.choisirMerveilleInactive();
@@ -142,13 +146,16 @@ void Partie::selectionDesBatiments() {
                 options << "Construire" << "Defausser" << "Construire Merveille";
                 QString choix = QInputDialog::getItem(nullptr, "Joueur 2", "Choisissez une option:", options, 0, false, &ok2);
                 if (choix=="Construire") {
-                    joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
-                    joueur2.ajouterBatiment(bat);
-                    plateau.deplacerPionMilitaire(-bat->getNbPointsCombats());
-                    if (joueur2.checkVictoireScientifique()==6) {
-                        std::cout << "Le joueur 2 a gagne par la victoire scientifique !" << std::endl;
-                        running = false;
+                    if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
+                        joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
+                        joueur2.ajouterBatiment(bat);
+                        plateau.deplacerPionMilitaire(-bat->getNbPointsCombats());
+                        if (joueur2.checkVictoireScientifique()==6) {
+                            std::cout << "Le joueur 2 a gagne par la victoire scientifique !" << std::endl;
+                            running = false;
+                        }
                     }
+                    else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
                 }
                 else if (choix=="Defausser") joueur2.gainPieces(joueur2.gainDefausse());
                 else if (choix=="Construire Merveille") joueur2.choisirMerveilleInactive();
@@ -162,7 +169,7 @@ void Partie::selectionDesBatiments() {
                 std::cout << "Le joueur 2 a gagne par la victoire militaire !" << std::endl;
                 running=false;
             }
-            std::cout << "!!! Plateau Militaire !!! : " << plateau.getEmplacementPionMilitaire() << std::endl;
+            std::cout << "Plateau Militaire : " << plateau.getEmplacementPionMilitaire() << std::endl;
             j2=!j2;
         }
     }
@@ -440,9 +447,9 @@ void Partie::genererAgeTrois() {
 
 
 std::ostream& operator<<(std::ostream& f, const Partie& p) {
-    f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " VS " << p.getJoueur2().getNom() << "\033[0m";
+    f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " PV : " << p.getJoueur1().compterPointsVictoires(p.getPlateau())
+      << " VS " << p.getJoueur2().getNom() << " PV : " << p.getJoueur2().compterPointsVictoires(p.getPlateau(), true) << "\033[0m";
     return f;
 }
-
 
 

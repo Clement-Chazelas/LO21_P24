@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "cartes.h"
+#include "plateauJeu.h"
 //#include "jetonProgres.h"         Activer cette ligne fait buguer la même qui est dans plateauJeu
 //#include "plateauJeu.h"
 
@@ -39,7 +40,7 @@ public:
     void ajouterBatiment(Batiment* bat);
     unsigned int gainDefausse();
     unsigned int coutAchat(Batiment* bat, const Joueur& adversaire);
-    unsigned int compterPointsVictoires() const;
+    const unsigned int compterPointsVictoires(const PlateauDeJeu& pla, const bool j2=false) const;
     void choisirMerveilleInactive();
     unsigned int checkVictoireScientifique() const;
 };

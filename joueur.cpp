@@ -1,5 +1,4 @@
 #include "joueur.h"
-#include "plateauJeu.h"
 #include "utils.h"
 #include "QInputDialog"
 #include "QLineEdit"
@@ -59,7 +58,7 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
 }
 
 
-unsigned int Joueur::compterPointsVictoires() const {
+const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const bool j2) const {
     unsigned int total=0;
     for (unsigned int i=0; i<nbBatiments; i++) {
         total+=cite[i]->getNbPointVictoire();
@@ -67,6 +66,17 @@ unsigned int Joueur::compterPointsVictoires() const {
     for (unsigned int i=0; i<nbMerveilles; i++) {
         total+=merveilles[i].getNbPointVictoire();
     }
+    if (!j2) {
+        if (pla.getEmplacementPionMilitaire()>5) total+=10;
+        else if (pla.getEmplacementPionMilitaire()>2) total+=5;
+        else if (pla.getEmplacementPionMilitaire()>0) total+=2;
+    }
+    else {
+        if (pla.getEmplacementPionMilitaire()<-5) total+=10;
+        else if (pla.getEmplacementPionMilitaire()<-2) total+=5;
+        else if (pla.getEmplacementPionMilitaire()<0) total+=2;
+    }
+    // Il reste à parcourir les jetons scientifiques !
     return total;
 }
 
@@ -92,10 +102,11 @@ void Joueur::choisirMerveilleInactive() {
 
 
 ostream& operator<<(ostream& f, const Joueur& j) {
-    f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << " - PV : " << j.compterPointsVictoires() << " - Pieces : " << j.getnbPieces() << " - Science : " << j.checkVictoireScientifique() << "/6 ===" << endl;
+    f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << " - Pieces : " << j.getnbPieces() << " - Science : " << j.checkVictoireScientifique() << "/6 ===" << endl;
     f << "Merveilles dans sa cite : " << endl;
     for (unsigned int i=0; i<j.getNbMerveilles(); i++) f << j.getMerveilles()[i];
     f << "Batiments dans sa cite : " << endl;
     for (unsigned int i=0; i<j.getNbBatiments(); i++) f << *(j.getCite()[i]);
     return f;
 }
+

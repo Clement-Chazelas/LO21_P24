@@ -5,6 +5,11 @@
 #include <algorithm> // Pour std::random_shuffle
 #include <ctime>     // Pour std::time
 #include <cstdlib>   // Pour std::rand et std::srand
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <random>
 
 
 using namespace std;
@@ -63,7 +68,6 @@ void PlateauDeJeu::prendreJetonPlateau(size_t i) {
 void PlateauDeJeu::ajouterMerveillePlateau(Merveille& mer) {
     selectionMerveille[nb_merveille_plateau++]=mer;
 }
-
 
 void PlateauDeJeu::ajouterBatimentPlateau(Batiment* bat) {
     if (nb_batiment_plateau>=20) throw "Pas assez d'espace memoire alloue pour les batiments";
@@ -262,6 +266,74 @@ Batiment* PlateauDeJeu::piocher(int i) {
 }
 
 
+void PlateauDeJeu::genererJetons() {
+    std::vector<JetonProgres> jetons;
+    std::ifstream fichier("C:/Users/clemc/Desktop/UTC/GI01/LO21/LO21_Projet/jeton_progres_SevenWonders.csv");
+    std::string ligne;
+
+    int ligne_numero = 0;
+
+    // Ignorer l'en-tête et gérer le BOM
+    std::getline(fichier, ligne);
+    if (!ligne.empty() && ligne[0] == '\xEF' && ligne[1] == '\xBB' && ligne[2] == '\xBF') {
+        ligne = ligne.substr(3);  // Supprimer le BOM
+    }
+
+    while (std::getline(fichier, ligne)) {
+        ligne_numero++;
+        std::istringstream ss(ligne);
+        std::string token;
+        std::vector<std::string> tokens;
+
+        while (std::getline(ss, token, ';')) {  // Utiliser ';' comme séparateur
+            tokens.push_back(token);
+        }
+
+        if (tokens.size() == 3) {
+            std::string nom = tokens[0];
+            std::string effet = tokens[1];
+            int points;
+            try {
+                points = std::stoi(tokens[2]);
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Erreur de conversion pour les points de victoire : " << tokens[2] << " à la ligne " << ligne_numero << std::endl;
+                continue;
+            }
+            JetonProgres jeton(nom, effet, points);
+            jetons.push_back(jeton);
+        } else {
+            std::cerr << "Ligne invalide (tokens attendus: 3, obtenus: " << tokens.size() << ") dans le fichier CSV à la ligne " << ligne_numero << " : " << ligne << std::endl;
+        }
+    }
+
+    fichier.close();
+
+    if (jetons.size() < (nb_jeton_pioche + nb_jeton_plateau)) {
+        std::cerr << "Nombre de jetons insuffisant pour remplir la pioche et le plateau" << std::endl;
+        return;
+    }
+
+    // Fonction pour distribuer les jetons aléatoirement dans les tableaux piocheJeton et plateauJeton
+
+    nb_jeton_pioche = 3;
+    nb_jeton_plateau = 5;
+
+    // Mélanger aléatoirement les jetons
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(jetons.begin(), jetons.end(), g);
+
+    // Distribuer les jetons dans les tableaux piocheJeton et plateauJeton
+    for (int i = 0; i < nb_jeton_pioche; ++i) {
+        piocheJeton[i] = jetons[i];
+    }
+
+    for (int i = 0; i < nb_jeton_plateau; ++i) {
+        plateauJeton[i] = jetons[nb_jeton_pioche + i];
+    }
+}
+
+
 std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {
     f << "Merveilles sur le plateau : " << std::endl;
     for (unsigned int i=0; i<pla.getNb_merveille_plateau(); i++) f << pla.getSelectionMerveille()[i] << std::endl;
@@ -269,6 +341,4 @@ std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {
     for (unsigned int i=0; i<pla.getNb_batiment_plateau(); i++) f << *(pla.getTab()[i]);
     return f;
 }
-
-
 

@@ -39,14 +39,14 @@ int main(int argc, char *argv[]) {
 
 /*
 To Do list :
-    - Finaliser la methode de decompte des points de victoires
-    - Finaliser la methode de decompte des symboles scientifiques
-    - Ecrire la methode pour supprimer une ressource (manufacture ou primaire) a l'adversaire
-    - Ecrire la methode pour choisir un jeton scientifique hors plateau selon les regles du jeu
-    - Generation aleatoire des jetons scientifique sur et hors plateau
-    - Gestion du conflit militaire
-    - Assigner la gestion du cycle de vie de tous les objets chacun à une classe
-    - Nettoyer le code (retirer les methodes inutilises, nettoyer la memoire pendant la partie, commencer à mettre des commentaires pour les méthodes un peu complexes)
+    - Finaliser la methode de decompte des points de victoires (Titouan)
+    - Finaliser la methode de decompte des symboles scientifiques (Titouan)
+    - Ecrire la methode pour supprimer une ressource (manufacture ou primaire) a l'adversaire (Agathe)
+    - Ecrire la methode pour choisir un jeton scientifique hors plateau selon les regles du jeu (Clement)
+    - Gestion du conflit militaire (Agathe)
+    - Ecrire Methode de fin de partie (Agathe)
+    - agrandir le CSV pour eviter les exceptions
+    - Nettoyer le code (retirer les methodes inutilises, nettoyer la memoire pendant la partie, commencer à mettre des commentaires pour les méthodes un peu complexes) 
     - faire une méthode dans la classe partie pour faire derouler l'integralite de la partie
     - Photocopier les cartes du jeu
     - S'attaquer à la partie graphique...

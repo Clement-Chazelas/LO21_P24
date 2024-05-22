@@ -32,6 +32,8 @@ int main(int argc, char *argv[]) {
     p.selectionDesBatiments();
     */
 
+    p.getPlateau().genererJetons();    //Génération aléatoire des Jetons Progrès
+
     return 0;
 }
 

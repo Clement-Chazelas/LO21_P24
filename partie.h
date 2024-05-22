@@ -19,7 +19,8 @@ public:
     //getters
     const Joueur& getJoueur1() const {return joueur1;}
     const Joueur& getJoueur2() const {return joueur2;}
-    PlateauDeJeu& getPlateau() {return plateau;}
+    PlateauDeJeu& getSetPlateau() {return plateau;}
+    const PlateauDeJeu& getPlateau() const {return plateau;}
 
     void genererHuitMerveilles();
     void genererAgeUn();

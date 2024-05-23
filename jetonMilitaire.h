@@ -1,9 +1,9 @@
 #ifndef LO21_P24_JETONMILITAIRE_H
 #define LO21_P24_JETONMILITAIRE_H
 
+#include "joueur.h"
 #include <iostream>
 #include <string>
-#include "joueur.h"
 
 class JetonMilitaire{
 private:

@@ -52,7 +52,7 @@ public:
     Merveille() : active(false), rejouer(false), produitRessources(nullptr), nbProd(0), nbProdMax(0), nbPointsCombat(0), nbPiecesRapportees(0), nbPiecesSacagees(0), batimentSacagee(TypeBatiment::undefined), choixDefausse(false), choixJeton(false) {}
     Merveille(std::string m, bool act=false, bool rej=false, unsigned int ptv=0,
               unsigned int ptc = 0, unsigned int pieceR = 0, unsigned int pieceS = 0, unsigned int nbRes=0, TypeBatiment bc=TypeBatiment::undefined, bool cd=false, bool cj=false) :
-                  Carte(m, ptv), active(act), rejouer(rej), nbProd(0),
+        Carte(m, ptv), active(act), rejouer(rej), nbProd(0),
         nbProdMax(nbRes), nbPointsCombat(ptc), nbPiecesRapportees(pieceR), nbPiecesSacagees(pieceS), produitRessources(new Ressources[nbRes]), batimentSacagee(bc), choixDefausse(cd), choixJeton(cj) {}
     Merveille(const Merveille& mer);
     Merveille& operator=(const Merveille& mer);
@@ -77,8 +77,8 @@ public:
     void setChoixJeton(bool cj) {choixJeton=cj;}
 
     void ajouterProduitRessources(Ressources r);
-    choisirBatimentADefausser();
-    saccagerRessourceAdverse();
+    void choisirBatimentADefausser();
+    void saccagerRessourceAdverse();
 };
 
 std::ostream& operator<<(std::ostream& f, const Merveille& m);
@@ -93,8 +93,8 @@ private:
 public:
     Batiment()=default;
     Batiment(std::string m, unsigned int cp, std::string cchain, std::string schain, bool fc, unsigned int ptv=0) :
-                 Carte(m, ptv), coutPieces(cp), coutChainage(cchain),
-                 symboleChainage(schain), faceCachee(fc) {}
+        Carte(m, ptv), coutPieces(cp), coutChainage(cchain),
+        symboleChainage(schain), faceCachee(fc) {}
     Batiment(const Batiment& bat);
     virtual Batiment& operator=(const Batiment& bat);
     ~Batiment()=default;
@@ -238,4 +238,3 @@ public:
 };
 
 #endif
-

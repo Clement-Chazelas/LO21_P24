@@ -1,6 +1,7 @@
 #include "plateauJeu.h"
 #include <stdio.h>
 #include "utils.h"
+#include "joueur.h"
 #include <QInputDialog>
 #include <algorithm> // Pour std::random_shuffle
 #include <ctime>     // Pour std::time
@@ -40,27 +41,83 @@ void PlateauDeJeu::prendreBatimentPlateau(size_t i) {
     }
 }
 
-void PlateauDeJeu::prendreJetonPioche(size_t i) {
-    if(i >= nb_jeton_pioche){
-        throw "Erreur : ce jeton n'est pas dans la pioche";
+
+void PlateauDeJeu::prendreJetonDansPioche(Joueur& joueur)
+{
+    // Afficher les jetons dans la pioche
+    QStringList jetonsPioche;
+    for (size_t i = 0; i < nb_jeton_pioche; ++i) {
+        jetonsPioche << QString::fromStdString(piocheJeton[i].getNomJeton());
     }
-    else{
-        for(i; i < nb_jeton_pioche; i++){
-            piocheJeton[i] = piocheJeton[i + 1];
+
+    // Demander au joueur de choisir un jeton dans la pioche
+    bool ok;
+    QString jetonChoisi = QInputDialog::getItem(nullptr, "Choisir un jeton dans la pioche", "Jeton à piocher :", jetonsPioche, 0, false, &ok);
+    if (ok && !jetonChoisi.isEmpty()) {
+        // Trouver le jeton choisi dans la pioche
+        JetonProgres jeton;
+        for (size_t i = 0; i < nb_jeton_pioche; ++i) {
+            if (jetonChoisi.toStdString() == piocheJeton[i].getNomJeton()) {
+                jeton = piocheJeton[i];
+                break;
+            }
         }
-        nb_jeton_pioche--;
+
+        // Ajouter le jeton choisi au joueur
+        joueur.ajouterJeton(jeton);
+
+        // Supprimer le jeton de la pioche
+        for (size_t i = 0; i < nb_jeton_pioche; ++i) {
+            if (jetonChoisi.toStdString() == piocheJeton[i].getNomJeton()) {
+                // Déplacer les éléments suivants pour remplir le trou
+                for (size_t j = i; j < nb_jeton_pioche - 1; ++j) {
+                    piocheJeton[j] = piocheJeton[j + 1];
+                }
+                // Diminuer le nombre de jetons dans la pioche
+                --nb_jeton_pioche;
+                break;
+            }
+        }
     }
 }
 
-void PlateauDeJeu::prendreJetonPlateau(size_t i) {
-    if(i >= nb_jeton_plateau){
-        throw "Erreur : ce jeton n'est pas sur le plateau";
+
+void PlateauDeJeu::prendreJetonDansPlateau(Joueur& joueur)
+{
+    // Afficher les jetons sur le plateau
+    QStringList jetonsPlateau;
+    for (size_t i = 0; i < nb_jeton_plateau; ++i) {
+        jetonsPlateau << QString::fromStdString(plateauJeton[i].getNomJeton());
     }
-    else{
-        for(i; i < nb_jeton_plateau; i++){
-            plateauJeton[i] = plateauJeton[i + 1];
+
+    // Demander au joueur de choisir un jeton du plateau
+    bool ok;
+    QString jetonChoisi = QInputDialog::getItem(nullptr, "Choisir un jeton du plateau", "Jeton à prendre :", jetonsPlateau, 0, false, &ok);
+    if (ok && !jetonChoisi.isEmpty()) {
+        // Trouver le jeton choisi dans le plateau
+        JetonProgres jeton;
+        for (size_t i = 0; i < nb_jeton_plateau; ++i) {
+            if (jetonChoisi.toStdString() == plateauJeton[i].getNomJeton()) {
+                jeton = plateauJeton[i];
+                break;
+            }
         }
-        nb_jeton_plateau--;
+
+        // Ajouter le jeton choisi au joueur
+        joueur.ajouterJeton(jeton);
+
+        // Supprimer le jeton du plateau
+        for (size_t i = 0; i < nb_jeton_plateau; ++i) {
+            if (jetonChoisi.toStdString() == plateauJeton[i].getNomJeton()) {
+                // Déplacer les éléments suivants pour remplir le trou
+                for (size_t j = i; j < nb_jeton_plateau - 1; ++j) {
+                    plateauJeton[j] = plateauJeton[j + 1];
+                }
+                // Diminuer le nombre de jetons sur le plateau
+                --nb_jeton_plateau;
+                break;
+            }
+        }
     }
 }
 

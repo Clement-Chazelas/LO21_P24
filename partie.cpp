@@ -452,4 +452,3 @@ std::ostream& operator<<(std::ostream& f, const Partie& p) {
     return f;
 }
 
-

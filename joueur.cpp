@@ -1,5 +1,7 @@
 #include "joueur.h"
 #include "utils.h"
+#include "jetonProgres.h"
+#include "plateauJeu.h"
 #include "QInputDialog"
 #include "QLineEdit"
 
@@ -46,13 +48,13 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
         }
     }
     for (unsigned int i=0; i<bat->getNbCout(); i++) if (res[i]!=Ressources::undefined) {
-        total+=2;
-        for (unsigned int j=0; j<adversaire.getNbBatiments(); j++) {
-            if (adversaire.getCite()[j]->getType()=="BatimentRessource") {
-                if (adversaire.getCite()[j]->getRessourceProduite()==res[i]) total++;
+            total+=2;
+            for (unsigned int j=0; j<adversaire.getNbBatiments(); j++) {
+                if (adversaire.getCite()[j]->getType()=="BatimentRessource") {
+                    if (adversaire.getCite()[j]->getRessourceProduite()==res[i]) total++;
+                }
             }
         }
-    }
     delete[] res;
     return total;
 }
@@ -110,3 +112,14 @@ ostream& operator<<(ostream& f, const Joueur& j) {
     return f;
 }
 
+
+void Joueur::ajouterJeton(const JetonProgres& jeton) {
+    jetonsProgres.push_back(jeton);
+}
+
+void Joueur::afficherJetons() const {
+    std::cout << "Jetons du joueur :" << std::endl;
+    for (const auto& jeton : jetonsProgres) {
+        std::cout << "Nom : " << jeton.getNomJeton() << ", Effet : " << jeton.getEffetJeton() << ", Points de victoire : " << jeton.getPointsVictoire() << std::endl;
+    }
+}

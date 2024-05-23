@@ -19,6 +19,8 @@ public:
     //getters
     const Joueur& getJoueur1() const {return joueur1;}
     const Joueur& getJoueur2() const {return joueur2;}
+    Joueur& getSetJoueur1() {return joueur1;}
+    Joueur& getSetJoueur2() {return joueur2;}
     PlateauDeJeu& getSetPlateau() {return plateau;}
     const PlateauDeJeu& getPlateau() const {return plateau;}
 

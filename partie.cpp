@@ -451,4 +451,3 @@ std::ostream& operator<<(std::ostream& f, const Partie& p) {
       << " VS " << p.getJoueur2().getNom() << " PV : " << p.getJoueur2().compterPointsVictoires(p.getPlateau(), true) << "\033[0m";
     return f;
 }
-

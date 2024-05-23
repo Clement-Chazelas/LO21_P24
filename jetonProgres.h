@@ -17,4 +17,7 @@ public:
     int getPointsVictoire() const {return pointsVictoire;}
 };
 
+std::ostream& operator<<(std::ostream& out, const JetonProgres& jeton);
+
+
 #endif //LO21_P24_JETONPROGRES_H

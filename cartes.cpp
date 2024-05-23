@@ -21,8 +21,8 @@ Merveille::Merveille(const Merveille& mer) :
     nbPiecesRapportees(mer.getNbPiecesRapportees()), nbPiecesSacagees(mer.getNbPiecesSacagees()),
     batimentSacagee(mer.getBatimentSacagee()), choixDefausse(mer.getChoixDefausse()), choixJeton(mer.getChoixJeton()) {
     std::cout << "entree recopie" << std::endl;
-        for (unsigned int i=0; i<nbCout; i++) coutRessources[i]=mer.getCoutRessources()[i];
-        for (unsigned int i=0; i<nbProd; i++) produitRessources[i]=mer.getProduitRessources()[i];
+    for (unsigned int i=0; i<nbCout; i++) coutRessources[i]=mer.getCoutRessources()[i];
+    for (unsigned int i=0; i<nbProd; i++) produitRessources[i]=mer.getProduitRessources()[i];
 }
 
 Batiment::Batiment(const Batiment& bat) :
@@ -40,8 +40,8 @@ BatimentScientifique::BatimentScientifique(const BatimentScientifique& other) :
 
 BatimentCommercial::BatimentCommercial(const BatimentCommercial& other) :
     Batiment(other), piecesRapportees(other.getPiecesRapportees()), typePourGainPieces(other.getTypePourGainPiece()),
-        nbRessourcesStockees(other.getNbRessourcesStockees()), nbRessourcesDisponibles(other.getNbRessourcesDisponibles()),
-        ressourcesStockees(new Ressources[other.getNbRessourcesStockees()]), ressourcesDisponibles(new Ressources[other.getNbRessourcesDisponibles()]) {
+    nbRessourcesStockees(other.getNbRessourcesStockees()), nbRessourcesDisponibles(other.getNbRessourcesDisponibles()),
+    ressourcesStockees(new Ressources[other.getNbRessourcesStockees()]), ressourcesDisponibles(new Ressources[other.getNbRessourcesDisponibles()]) {
     for (unsigned int i=0; i<nbRessourcesStockees; i++) ressourcesStockees[i]=other.getRessourcesStockees()[i];
     for (unsigned int i=0; i<nbRessourcesDisponibles; i++) ressourcesDisponibles[i]=other.getRessourcesDisponibles()[i];
 }

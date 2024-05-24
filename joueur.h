@@ -44,6 +44,7 @@ public:
     const unsigned int compterPointsVictoires(const PlateauDeJeu& pla, const bool j2 = false) const;
     void choisirMerveilleInactive();
     unsigned int checkVictoireScientifique() const;
+    void saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire);
     void ajouterJeton(const JetonProgres& jeton);
     void afficherJetons() const;
 };

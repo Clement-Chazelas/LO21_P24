@@ -28,7 +28,7 @@ unsigned int Joueur::gainDefausse() {
 
 unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
     unsigned int total=bat->getCoutPieces();
-    if (nbBatiments==0) return bat->getNbCout()*2;
+    if (nbBatiments==0) return bat->getNbCout()*2; //il achete tt les ressources a son adversaire -->si il a 0 batiment et pourtant 1 merveille active ?
     Ressources* res=new Ressources[bat->getNbCout()];
     for (unsigned int i=0; i<bat->getNbCout(); i++) res[i]=bat->getCoutRessources()[i];
     for (unsigned i=0; i<nbBatiments; i++) {
@@ -102,6 +102,60 @@ void Joueur::choisirMerveilleInactive() {
     }
 }
 
+void Joueur::saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire){
+    if (mer.getBatimentSacagee() == TypeBatiment::undefined)
+        throw "Cette merveille est incapable de saccager une ressource.";
+    BatimentRessource* select = new BatimentRessource[adversaire.getNbBatiments()];
+    unsigned int counter = 0;
+    if (mer.getBatimentSacagee() == TypeBatiment::Primaire){
+        for (unsigned int i = 0; i < adversaire.getNbBatiments(); i++) {
+            if (adversaire.getCite()[i]->getType() == "BatimentRessource"){
+                BatimentRessource* tmp = dynamic_cast<BatimentRessource*>(adversaire.getCite()[i]);
+                if (tmp->getTypeRessource() == "RessourcePrimaire") {
+                    select[counter++] = *tmp;
+                }
+            }
+        }
+        if (counter == 0)
+            throw "L'adversaire ne possède pas de ressources primaires.";
+    }
+    else if (mer.getBatimentSacagee() == TypeBatiment::Manufacturee){
+        for (unsigned int i = 0; i < adversaire.getNbBatiments(); i++) {
+            if (adversaire.getCite()[i]->getType() == "BatimentRessource"){
+                BatimentRessource* tmp = dynamic_cast<BatimentRessource*>(adversaire.getCite()[i]);
+                if (tmp->getTypeRessource() == "RessourceManufacturee") {
+                    select[counter++] = *tmp;
+                }
+            }
+        }
+        if (counter == 0)
+            throw "L'adversaire ne possède pas de ressources manufacturées.";
+    }
+    std::cout << "\n\n----    Ressources Parmis Lesquelles choisir    ----\n" << std::endl;
+    for (unsigned int i=0; i<counter; i++)
+        std::cout << select[i].getNom() << std::endl;
+    bool ok1;
+    QString ressourceChoisie = QInputDialog::getText(nullptr, QString::fromStdString(nom), "Ressource choisie :", QLineEdit::Normal, "", &ok1);
+    bool verif = false;
+    for (unsigned int i=0; i<counter; i++){
+        if (ressourceChoisie.toStdString() == select[i].getNom())
+            verif = true;
+    }
+    if (verif = false)
+        throw "carte choisie non trouvée dans les ressources selectionnables.";
+    counter = 0;
+    while (ressourceChoisie.toStdString() != adversaire.getCite()[counter]->getNom() &&  counter < adversaire.getNbBatiments() ){
+        counter++;
+    }
+    if (counter == adversaire.getNbBatiments())
+        throw "carte choisie non trouvé dans les ressources de l'adversaire.";
+
+    for (unsigned int i=counter; i<adversaire.getNbBatiments()-1; i++){
+        adversaire.setElementCite(adversaire.getCite()[i+1], i);
+    }
+    adversaire.setNbBatiments(adversaire.getNbBatiments()-1);
+
+}
 
 ostream& operator<<(ostream& f, const Joueur& j) {
     f << "===Joueur : " << j.getPrenom() << " " << j.getNom() << " - Pieces : " << j.getnbPieces() << " - Science : " << j.checkVictoireScientifique() << "/6 ===" << endl;

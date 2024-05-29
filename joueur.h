@@ -35,6 +35,10 @@ public:
     unsigned int getNbBatiments() const { return nbBatiments; }
     Batiment** getCite() const { return cite; }
 
+    //setters
+    void setNbBatiments(unsigned int val) {nbBatiments = val;}
+    void setElementCite(Batiment* bat, unsigned int position) {cite[position] = bat;}
+
     void gainPieces(unsigned int n) { nbPieces += n; }
     void pertePieces(unsigned int n) { if (n > nbPieces) nbPieces = 0; else nbPieces -= n; }
     void ajouterMerveille(const Merveille& mer);

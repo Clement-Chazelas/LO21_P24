@@ -1,10 +1,8 @@
 #ifndef PARTIE_H
 #define PARTIE_H
-
 #include <iostream>
 #include "joueur.h"
 #include "plateauJeu.h"
-
 
 class Partie
 {
@@ -28,9 +26,11 @@ public:
     void genererAgeUn();
     void genererAgeDeux();
     void genererAgeTrois();
+    void genererPlateauMilitaire();
     void afficherMerveillesRestantes(bool salve2=false) const;
     void selectionDesMerveilles();
     void selectionDesBatiments();
+    void deplacerPionMilitaire(int i);
 };
 
 std::ostream& operator<<(std::ostream& f, const Partie& p);

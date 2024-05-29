@@ -165,8 +165,6 @@ ostream& operator<<(ostream& f, const Joueur& j) {
     for (unsigned int i=0; i<j.getNbBatiments(); i++) f << *(j.getCite()[i]);
     return f;
 }
-
-
 void Joueur::ajouterJeton(const JetonProgres& jeton) {
     jetonsProgres.push_back(jeton);
 }

@@ -1,10 +1,11 @@
-#ifndef LO21_P24_PLATEAUJEU_H
-#define LO21_P24_PLATEAUJEU_H
+#ifndef PLATEAUJEU_H
+#define PLATEAUJEU_H
 
 #include <iostream>
 #include <vector>
 #include "cartes.h"
 #include "jetonProgres.h"
+#include "jetonMilitaire.h"
 
 // Forward declaration
 class Joueur;
@@ -24,9 +25,10 @@ private:
     size_t nb_max_defausse;
     size_t nb_merveille_plateau;
     int emplacementPionMilitaire;
+    JetonMilitaire* plateauMilitaire;
 public:
     PlateauDeJeu(size_t c, size_t pio, size_t pla);
-    ~PlateauDeJeu() { delete[] defausse; delete[] tab; delete[] piocheJeton; delete[] plateauJeton; delete[] selectionMerveille; }
+    ~PlateauDeJeu() {delete[] defausse; delete[] tab; delete[] piocheJeton; delete[] plateauJeton; delete[] selectionMerveille; delete[] plateauMilitaire;}
 
     // getters
     Batiment** getTab() const { return tab; }
@@ -40,14 +42,16 @@ public:
     int getEmplacementPionMilitaire() const { return emplacementPionMilitaire; }
     unsigned int getNb_jeton_pioche() const {return nb_jeton_pioche;}
     unsigned int getNb_jeton_plateau() const {return nb_jeton_plateau;}
+    JetonMilitaire getZonePlateauMilitaire(unsigned int i) {return plateauMilitaire[i];}
 
     // setters
     void setDispositionCartes(size_t i);
     void setJetonProgresPioche(size_t i);
     void setJetonProgresPlateau(size_t i);
     void setDefausse(Batiment& bat); // Défausser
-    void setPionMilitaire(int i) { emplacementPionMilitaire += i; if (emplacementPionMilitaire >= 10 || emplacementPionMilitaire <= -10) { /*DECLENCHER_FIN_PARTIE*/ }; } // Remplacerr le déclenchement par la méthode de fin
-    void deplacerPionMilitaire(int i) { emplacementPionMilitaire += i; }
+    void setPionMilitaire(int i) { emplacementPionMilitaire += i; }
+    //void deplacerPionMilitaire(int i) { emplacementPionMilitaire += i; }
+    void setZonePlateauMilitaire(JetonMilitaire& zone, unsigned int i);
 
     // Pour les merveilles
     Merveille prendreMerveillePlateau(size_t i);
@@ -75,4 +79,4 @@ public:
 
 std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla);
 
-#endif // LO21_P24_PLATEAUJEU_H
+#endif // PLATEAUJEU_H

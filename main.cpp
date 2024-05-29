@@ -22,11 +22,9 @@ int main(int argc, char *argv[]) {
     /*p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
     p.getPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
     p.selectionDesBatiments(); //Choix successifs des batiments
-
     p.genererAgeDeux();
     p.getPlateau().genererStructureAge2();
     p.selectionDesBatiments();
-
     p.genererAgeTrois();
     p.getPlateau().genererStructureAge3();
     p.selectionDesBatiments();*/
@@ -82,4 +80,3 @@ To Do list :
     - Photocopier les cartes du jeu
     - S'attaquer à la partie graphique...
 */
-

@@ -1,5 +1,6 @@
-#ifndef LO21_P24_JETONPROGRES_H
-#define LO21_P24_JETONPROGRES_H
+#ifndef JETONPROGRES_H
+#define JETONPROGRES_H
+
 #include <iostream>
 #include <string>
 
@@ -19,5 +20,4 @@ public:
 
 std::ostream& operator<<(std::ostream& out, const JetonProgres& jeton);
 
-
-#endif //LO21_P24_JETONPROGRES_H
+#endif // JETONPROGRES_H

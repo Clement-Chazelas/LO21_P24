@@ -14,8 +14,7 @@ Partie::Partie(const std::string& n_j1, const std::string& p_j1, const std::stri
 
 void Partie::genererHuitMerveilles() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/merveilles_SevenWonders.csv"; //changer l'adresse !
-
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/merveilles_SevenWonders.csv"; //changer adresse!
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -117,7 +116,7 @@ void Partie::selectionDesBatiments() {
                 plateau.afficherSelectionnable();
                 bool ok2;
                 Batiment* bat(plateau.choisirBatiment());
-                // Demander au joueur de choisir une option
+                //Demander au joueur de choisir une option
                 QStringList options;
                 options << "Construire" << "Defausser" << "Construire Merveille";
                 QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
@@ -125,7 +124,7 @@ void Partie::selectionDesBatiments() {
                     if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
                         joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
                         joueur1.ajouterBatiment(bat);
-                        plateau.deplacerPionMilitaire(bat->getNbPointsCombats());
+                        deplacerPionMilitaire(bat->getNbPointsCombats());
                         if (joueur1.checkVictoireScientifique()==6) {
                             std::cout << "Le joueur 1 a gagne par la victoire scientifique !" << std::endl;
                             running = false;
@@ -141,7 +140,7 @@ void Partie::selectionDesBatiments() {
                 plateau.afficherSelectionnable();
                 bool ok2;
                 Batiment* bat(plateau.choisirBatiment(j2));
-                // Demander au joueur de choisir une option
+                //Demander au joueur de choisir une option
                 QStringList options;
                 options << "Construire" << "Defausser" << "Construire Merveille";
                 QString choix = QInputDialog::getItem(nullptr, "Joueur 2", "Choisissez une option:", options, 0, false, &ok2);
@@ -149,7 +148,7 @@ void Partie::selectionDesBatiments() {
                     if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
                         joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
                         joueur2.ajouterBatiment(bat);
-                        plateau.deplacerPionMilitaire(-bat->getNbPointsCombats());
+                        deplacerPionMilitaire(-bat->getNbPointsCombats());
                         if (joueur2.checkVictoireScientifique()==6) {
                             std::cout << "Le joueur 2 a gagne par la victoire scientifique !" << std::endl;
                             running = false;
@@ -181,7 +180,7 @@ void Partie::selectionDesBatiments() {
 
 void Partie::genererAgeUn() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge1_SevenWonders.csv"; //changer l'adresse !
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/batimentsAge1_SevenWonders.csv"; //changer l'adresse !
 
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
@@ -250,7 +249,7 @@ void Partie::genererAgeUn() {
 
 void Partie::genererAgeDeux() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge2_SevenWonders.csv"; //changer l'adresse !
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/batimentsAge2_SevenWonders.csv"; //changer l'adresse !
 
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
@@ -351,7 +350,7 @@ void Partie::genererAgeDeux() {
 
 void Partie::genererAgeTrois() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge3_SevenWonders.csv"; //changer l'adresse !
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/batimentsAge3_SevenWonders.csv"; //changer l'adresse !
 
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
@@ -443,6 +442,60 @@ void Partie::genererAgeTrois() {
     }
     file.close();
     plateau.melangerBatiments();
+}
+
+void Partie::genererPlateauMilitaire(){
+
+    for (unsigned int i=1; i<=8; i++){
+        JetonMilitaire zone(i,0);
+        if (i==3)
+            zone.JetonMilitaire::setPertePiece(2);
+        else if (i==6)
+            zone.JetonMilitaire::setPertePiece(5);
+        plateau.setZonePlateauMilitaire(zone, i-1);
+    }
+}
+
+
+void Partie::deplacerPionMilitaire(int i) {
+    plateau.setPionMilitaire(i);
+    if (i>0){
+        for (size_t c=0; c< joueur1.getJetonsProgres().size(); c++){
+            if (joueur1.getJetonsProgres()[i].getNomJeton() == "Stratégie"){
+                plateau.setPionMilitaire(1);
+                break;
+            }
+        }
+    }
+    if (i<0){
+        for (size_t c=0; c< joueur2.getJetonsProgres().size(); c++){
+            if (joueur2.getJetonsProgres()[i].getNomJeton() == "Stratégie"){
+                plateau.setPionMilitaire(-1);
+                break;
+            }
+        }
+    }
+
+    if (plateau.getEmplacementPionMilitaire() >=9)
+        std::cout<< "victoire joueur 1";
+        //victoire joueur1
+    if (plateau.getEmplacementPionMilitaire() <=-9)
+        std::cout<< "victoire joueur 2";
+        //victoire joueur2;
+    for (unsigned int j=1; j<=8; j++){
+        if (plateau.getEmplacementPionMilitaire()==plateau.getZonePlateauMilitaire(j).getEmplacement()){
+            if (!plateau.getZonePlateauMilitaire(j).getUtilise()){
+                joueur2.pertePieces(plateau.getZonePlateauMilitaire(j).getPertePiece());
+                break;
+            }
+            }
+        if (plateau.getEmplacementPionMilitaire()== - plateau.getZonePlateauMilitaire(j).getEmplacement()){
+            if (!plateau.getZonePlateauMilitaire(j).getUtilise()){
+                joueur1.pertePieces(plateau.getZonePlateauMilitaire(j).getPertePiece());
+                break;
+            }
+        }
+        }
 }
 
 

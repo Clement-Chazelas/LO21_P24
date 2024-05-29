@@ -27,4 +27,5 @@ std::string printSymbole(const SymboleScientifique& r);
 
 std::string printTypeBatiment(const TypeBatiment& s);
 
+
 #endif // UTILS_H

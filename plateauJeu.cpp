@@ -19,7 +19,8 @@ PlateauDeJeu::PlateauDeJeu(size_t c, size_t pio, size_t pla)
     : nb_batiment_plateau(0), nb_jeton_pioche(pio), nb_jeton_plateau(pla), nb_defausse(0), nb_max_defausse(10),
     defausse(new Batiment*[c]), tab(new Batiment*[c]),
     piocheJeton(new JetonProgres[pio]), plateauJeton(new JetonProgres[pla]),
-    selectionMerveille(new Merveille[8]), emplacementPionMilitaire(0), nb_merveille_plateau(0) {
+    selectionMerveille(new Merveille[8]), emplacementPionMilitaire(0), nb_merveille_plateau(0),
+    plateauMilitaire(new JetonMilitaire[8]) {
     for (size_t i = 0; i < 8; ++i) {
         for (size_t j = 0; j < 13; ++j) {
             structure[i][j]=nullptr;
@@ -325,7 +326,7 @@ Batiment* PlateauDeJeu::piocher(int i) {
 
 void PlateauDeJeu::genererJetons() {
     std::vector<JetonProgres> jetons;
-    std::ifstream fichier("C:/Users/clemc/Desktop/UTC/GI01/LO21/LO21_Projet/jeton_progres_SevenWonders.csv");
+    std::ifstream fichier("C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/jeton_progres_SevenWonders.csv");
     std::string ligne;
 
     int ligne_numero = 0;
@@ -390,6 +391,10 @@ void PlateauDeJeu::genererJetons() {
     }
 }
 
+void PlateauDeJeu::setZonePlateauMilitaire(JetonMilitaire& zone, unsigned int i) {
+    if (i>=8) throw "Pas assez d'espace memoire alloue pour le plateau militaire.";
+    plateauMilitaire[i] = zone;
+}
 
 std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {
     f << "Merveilles sur le plateau : " << std::endl;
@@ -398,4 +403,3 @@ std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla) {
     for (unsigned int i=0; i<pla.getNb_batiment_plateau(); i++) f << *(pla.getTab()[i]);
     return f;
 }
-

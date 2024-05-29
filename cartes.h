@@ -1,5 +1,6 @@
-#ifndef MERVEILLES_H_INCLUDED
-#define MERVEILLES_H_INCLUDED
+#ifndef CARTES_H
+#define CARTES_H
+
 #include <string>
 #include <iostream>
 #include "utils.h"
@@ -122,8 +123,8 @@ public:
     BatimentRessource(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, Ressources res, unsigned int nbRes)
         : Batiment(nom, cp, cchain, schain, fc), ressourceProduite(res), nbRessourcesProduites(nbRes) {}
     BatimentRessource(const BatimentRessource& other);
-    BatimentRessource(): Batiment(), ressourceProduite(Ressources::undefined), nbRessourcesProduites(0) {}
     BatimentRessource& operator=(const BatimentRessource& other);
+    BatimentRessource(): Batiment(), ressourceProduite(Ressources::undefined), nbRessourcesProduites(0) {}
     ~BatimentRessource()=default;
 
     //getters
@@ -238,4 +239,4 @@ public:
     virtual std::string getType() const {return "BatimentGuilde";}
 };
 
-#endif
+#endif // CARTES_H

@@ -34,6 +34,8 @@ public:
     const Merveille* const getMerveilles() const { return merveilles; }
     unsigned int getNbBatiments() const { return nbBatiments; }
     Batiment** getCite() const { return cite; }
+    std::vector<JetonProgres> getJetonsProgres() {return jetonsProgres;}
+
 
     //setters
     void setNbBatiments(unsigned int val) {nbBatiments = val;}

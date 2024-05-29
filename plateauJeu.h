@@ -50,7 +50,6 @@ public:
     void setJetonProgresPlateau(size_t i);
     void setDefausse(Batiment& bat); // Défausser
     void setPionMilitaire(int i) { emplacementPionMilitaire += i; }
-    //void deplacerPionMilitaire(int i) { emplacementPionMilitaire += i; }
     void setZonePlateauMilitaire(JetonMilitaire& zone, unsigned int i);
 
     // Pour les merveilles

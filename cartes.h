@@ -122,6 +122,7 @@ public:
     BatimentRessource(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, Ressources res, unsigned int nbRes)
         : Batiment(nom, cp, cchain, schain, fc), ressourceProduite(res), nbRessourcesProduites(nbRes) {}
     BatimentRessource(const BatimentRessource& other);
+    BatimentRessource(): Batiment(), ressourceProduite(Ressources::undefined), nbRessourcesProduites(0) {}
     BatimentRessource& operator=(const BatimentRessource& other);
     ~BatimentRessource()=default;
 

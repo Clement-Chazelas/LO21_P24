@@ -73,7 +73,6 @@ int main(int argc, char *argv[]) {
 To Do list :
     - Generation aleatoire des jetons scientifique sur et hors plateau
     - Finaliser l'ajout des attributs spéciaux des merveilles (ressources disponibles, choix du jeton, choix dans la defausse...
-    - Gestion du conflit militaire
     - Assigner la gestion du cycle de vie de tous les objets chacun à une classe
     - Nettoyer le code (retirer les methodes inutilises, nettoyer la memoire pendant la partie, commencer à mettre des commentaires pour les méthodes un peu complexes)
     - faire une méthode dans la classe partie pour faire derouler l'integralite de la partie

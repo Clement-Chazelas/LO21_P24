@@ -14,22 +14,26 @@ int main(int argc, char *argv[]) {
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement");
     cout << p << endl;
 
-    /*
+
     p.genererHuitMerveilles(); //generation random parmis un csv pour choisir 8 merveilles
     p.selectionDesMerveilles(); //Choix successifs des merveilles
-    */
 
-    /*p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
-    p.getPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
-    p.selectionDesBatiments(); //Choix successifs des batiments
-    p.genererAgeDeux();
-    p.getPlateau().genererStructureAge2();
-    p.selectionDesBatiments();
-    p.genererAgeTrois();
-    p.getPlateau().genererStructureAge3();
-    p.selectionDesBatiments();*/
 
     p.getSetPlateau().genererJetons();
+
+    p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
+    p.getSetPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
+    p.selectionDesBatiments(); //Choix successifs des batiments
+
+    /*
+    p.genererAgeDeux();
+    p.getSetPlateau().genererStructureAge2();
+    p.selectionDesBatiments();
+
+    p.genererAgeTrois();
+    p.getSetPlateau().genererStructureAge3();
+    p.selectionDesBatiments();
+
 
     std::cout << "Jetons de la pioche avant choix:\n";
     for (size_t i = 0; i < p.getPlateau().getNb_jeton_pioche(); ++i) {
@@ -64,6 +68,7 @@ int main(int argc, char *argv[]) {
     for (size_t i = 0; i < p.getPlateau().getNb_jeton_plateau(); ++i) {
         std::cout << p.getPlateau().getJetonProgresPlateau()[i] << std::endl;
     }
+    */
 
 
     return 0;

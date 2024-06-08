@@ -111,6 +111,10 @@ public:
     virtual std::string getType() const=0;
     virtual SymboleScientifique getSymbole() const {return SymboleScientifique::undefined;}
     virtual unsigned int getNbPointsCombats() const {return 0;}
+    virtual Ressources* getRessourcesDisponibles() const {return new Ressources(Ressources::undefined);}
+    virtual unsigned int getNbRessourcesDisponibles() const {return 0;}
+    virtual Ressources* getRessourcesStockees() const {return new Ressources(Ressources::undefined);}
+    virtual unsigned int getNbRessourcesStockees() const {return 0;}
 };
 
 std::ostream& operator<<(std::ostream& f, const Batiment& bat);

@@ -27,15 +27,17 @@ unsigned int Joueur::gainDefausse() {
 }
 
 unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
+    std::cout << "entree dans cout achat... check" << std::endl;
     unsigned int total=bat->getCoutPieces();
-    if (nbBatiments==0) return bat->getNbCout()*2; //il achete tt les ressources a son adversaire -->si il a 0 batiment et pourtant 1 merveille active ?
+    if (nbBatiments==0 && nbMerveilles==0) return bat->getNbCout()*2+bat->getCoutPieces();
     Ressources* res=new Ressources[bat->getNbCout()];
     for (unsigned int i=0; i<bat->getNbCout(); i++) res[i]=bat->getCoutRessources()[i];
+    std::cout << "copie des ressources a acquerir ... check" << std::endl;
     for (unsigned i=0; i<nbBatiments; i++) {
         if (bat->getCoutChainage()!="NULL") {
             if (cite[i]->getSymboleChainage()==bat->getCoutChainage()) return 0;
         }
-        if (cite[i]->getType()=="BatimentRessource") {
+        if (cite[i]->getType()=="BatimentRessource") { // On vient parcourir la cite pour voir les ressources produites
             bool found=false;
             unsigned int counter=0;
             while (!found && counter<bat->getNbCout()) {
@@ -47,7 +49,46 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
             }
         }
     }
-    for (unsigned int i=0; i<bat->getNbCout(); i++) if (res[i]!=Ressources::undefined) {
+    std::cout << "Parcours des batiments ressources ... check" << std::endl;
+    for (unsigned i=0; i<nbBatiments; i++) { // De même pour voir les ressources disponibles pour les batiments commmerciaux
+        if (cite[i]->getType()=="BatimentCommercial") {
+            bool found=false;
+            unsigned int counter=0;
+            while (!found && counter<bat->getNbCout()) {
+                if (res[counter]!=Ressources::undefined) {
+                    for (unsigned int j=0; j<cite[i]->getNbRessourcesDisponibles(); j++) {
+                        if (cite[i]->getRessourcesDisponibles()[j]==res[counter]) {
+                            res[counter]=Ressources::undefined;
+                            found=true;
+                        }
+                    }
+                }
+                counter++;
+            }
+        }
+    }
+    std::cout << "Parcours des batiments commerciaux dispo ... check" << std::endl;
+    for (unsigned i=0; i<nbBatiments; i++) { // Puis une derniere fois pour voir ajouter les ressources produites mais payantes par les batiments commerciaux
+        if (cite[i]->getType()=="BatimentCommercial") {
+            bool found=false;
+            unsigned int counter=0;
+            while (!found && counter<bat->getNbCout()) {
+                if (res[counter]!=Ressources::undefined) {
+                    for (unsigned int j=0; j<cite[i]->getNbRessourcesStockees(); j++) {
+                        if (cite[i]->getRessourcesStockees()[j]==res[counter]) {
+                            res[counter]=Ressources::undefined;
+                            total++;
+                            found=true;
+                        }
+                    }
+                }
+                counter++;
+            }
+        }
+    }
+    std::cout << "Parcours des batiments commerciaux stockees ... check" << std::endl;
+    for (unsigned int i=0; i<bat->getNbCout(); i++) {
+        if (res[i]!=Ressources::undefined) {
             total+=2;
             for (unsigned int j=0; j<adversaire.getNbBatiments(); j++) {
                 if (adversaire.getCite()[j]->getType()=="BatimentRessource") {
@@ -55,6 +96,8 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
                 }
             }
         }
+    }
+    std::cout << "Parcours des batiments adverses ... check" << std::endl;
     delete[] res;
     return total;
 }
@@ -67,6 +110,9 @@ const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const
     }
     for (unsigned int i=0; i<nbMerveilles; i++) {
         total+=merveilles[i].getNbPointVictoire();
+    }
+    for (unsigned int i=0; i<jetonsProgres.size(); i++) {
+        total+=jetonsProgres[i].getPointsVictoire();
     }
     if (!j2) {
         if (pla.getEmplacementPionMilitaire()>5) total+=10;
@@ -94,11 +140,15 @@ unsigned int Joueur::checkVictoireScientifique() const {
 }
 
 
-void Joueur::choisirMerveilleInactive() {
+bool Joueur::choisirMerveilleInactive() {
     bool ok;
     QString merveilleChoisie = QInputDialog::getText(nullptr, QString::fromStdString(nom), "Merveille a activer :", QLineEdit::Normal, "", &ok);
     for (unsigned int i=0; i<nbMerveilles; i++) {
-        if (merveilleChoisie.toStdString()==merveilles[i].getNom()) merveilles[i].setActive(true); //il faudra verifier si la merveille n'est pas deja active
+        if (merveilleChoisie.toStdString()==merveilles[i].getNom()) {
+            merveilles[i].setActive(true); //il faudra verifier si la merveille n'est pas deja active
+            if (merveilles[i].getRejouer()) return true;
+            return false;
+        }
     }
 }
 
@@ -163,8 +213,11 @@ ostream& operator<<(ostream& f, const Joueur& j) {
     for (unsigned int i=0; i<j.getNbMerveilles(); i++) f << j.getMerveilles()[i];
     f << "Batiments dans sa cite : " << endl;
     for (unsigned int i=0; i<j.getNbBatiments(); i++) f << *(j.getCite()[i]);
+    f << "Jetons scientifiques : " << endl;
+    for (unsigned int i=0; i<j.getJetonsProgres().size(); i++) f << j.getJetonsProgres()[i];
     return f;
 }
+
 void Joueur::ajouterJeton(const JetonProgres& jeton) {
     jetonsProgres.push_back(jeton);
 }
@@ -175,3 +228,4 @@ void Joueur::afficherJetons() const {
         std::cout << "Nom : " << jeton.getNomJeton() << ", Effet : " << jeton.getEffetJeton() << ", Points de victoire : " << jeton.getPointsVictoire() << std::endl;
     }
 }
+

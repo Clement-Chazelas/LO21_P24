@@ -75,12 +75,12 @@ int main(int argc, char *argv[]) {
 }
 
 /*
-To Do list :
-    - Generation aleatoire des jetons scientifique sur et hors plateau
-    - Finaliser l'ajout des attributs spéciaux des merveilles (ressources disponibles, choix du jeton, choix dans la defausse...
-    - Assigner la gestion du cycle de vie de tous les objets chacun à une classe
-    - Nettoyer le code (retirer les methodes inutilises, nettoyer la memoire pendant la partie, commencer à mettre des commentaires pour les méthodes un peu complexes)
-    - faire une méthode dans la classe partie pour faire derouler l'integralite de la partie
-    - Photocopier les cartes du jeu
-    - S'attaquer à la partie graphique...
+To Do list pour le back_end :
+    - Creer une IA simple
+    - Permettre aux joueurs d'utiliser les effets des merveilles (qui sont pour la plupart déjà implémentés)
+    - prendre en compte les batiments guilde dans le calcul des points de victoire
+    - calculer les gains rapportés par la construction des batiments guildes
+    - concernant les jetons il reste à coder (du plus facile au plus dur) : Loi, Theologie, Mathematiques, Economie, Architecture, Maconnerie et Urbanisme (attention ce n'est pas le plus important !)
+    - Nettoyer le code
+    - Tester le code sous toutes ses coutures
 */

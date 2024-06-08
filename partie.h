@@ -10,6 +10,7 @@ class Partie
     Joueur joueur2;
     PlateauDeJeu plateau;
     unsigned int age;
+    bool rejouer;
 public:
     Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2);
     ~Partie()=default;

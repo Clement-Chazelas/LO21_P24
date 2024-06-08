@@ -21,7 +21,7 @@ private:
     std::vector<JetonProgres> jetonsProgres;
     unsigned int nbMerveilles;
 public:
-    Joueur(std::string n, std::string p, unsigned int m=7)
+    Joueur(std::string n, std::string p, unsigned int m=100)
         : merveilles(new Merveille[4]), cite(new Batiment*[30]), nbBatiments(0), nom(n), prenom(p), nbPieces(m), nbMerveilles(0) {}
     ~Joueur() { delete[] merveilles; }
     Joueur(const Joueur& j) = delete;
@@ -35,6 +35,7 @@ public:
     unsigned int getNbBatiments() const { return nbBatiments; }
     Batiment** getCite() const { return cite; }
     std::vector<JetonProgres> getJetonsProgres() {return jetonsProgres;}
+    std::vector<JetonProgres> getJetonsProgres() const {return jetonsProgres;}
 
 
     //setters
@@ -48,7 +49,7 @@ public:
     unsigned int gainDefausse();
     unsigned int coutAchat(Batiment* bat, const Joueur& adversaire);
     const unsigned int compterPointsVictoires(const PlateauDeJeu& pla, const bool j2 = false) const;
-    void choisirMerveilleInactive();
+    bool choisirMerveilleInactive();
     unsigned int checkVictoireScientifique() const;
     void saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire);
     void ajouterJeton(const JetonProgres& jeton);

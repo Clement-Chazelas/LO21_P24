@@ -1,21 +1,16 @@
 #include <QtWidgets>
-#include "MainWindow.h"
-
+#include "PyramidWidget.h"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     // Créer la fenêtre principale
-    QWidget window;
-    window.setWindowTitle("Grilles en haut et en bas de l'écran");
-    window.setWindowState(Qt::WindowMaximized); // Définir l'état initial de la fenêtre sur maximisé
-
-    // Créer le widget contenant les layouts
-    QWidget *widget = new QWidget(&window);
-    widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    QWidget mainWidget;
+    mainWidget.setWindowTitle("Affichage des Deux Fenêtres");
+    mainWidget.setWindowState(Qt::WindowMaximized);
 
     // Créer le layout principal
-    QVBoxLayout *mainLayout = new QVBoxLayout(widget);
+    QVBoxLayout *mainLayout = new QVBoxLayout(&mainWidget);
 
     // Créer le layout en haut de l'écran
     QGridLayout *topGridLayout = new QGridLayout;
@@ -25,14 +20,32 @@ int main(int argc, char *argv[]) {
         for (int col = 0; col < 2; ++col) {
             QLabel *imageLabel = new QLabel;
             QPixmap pixmap("C:/Users/clemc/Desktop/UTC/GI01/LO21/UI_SevenWondersDuel/Merveilles/LaGrandeBibliotheque.png"); // Chemin vers votre image
-            imageLabel->setPixmap(pixmap.scaledToWidth(200)); // Redimensionner l'image pour qu'elle ne prenne pas tout l'écran
+            imageLabel->setPixmap(pixmap.scaled(200, 100, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
+            imageLabel->setFixedSize(200, 100); // Définir une taille fixe pour les QLabel
             imageLabel->setScaledContents(true); // Pour redimensionner l'image pour s'adapter au QLabel
             topGridLayout->addWidget(imageLabel, row, col);
         }
     }
 
-    // Créer un espace élastique pour étirer entre les deux grilles
-    QSpacerItem *verticalSpacer = new QSpacerItem(20, 230, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    // Ajouter la grille du haut au layout principal
+    mainLayout->addLayout(topGridLayout);
+
+    // Créer un espace élastique pour séparer la grille du haut et la pyramide
+    mainLayout->addStretch();
+
+    // Créer la pyramide
+    PyramidWidget *pyramidWidget = new PyramidWidget(&mainWidget);
+
+    // Ajouter la pyramide au layout principal, centrée horizontalement
+    QHBoxLayout *pyramidLayout = new QHBoxLayout;
+    pyramidLayout->addStretch();
+    pyramidLayout->addWidget(pyramidWidget);
+    pyramidLayout->addStretch();
+
+    mainLayout->addLayout(pyramidLayout);
+
+    // Ajouter un espace élastique pour séparer la pyramide et la grille du bas
+    mainLayout->addStretch();
 
     // Créer le layout en bas de l'écran
     QGridLayout *bottomGridLayout = new QGridLayout;
@@ -42,22 +55,38 @@ int main(int argc, char *argv[]) {
         for (int col = 0; col < 2; ++col) {
             QLabel *imageLabel = new QLabel;
             QPixmap pixmap("C:/Users/clemc/Desktop/UTC/GI01/LO21/UI_SevenWondersDuel/Merveilles/LaGrandeBibliotheque.png"); // Chemin vers votre image
-            imageLabel->setPixmap(pixmap.scaledToWidth(200)); // Redimensionner l'image pour qu'elle ne prenne pas tout l'écran
+            imageLabel->setPixmap(pixmap.scaled(200, 100, Qt::KeepAspectRatio)); // Ajuster la taille de l'image
+            imageLabel->setFixedSize(200, 100); // Définir une taille fixe pour les QLabel
             imageLabel->setScaledContents(true); // Pour redimensionner l'image pour s'adapter au QLabel
             bottomGridLayout->addWidget(imageLabel, row, col);
         }
     }
 
-    // Ajouter les layouts en haut et en bas dans le layout principal
-    mainLayout->addLayout(topGridLayout);
-    mainLayout->addItem(verticalSpacer);
+    // Ajouter la grille du bas au layout principal
     mainLayout->addLayout(bottomGridLayout);
 
-    // Afficher la fenêtre
-    window.show();
+    // Ajuster les marges et les alignements pour placer les grilles en haut à gauche et en bas à gauche
+    mainLayout->setContentsMargins(20, 20, 20, 20); // Ajuster les marges pour positionner les grilles
+    topGridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft); // Alignement de la grille du haut
+    bottomGridLayout->setAlignment(Qt::AlignBottom | Qt::AlignLeft); // Alignement de la grille du bas
 
-    MainWindow window2;
-    window2.show();
+    // Afficher la fenêtre principale
+    mainWidget.show();
 
     return app.exec();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

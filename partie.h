@@ -30,8 +30,11 @@ public:
     void genererPlateauMilitaire();
     void afficherMerveillesRestantes(bool salve2=false) const;
     void selectionDesMerveilles();
-    void selectionDesBatiments();
-    void deplacerPionMilitaire(int i);
+    void selectionDesBatiments(int  age);
+    int deplacerPionMilitaire(int i);
+    int victoireMilitaire(const Joueur& gagnant);
+    int victoireScientifique (const Joueur& gagnant);
+    int finDePartie(bool vmilit=false, bool vscient=false);
 };
 
 std::ostream& operator<<(std::ostream& f, const Partie& p);

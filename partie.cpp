@@ -14,7 +14,7 @@ Partie::Partie(const std::string& n_j1, const std::string& p_j1, const std::stri
 
 void Partie::genererHuitMerveilles() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/merveilles_SevenWonders.csv"; //changer adresse!
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/merveilles_SevenWonders.csv"; //changer adresse!
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -105,9 +105,13 @@ void Partie::selectionDesMerveilles() { // Méthode a finir
     }
 }
 
-void Partie::selectionDesBatiments() {
+void Partie::selectionDesBatiments(int age) {
     try {
         bool j2=false;
+        if (age == 2 && plateau.getEmplacementPionMilitaire() <= 0)
+            j2 = true;//a la fin de l'age un, le dernier joueur actif est le joueur 2
+        else if (age == 3 && plateau.getEmplacementPionMilitaire() < 0)
+            j2 = true; //a la fin de l'age deux, le dernier joueur actif est le joueur 1
         bool running=true;
         while (plateau.getNb_batiment_plateau()>0 && running) {
             std::cout << *this << std::endl;
@@ -131,10 +135,11 @@ void Partie::selectionDesBatiments() {
                             }
                         }
                         joueur1.ajouterBatiment(bat);
-                        deplacerPionMilitaire(bat->getNbPointsCombats());
+                        running = deplacerPionMilitaire(bat->getNbPointsCombats());
+                        if (!running)
+                            break;
                         if (joueur1.checkVictoireScientifique()==6) {
-                            std::cout << "Le joueur 1 a gagne par la victoire scientifique !" << std::endl;
-                            running = false;
+                            running = victoireScientifique(joueur1);
                         }
                     }
                     else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
@@ -165,10 +170,11 @@ void Partie::selectionDesBatiments() {
                             }
                         }
                         joueur2.ajouterBatiment(bat);
-                        deplacerPionMilitaire(-bat->getNbPointsCombats());
+                        running = deplacerPionMilitaire(-bat->getNbPointsCombats());
+                        if (!running)
+                            break;
                         if (joueur2.checkVictoireScientifique()==6) {
-                            std::cout << "Le joueur 2 a gagne par la victoire scientifique !" << std::endl;
-                            running = false;
+                            running = victoireScientifique(joueur2);
                         }
                     }
                     else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
@@ -200,7 +206,7 @@ void Partie::selectionDesBatiments() {
 
 void Partie::genererAgeUn() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge1_SevenWonders.csv"; //changer l'adresse !
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/batimentsAge1_SevenWonders.csv"; //changer l'adresse !
 
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
@@ -269,7 +275,7 @@ void Partie::genererAgeUn() {
 
 void Partie::genererAgeDeux() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge2_SevenWonders.csv"; //changer l'adresse !
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/batimentsAge2_SevenWonders.csv"; //changer l'adresse !
 
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
@@ -370,7 +376,7 @@ void Partie::genererAgeDeux() {
 
 void Partie::genererAgeTrois() {
     // Chemin vers le fichier CSV
-    QString filePath = "C:/Users/cheva/OneDrive/Bureau/Qt/Edition_LO21/batimentsAge3_SevenWonders.csv"; //changer l'adresse !
+    QString filePath = "C:/Users/Agaathe/Documents/cours/GI/P24/LO21/projet 7 pyramides/jeu_code/batimentsAge3_SevenWonders.csv"; //changer l'adresse !
 
     // Ouverture du fichier en lecture seule
     QFile file(filePath);
@@ -477,7 +483,7 @@ void Partie::genererPlateauMilitaire(){
 }
 
 
-void Partie::deplacerPionMilitaire(int i) {
+int Partie::deplacerPionMilitaire(int i) {
     plateau.setPionMilitaire(i);
     if (i>0){
         for (size_t c=0; c< joueur1.getJetonsProgres().size(); c++){
@@ -497,11 +503,11 @@ void Partie::deplacerPionMilitaire(int i) {
     }
 
     if (plateau.getEmplacementPionMilitaire() >=9)
-        std::cout<< "victoire joueur 1";
-        //victoire joueur1
+        return victoireMilitaire(joueur1);
+    //victoire joueur1
     if (plateau.getEmplacementPionMilitaire() <=-9)
-        std::cout<< "victoire joueur 2";
-        //victoire joueur2;
+        return victoireMilitaire(joueur2);
+    //victoire joueur2;
     for (unsigned int j=1; j<=8; j++){
         if (plateau.getEmplacementPionMilitaire()==plateau.getZonePlateauMilitaire(j).getEmplacement()){
             if (!plateau.getZonePlateauMilitaire(j).getUtilise()){
@@ -516,12 +522,39 @@ void Partie::deplacerPionMilitaire(int i) {
             }
         }
     }
+    return 1;
 }
 
+int Partie::victoireMilitaire(const Joueur& gagnant){
+    std::cout<<"Victoire militaire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
+    return finDePartie(true,false);
+}
+
+int Partie::victoireScientifique (const Joueur& gagnant){
+    std::cout<<"Victoire scientifique de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
+    return finDePartie(false,true);
+}
+
+int Partie::finDePartie(bool vmilit, bool vscient){
+    if (!vmilit && !vscient){
+        const unsigned int scorej1 = joueur1.compterPointsVictoires(plateau, false);
+        const unsigned int scorej2 = joueur2.compterPointsVictoires(plateau, true);
+        if (scorej1 == scorej2){
+            std::cout<<"égalité des deux joueurs \n"<<std::endl;
+            return 0;
+        }
+        Joueur& gagnant = joueur1;
+        if (scorej1 < scorej2)
+            Joueur& gagnant = joueur2;
+        std::cout<<"Victoire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
+
+    }
+    std::cout<<"Fin de partie.\n"<<std::endl;
+    return 0;
+}
 
 std::ostream& operator<<(std::ostream& f, const Partie& p) {
     f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " PV : " << p.getJoueur1().compterPointsVictoires(p.getPlateau())
       << " VS " << p.getJoueur2().getNom() << " PV : " << p.getJoueur2().compterPointsVictoires(p.getPlateau(), true) << "\033[0m";
     return f;
 }
-

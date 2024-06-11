@@ -228,4 +228,3 @@ void Joueur::afficherJetons() const {
         std::cout << "Nom : " << jeton.getNomJeton() << ", Effet : " << jeton.getEffetJeton() << ", Points de victoire : " << jeton.getPointsVictoire() << std::endl;
     }
 }
-

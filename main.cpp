@@ -15,6 +15,8 @@ int main(int argc, char *argv[]) {
     cout << p << endl;
 
 
+    p.finDePartie();
+    /*
     p.genererHuitMerveilles(); //generation random parmis un csv pour choisir 8 merveilles
     p.selectionDesMerveilles(); //Choix successifs des merveilles
 
@@ -23,16 +25,17 @@ int main(int argc, char *argv[]) {
 
     p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
     p.getSetPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
-    p.selectionDesBatiments(); //Choix successifs des batiments
+    p.selectionDesBatiments(1); //Choix successifs des batiments
 
-    /*
+
     p.genererAgeDeux();
     p.getSetPlateau().genererStructureAge2();
-    p.selectionDesBatiments();
+    p.selectionDesBatiments(2);
+
 
     p.genererAgeTrois();
     p.getSetPlateau().genererStructureAge3();
-    p.selectionDesBatiments();
+    p.selectionDesBatiments(3);
 
 
     std::cout << "Jetons de la pioche avant choix:\n";

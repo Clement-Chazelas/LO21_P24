@@ -12,7 +12,7 @@ private:
 public:
     JetonProgres()=default;
     JetonProgres(std::string n, std::string e, int p) : nomJeton(std::move(n)), effet(std::move(e)), pointsVictoire(p) {}
-    ~JetonProgres()=default;
+    virtual ~JetonProgres()=default;
     std::string getNomJeton() const {return nomJeton;}
     std::string getEffetJeton() const {return effet;}
     int getPointsVictoire() const {return pointsVictoire;}

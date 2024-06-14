@@ -12,8 +12,8 @@ class Partie
     unsigned int age;
     bool rejouer;
 public:
-    Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2);
-    ~Partie()=default;
+    Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2, bool iaj1 = false, bool iaj2 = false);
+    virtual ~Partie()=default;
 
     //getters
     const Joueur& getJoueur1() const {return joueur1;}
@@ -30,7 +30,7 @@ public:
     void genererPlateauMilitaire();
     void afficherMerveillesRestantes(bool salve2=false) const;
     void selectionDesMerveilles();
-    void selectionDesBatiments(int  age);
+    int selectionDesBatiments(int  age);
     int deplacerPionMilitaire(int i);
     int victoireMilitaire(const Joueur& gagnant);
     int victoireScientifique (const Joueur& gagnant);

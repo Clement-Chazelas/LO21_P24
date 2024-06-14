@@ -23,7 +23,7 @@ public:
         for (unsigned int i=0; i<other.nbCout; i++) coutRessources[i]=other.getCoutRessources()[i];
     }
     Carte& operator=(const Carte& other);
-    ~Carte() {delete [] coutRessources;}
+    virtual ~Carte() {delete [] coutRessources;}
 
     //getters
     const std::string getNom() const {return nom;}
@@ -57,7 +57,7 @@ public:
         nbProdMax(nbRes), nbPointsCombat(ptc), nbPiecesRapportees(pieceR), nbPiecesSacagees(pieceS), produitRessources(new Ressources[nbRes]), batimentSacagee(bc), choixDefausse(cd), choixJeton(cj) {}
     Merveille(const Merveille& mer);
     Merveille& operator=(const Merveille& mer);
-    ~Merveille() {delete[] produitRessources;}
+    virtual ~Merveille() {delete[] produitRessources;}
 
     //getters
     const unsigned int getNbPointsCombat() const {return nbPointsCombat;}
@@ -98,7 +98,7 @@ public:
         symboleChainage(schain), faceCachee(fc) {}
     Batiment(const Batiment& bat);
     virtual Batiment& operator=(const Batiment& bat);
-    ~Batiment()=default;
+    virtual ~Batiment()=default;
 
     //getters
     unsigned int getCoutPieces() const {return coutPieces;}
@@ -107,7 +107,7 @@ public:
     bool getFaceCachee() const {return faceCachee;}
 
     virtual Ressources getRessourceProduite() const {return Ressources::undefined;}
-    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme (cf. cours à venir)
+    virtual void afficher(std::ostream& f) const; //Virtual pour le polymorphisme
     virtual std::string getType() const=0;
     virtual SymboleScientifique getSymbole() const {return SymboleScientifique::undefined;}
     virtual unsigned int getNbPointsCombats() const {return 0;}
@@ -129,7 +129,7 @@ public:
     BatimentRessource(const BatimentRessource& other);
     BatimentRessource& operator=(const BatimentRessource& other);
     BatimentRessource(): Batiment(), ressourceProduite(Ressources::undefined), nbRessourcesProduites(0) {}
-    ~BatimentRessource()=default;
+    virtual ~BatimentRessource()=default;
 
     //getters
     Ressources getRessourceProduite() const {return ressourceProduite;}
@@ -152,7 +152,7 @@ public:
         : Batiment(nom, cp, cchain, schain, fc, ptv) {}
     BatimentCivil(const BatimentCivil& other);
     BatimentCivil& operator=(const BatimentCivil& other);
-    ~BatimentCivil()=default;
+    virtual ~BatimentCivil()=default;
 
     void afficher(std::ostream& f) const;
     virtual std::string getType() const {return "BatimentCivil";}
@@ -166,7 +166,7 @@ public:
         : Batiment(nom, cp, cchain, schain, fc, ptv), symbole(symb) {}
     BatimentScientifique(const BatimentScientifique& other);
     BatimentScientifique& operator=(const BatimentScientifique& other);
-    ~BatimentScientifique()=default;
+    virtual ~BatimentScientifique()=default;
 
     //getters
     SymboleScientifique getSymbole() const {return symbole;}
@@ -190,7 +190,7 @@ public:
         typePourGainPieces(type), piecesRapportees(pR) {}
     BatimentCommercial(const BatimentCommercial& other);
     BatimentCommercial& operator=(const BatimentCommercial& other);
-    ~BatimentCommercial() {delete[] ressourcesStockees, delete[] ressourcesDisponibles;}
+    virtual ~BatimentCommercial() {delete[] ressourcesStockees, delete[] ressourcesDisponibles;}
 
     //getters
     unsigned int getPiecesRapportees() const {return piecesRapportees;}
@@ -217,7 +217,7 @@ public:
         : Batiment(nom, cp, cchain, schain, fc), pointsCombats(ptc) {}
     BatimentMilitaire(const BatimentMilitaire& other);
     BatimentMilitaire& operator=(const BatimentMilitaire& other);
-    ~BatimentMilitaire()=default;
+    virtual ~BatimentMilitaire()=default;
 
     //getters
     unsigned int getNbPointsCombats() const {return pointsCombats;}
@@ -232,7 +232,7 @@ class BatimentGuilde : public Batiment {
 public:
     BatimentGuilde(const std::string& nom, unsigned int cp, const std::string& cchain, std::string schain, bool fc, unsigned int ptc, TypeBatiment type)
         : Batiment(nom, cp, cchain, schain, fc), typePourAvantages(type) {}
-
+    virtual ~BatimentGuilde() = default;
     //getters
     TypeBatiment getTypePourAvantages() const {return typePourAvantages;}
 

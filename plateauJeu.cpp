@@ -291,7 +291,8 @@ Batiment* PlateauDeJeu::choisirBatiment(bool j2) {
             }
         }
     }
-    throw "Le batiment choisie n'existe pas sur le plateau de jeu ou n'est pas accessible";
+    std::cout<<"Le batiment choisie n'existe pas sur le plateau de jeu ou n'est pas accessible";
+    return 0;
 }
 
 Batiment* PlateauDeJeu::iaChoisirBatiment() {

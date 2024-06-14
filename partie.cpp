@@ -192,8 +192,10 @@ int Partie::selectionDesBatiments(int age) {
                             }
                         }
                         joueur1.ajouterBatiment(bat);
-                        if (deplacerPionMilitaire(bat->getNbPointsCombats()))
+                        if (deplacerPionMilitaire(bat->getNbPointsCombats())){
+                            std::cout<<"vic militaire test ";
                             return 1; // si deplacerPionMilitaire retourne 1 alors la methode fin de partie a été appelée
+                        }
                         if (joueur1.checkVictoireScientifique()==6) {
                             return victoireScientifique(joueur1);
                         }
@@ -205,7 +207,9 @@ int Partie::selectionDesBatiments(int age) {
                 }
                 else {
                     bool ok2;
-                    Batiment* bat(plateau.choisirBatiment());
+                    Batiment* bat = nullptr;
+                    while (bat == nullptr)
+                         bat = plateau.choisirBatiment();
                     //Demander au joueur de choisir une option
                     QStringList options;
                     options << "Construire" << "Defausser" << "Construire Merveille";
@@ -254,8 +258,10 @@ int Partie::selectionDesBatiments(int age) {
                             }
                         }
                         joueur2.ajouterBatiment(bat);
-                        if (deplacerPionMilitaire(bat->getNbPointsCombats()))
+                        if (deplacerPionMilitaire(bat->getNbPointsCombats())){
+                            std::cout<<"vic militaire test ";
                             return 1;
+                        }
                         if (joueur2.checkVictoireScientifique()==6) {
                             return victoireScientifique(joueur2);
                         }
@@ -305,6 +311,7 @@ int Partie::selectionDesBatiments(int age) {
             if (!rejouer) j2=!j2;
             else rejouer=false;
         }
+        std::cout<<"il n'y a plus de bat";
         return 0;
     }
     catch (const char* mes) {
@@ -596,7 +603,7 @@ int Partie::deplacerPionMilitaire(int i) {
     plateau.setPionMilitaire(i);
     if (i>0){
         for (size_t c=0; c< joueur1.getJetonsProgres().size(); c++){
-            if (joueur1.getJetonsProgres()[i].getNomJeton() == "Stratégie"){
+            if (joueur1.getJetonsProgres()[c].getNomJeton() == "Stratégie"){
                 plateau.setPionMilitaire(1);
                 break;
             }
@@ -604,7 +611,7 @@ int Partie::deplacerPionMilitaire(int i) {
     }
     if (i<0){
         for (size_t c=0; c< joueur2.getJetonsProgres().size(); c++){
-            if (joueur2.getJetonsProgres()[i].getNomJeton() == "Stratégie"){
+            if (joueur2.getJetonsProgres()[c].getNomJeton() == "Stratégie"){
                 plateau.setPionMilitaire(-1);
                 break;
             }
@@ -636,30 +643,27 @@ int Partie::deplacerPionMilitaire(int i) {
 
 int Partie::victoireMilitaire(const Joueur& gagnant){
     std::cout<<"Victoire militaire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
-    return finDePartie(true,false);
+    return 1;
 }
 
 int Partie::victoireScientifique (const Joueur& gagnant){
     std::cout<<"Victoire scientifique de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
-    return finDePartie(false,true);
+    return 1;
 }
 
-int Partie::finDePartie(bool vmilit, bool vscient){
-    if (!vmilit && !vscient){
-        const unsigned int scorej1 = joueur1.compterPointsVictoires(plateau, false);
-        const unsigned int scorej2 = joueur2.compterPointsVictoires(plateau, true);
-        if (scorej1 == scorej2){
-            std::cout<<"égalité des deux joueurs \n"<<std::endl;
-        }
-        else {
-            Joueur& gagnant = joueur1;
-            if (scorej1 < scorej2)
-                Joueur& gagnant = joueur2;
-            std::cout<<"Victoire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
-        }
+void Partie::victoireCivile(){
+    const unsigned int scorej1 = joueur1.compterPointsVictoires(plateau, false);
+    const unsigned int scorej2 = joueur2.compterPointsVictoires(plateau, true);
+    if (scorej1 == scorej2){
+        std::cout<<"égalité des deux joueurs \n"<<std::endl;
+    }
+    else {
+        Joueur& gagnant = joueur1;
+        if (scorej1 < scorej2)
+            gagnant = joueur2;
+        std::cout<<"Victoire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
     }
     std::cout<<"Fin de partie.\n"<<std::endl;
-    return 1;
 }
 
 std::ostream& operator<<(std::ostream& f, const Partie& p) {

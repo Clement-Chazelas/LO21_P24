@@ -22,7 +22,7 @@ private:
     std::vector<JetonProgres> jetonsProgres;
     unsigned int nbMerveilles;
 public:
-    Joueur(std::string n, std::string p, bool i=false, unsigned int m=100)
+    Joueur(std::string n, std::string p, bool i=false, unsigned int m=07)
         : merveilles(new Merveille[4]), cite(new Batiment*[30]), nbBatiments(0), nom(n), prenom(p), ia(i), nbPieces(m), nbMerveilles(0) {}
     virtual ~Joueur() { delete[] merveilles; delete [] cite;}
     Joueur(const Joueur& j) = delete;

@@ -7,9 +7,8 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
 
-    QApplication a(argc, argv);
+int mafonction() {
 
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement", true, true);
     cout << p << endl;
@@ -24,22 +23,39 @@ int main(int argc, char *argv[]) {
 
     p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
     p.getSetPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
-    if (p.selectionDesBatiments(1))//Choix successifs des batiments
-        return 0;
+    if (p.selectionDesBatiments(1)){
+        std::cout << "Fin de partie après âge 1" << std::endl;
+        return 1;
+    }
+    //Choix successifs des batiments
 
     std::cout<<"fin age1";
     p.genererAgeDeux();
     p.getSetPlateau().genererStructureAge2();
-    if (p.selectionDesBatiments(2))
-        return 0;
+    if (p.selectionDesBatiments(2)){
+        std::cout << "Fin de partie après âge 2" << std::endl;
+        return 2;
+    }
 
     std::cout<<"fin age2";
     p.genererAgeTrois();
     p.getSetPlateau().genererStructureAge3();
-    if (p.selectionDesBatiments(3))
-        return 0;
+    if (p.selectionDesBatiments(3)){
+        std::cout << "Fin de partie après âge 3" << std::endl;
+        return 3;
+    }
+
     std::cout<<"fin age3";
-    p.finDePartie();
+    p.victoireCivile();
+    return 0;
+
+}
+
+int main(int argc, char *argv[]) {
+
+    QApplication a(argc, argv);
+
+    mafonction();
     return 0;
 
     /*

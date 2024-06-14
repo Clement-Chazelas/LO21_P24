@@ -34,7 +34,7 @@ public:
     int deplacerPionMilitaire(int i);
     int victoireMilitaire(const Joueur& gagnant);
     int victoireScientifique (const Joueur& gagnant);
-    int finDePartie(bool vmilit=false, bool vscient=false);
+    void victoireCivile();
 };
 
 std::ostream& operator<<(std::ostream& f, const Partie& p);

@@ -8,8 +8,8 @@
 #include "QInputDialog"
 
 
-Partie::Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2)
-    : joueur1(Joueur(n_j1, p_j1)), joueur2(Joueur(n_j2, p_j2)), plateau(PlateauDeJeu(20, 5, 5)), age(1), rejouer(false){}
+Partie::Partie(const std::string& n_j1, const std::string& p_j1, const std::string& n_j2, const std::string& p_j2, bool iaj1, bool iaj2)
+    : joueur1(Joueur(n_j1, p_j1, iaj1)), joueur2(Joueur(n_j2, p_j2, iaj2)), plateau(PlateauDeJeu(20, 5, 5)), age(1), rejouer(false){}
 
 
 void Partie::genererHuitMerveilles() {
@@ -79,23 +79,64 @@ void Partie::afficherMerveillesRestantes(bool salve2) const {
 void Partie::selectionDesMerveilles() { // Méthode a finir
     try {
         afficherMerveillesRestantes();
-        joueur1.ajouterMerveille(plateau.choisirMerveille());
+        if (joueur1.robot())
+            joueur1.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur1.ajouterMerveille(plateau.choisirMerveille());
+
         afficherMerveillesRestantes();
-        joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
+        if (joueur2.robot())
+            joueur2.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
         afficherMerveillesRestantes();
-        joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
+        if (joueur2.robot())
+            joueur2.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
         afficherMerveillesRestantes();
-        joueur1.ajouterMerveille(plateau.choisirMerveille());
+
+        if (joueur1.robot())
+            joueur1.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur1.ajouterMerveille(plateau.choisirMerveille());
+
         afficherMerveillesRestantes();
+
         for (unsigned int i=0; i<4; i++) plateau.getSelectionMerveille()[i]=plateau.getSelectionMerveille()[i+4];
+
         afficherMerveillesRestantes(true);
-        joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
+        if (joueur2.robot())
+            joueur2.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
         afficherMerveillesRestantes(true);
-        joueur1.ajouterMerveille(plateau.choisirMerveille());
+
+        if (joueur1.robot())
+            joueur1.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur1.ajouterMerveille(plateau.choisirMerveille());
+
         afficherMerveillesRestantes(true);
-        joueur1.ajouterMerveille(plateau.choisirMerveille());
+
+        if (joueur1.robot())
+            joueur1.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur1.ajouterMerveille(plateau.choisirMerveille());
+
         afficherMerveillesRestantes(true);
-        joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
+        if (joueur2.robot())
+            joueur2.ajouterMerveille(plateau.iaChoisirMerveille());
+        else
+            joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
         delete[] plateau.getSelectionMerveille(); //On libere la memoire reserve pour les merveilles du plateau
         std::cout << joueur2 << std::endl;
         std::cout << joueur1 << std::endl;
@@ -105,98 +146,166 @@ void Partie::selectionDesMerveilles() { // Méthode a finir
     }
 }
 
-void Partie::selectionDesBatiments(int age) {
+int Partie::selectionDesBatiments(int age) {
     try {
         bool j2=false;
-        if (age == 2 && plateau.getEmplacementPionMilitaire() <= 0)
+        if (plateau.getEmplacementPionMilitaire() > 0 && !joueur1.robot()) {
+            bool ok;
+            //Demander au joueur de choisir une option
+            QStringList options;
+            options << "moi" << "adversaire";
+            QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez qui commence la partie:", options, 0, false, &ok);
+            if (choix == "adversaire")
+                j2 = true;
+        }
+
+        else if (plateau.getEmplacementPionMilitaire() < 0 && !joueur2.robot()) {
+            bool ok;
+            //Demander au joueur de choisir une option
+            QStringList options;
+            options << "moi" << "adversaire";
+            QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez qui commence la partie:", options, 0, false, &ok);
+            if (choix == "moi")
+                j2 = true;
+        }
+
+        else if (age == 2 && plateau.getEmplacementPionMilitaire() <= 0)
             j2 = true;//a la fin de l'age un, le dernier joueur actif est le joueur 2
+
         else if (age == 3 && plateau.getEmplacementPionMilitaire() < 0)
             j2 = true; //a la fin de l'age deux, le dernier joueur actif est le joueur 1
-        bool running=true;
-        while (plateau.getNb_batiment_plateau()>0 && running) {
+
+        while (plateau.getNb_batiment_plateau()>0) {
             std::cout << *this << std::endl;
             if (!j2) {
                 std::cout << joueur1 << std::endl;
                 plateau.afficherSelectionnable();
-                bool ok2;
-                Batiment* bat(plateau.choisirBatiment());
-                //Demander au joueur de choisir une option
-                QStringList options;
-                options << "Construire" << "Defausser" << "Construire Merveille";
-                QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
-                if (choix=="Construire") {
+                if (joueur1.robot()) {
+                    Batiment* bat(plateau.iaChoisirBatiment());
                     if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
                         joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
                         if (bat->getType()=="BatimentScientifique") {
                             for (unsigned int i=0; i<joueur1.getNbBatiments(); i++) {
                                 if (joueur1.getCite()[i]->getSymbole()==bat->getSymbole()) {
-                                    plateau.prendreJetonDansPlateau(joueur1);
+                                    plateau.iaPrendreJetonDansPlateau(joueur1);
                                 }
                             }
                         }
                         joueur1.ajouterBatiment(bat);
-                        running = deplacerPionMilitaire(bat->getNbPointsCombats());
-                        if (!running)
-                            break;
+                        if (deplacerPionMilitaire(bat->getNbPointsCombats()))
+                            return 1; // si deplacerPionMilitaire retourne 1 alors la methode fin de partie a été appelée
                         if (joueur1.checkVictoireScientifique()==6) {
-                            running = victoireScientifique(joueur1);
+                            return victoireScientifique(joueur1);
                         }
                     }
-                    else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
+                    else {
+                        joueur1.gainPieces(joueur1.gainDefausse());
+                        plateau.setDefausse(*bat);
+                    }
                 }
-                else if (choix=="Defausser") joueur1.gainPieces(joueur1.gainDefausse());
-                else if (choix=="Construire Merveille") {
-                    rejouer=joueur1.choisirMerveilleInactive();
+                else {
+                    bool ok2;
+                    Batiment* bat(plateau.choisirBatiment());
+                    //Demander au joueur de choisir une option
+                    QStringList options;
+                    options << "Construire" << "Defausser" << "Construire Merveille";
+                    QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
+                    if (choix=="Construire") {
+                        if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
+                            joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
+                            if (bat->getType()=="BatimentScientifique") {
+                                for (unsigned int i=0; i<joueur1.getNbBatiments(); i++) {
+                                    if (joueur1.getCite()[i]->getSymbole()==bat->getSymbole()) {
+                                        plateau.prendreJetonDansPlateau(joueur1);
+                                    }
+                                }
+                            }
+                            joueur1.ajouterBatiment(bat);
+                            if (deplacerPionMilitaire(bat->getNbPointsCombats()))
+                                return 1;
+                            if (joueur1.checkVictoireScientifique()==6) {
+                                return victoireScientifique(joueur1);
+                            }
+                        }
+                        else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
+                    }
+                    else if (choix=="Defausser") {
+                        joueur1.gainPieces(joueur1.gainDefausse());
+                        plateau.setDefausse(*bat);
+                    }
+                    else if (choix=="Construire Merveille") {
+                        rejouer=joueur1.choisirMerveilleInactive();
+                    }
+                    std::cout << joueur1 << std::endl;
                 }
-                std::cout << joueur1 << std::endl;
             }
             else {
                 std::cout << joueur2 << std::endl;
                 plateau.afficherSelectionnable();
-                bool ok2;
-                Batiment* bat(plateau.choisirBatiment(j2));
-                //Demander au joueur de choisir une option
-                QStringList options;
-                options << "Construire" << "Defausser" << "Construire Merveille";
-                QString choix = QInputDialog::getItem(nullptr, "Joueur 2", "Choisissez une option:", options, 0, false, &ok2);
-                if (choix=="Construire") {
+                if (joueur2.robot()) {
+                    Batiment* bat(plateau.iaChoisirBatiment());
                     if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
                         joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
                         if (bat->getType()=="BatimentScientifique") {
                             for (unsigned int i=0; i<joueur2.getNbBatiments(); i++) {
                                 if (joueur2.getCite()[i]->getSymbole()==bat->getSymbole()) {
-                                    plateau.prendreJetonDansPlateau(joueur2);
+                                    plateau.iaPrendreJetonDansPlateau(joueur2);
                                 }
                             }
                         }
                         joueur2.ajouterBatiment(bat);
-                        running = deplacerPionMilitaire(-bat->getNbPointsCombats());
-                        if (!running)
-                            break;
+                        if (deplacerPionMilitaire(bat->getNbPointsCombats()))
+                            return 1;
                         if (joueur2.checkVictoireScientifique()==6) {
-                            running = victoireScientifique(joueur2);
+                            return victoireScientifique(joueur2);
                         }
                     }
-                    else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
+                    else {
+                        joueur2.gainPieces(joueur2.gainDefausse());
+                        plateau.setDefausse(*bat);
+                    }
                 }
-                else if (choix=="Defausser") joueur2.gainPieces(joueur2.gainDefausse());
-                else if (choix=="Construire Merveille") {
-                    rejouer=joueur2.choisirMerveilleInactive();
+                else {
+                    bool ok2;
+                    Batiment* bat(plateau.choisirBatiment(j2));
+                    //Demander au joueur de choisir une option
+                    QStringList options;
+                    options << "Construire" << "Defausser" << "Construire Merveille";
+                    QString choix = QInputDialog::getItem(nullptr, "Joueur 2", "Choisissez une option:", options, 0, false, &ok2);
+                    if (choix=="Construire") {
+                        if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
+                            joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
+                            if (bat->getType()=="BatimentScientifique") {
+                                for (unsigned int i=0; i<joueur2.getNbBatiments(); i++) {
+                                    if (joueur2.getCite()[i]->getSymbole()==bat->getSymbole()) {
+                                        plateau.prendreJetonDansPlateau(joueur2);
+                                    }
+                                }
+                            }
+                            joueur2.ajouterBatiment(bat);
+                            if (deplacerPionMilitaire(-bat->getNbPointsCombats()))
+                                return 1;
+                            if (joueur2.checkVictoireScientifique()==6) {
+                                return victoireScientifique(joueur2);
+                            }
+                        }
+                        else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
+                    }
+                    else if (choix=="Defausser") {
+                        joueur2.gainPieces(joueur2.gainDefausse());
+                        plateau.setDefausse(*bat);
+                    }
+                    else if (choix=="Construire Merveille") {
+                        rejouer=joueur2.choisirMerveilleInactive();
+                    }
+                    std::cout << joueur2 << std::endl;
                 }
-                std::cout << joueur2 << std::endl;
-            }
-            if (plateau.getEmplacementPionMilitaire()>=9) {
-                std::cout << "Le joueur 1 a gagne par la victoire militaire !" << std::endl;
-                running=false;
-            }
-            else if (plateau.getEmplacementPionMilitaire()<=-9) {
-                std::cout << "Le joueur 2 a gagne par la victoire militaire !" << std::endl;
-                running=false;
             }
             std::cout << "Plateau Militaire : " << plateau.getEmplacementPionMilitaire() << std::endl;
             if (!rejouer) j2=!j2;
             else rejouer=false;
         }
+        return 0;
     }
     catch (const char* mes) {
         std::cout << mes << std::endl;
@@ -522,7 +631,7 @@ int Partie::deplacerPionMilitaire(int i) {
             }
         }
     }
-    return 1;
+    return 0;
 }
 
 int Partie::victoireMilitaire(const Joueur& gagnant){
@@ -541,16 +650,16 @@ int Partie::finDePartie(bool vmilit, bool vscient){
         const unsigned int scorej2 = joueur2.compterPointsVictoires(plateau, true);
         if (scorej1 == scorej2){
             std::cout<<"égalité des deux joueurs \n"<<std::endl;
-            return 0;
         }
-        Joueur& gagnant = joueur1;
-        if (scorej1 < scorej2)
-            Joueur& gagnant = joueur2;
-        std::cout<<"Victoire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
-
+        else {
+            Joueur& gagnant = joueur1;
+            if (scorej1 < scorej2)
+                Joueur& gagnant = joueur2;
+            std::cout<<"Victoire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
+        }
     }
     std::cout<<"Fin de partie.\n"<<std::endl;
-    return 0;
+    return 1;
 }
 
 std::ostream& operator<<(std::ostream& f, const Partie& p) {

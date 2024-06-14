@@ -122,6 +122,18 @@ void PlateauDeJeu::prendreJetonDansPlateau(Joueur& joueur)
     }
 }
 
+void PlateauDeJeu::iaPrendreJetonDansPlateau(Joueur& joueur) {
+    if (nb_jeton_plateau>0){
+        joueur.ajouterJeton(plateauJeton[0]);
+
+        // Supprimer le jeton du plateau
+        for (size_t i = 0; i < nb_jeton_plateau - 1; ++i) {
+            plateauJeton[i] = plateauJeton[i + 1];
+            // Diminuer le nombre de jetons sur le plateau
+        }
+        --nb_jeton_plateau;
+    }
+}
 
 void PlateauDeJeu::ajouterMerveillePlateau(Merveille& mer) {
     selectionMerveille[nb_merveille_plateau++]=mer;
@@ -282,6 +294,23 @@ Batiment* PlateauDeJeu::choisirBatiment(bool j2) {
     throw "Le batiment choisie n'existe pas sur le plateau de jeu ou n'est pas accessible";
 }
 
+Batiment* PlateauDeJeu::iaChoisirBatiment() {
+    unsigned int i = 0;
+    unsigned int j = 1;
+    bool test = false;
+    for (unsigned int i=0; i<8; i++) {
+        for (unsigned int j=1; j<13; j++) {
+            if (structure[i][j]!=nullptr && structure[i+1][j-1]==nullptr && structure[i+1][j+1]==nullptr) {
+                Batiment* temp=structure[i][j];
+                structure[i][j]=nullptr;
+                nb_batiment_plateau--;
+                return temp;
+            }
+        }
+    }
+    throw "aucun batiment selectionnable";
+}
+
 
 Merveille PlateauDeJeu::choisirMerveille(bool j2) {
     bool ok;
@@ -294,6 +323,11 @@ Merveille PlateauDeJeu::choisirMerveille(bool j2) {
     }
     throw "La merveille choisie n'existe pas sur le plateau de jeu";
 }
+
+Merveille PlateauDeJeu::iaChoisirMerveille() {
+    return prendreMerveillePlateau(0);
+}
+
 
 void PlateauDeJeu::setDefausse(Batiment& bat) {
     if( nb_defausse >= nb_max_defausse){

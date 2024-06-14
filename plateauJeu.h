@@ -28,7 +28,7 @@ private:
     JetonMilitaire* plateauMilitaire;
 public:
     PlateauDeJeu(size_t c, size_t pio, size_t pla);
-    ~PlateauDeJeu() {delete[] defausse; delete[] tab; delete[] piocheJeton; delete[] plateauJeton; delete[] selectionMerveille; delete[] plateauMilitaire;}
+    virtual ~PlateauDeJeu() {delete[] defausse; delete[] tab; delete[] piocheJeton; delete[] plateauJeton; delete[] selectionMerveille; delete[] plateauMilitaire;}
 
     // getters
     Batiment** getTab() const { return tab; }
@@ -56,6 +56,7 @@ public:
     // Pour les merveilles
     Merveille prendreMerveillePlateau(size_t i);
     Merveille choisirMerveille(bool j2 = false);
+    Merveille iaChoisirMerveille();
     void melangerMerveilles();
     void ajouterMerveillePlateau(Merveille& mer);
 
@@ -70,11 +71,13 @@ public:
     void afficherStructure();
     void afficherSelectionnable();
     Batiment* choisirBatiment(bool j2 = false);
+    Batiment* iaChoisirBatiment();
 
     // Pour les jetons
     void genererJetons();
     void prendreJetonDansPioche(Joueur& joueur);
     void prendreJetonDansPlateau(Joueur& joueur);
+    void iaPrendreJetonDansPlateau(Joueur& joueur);
 };
 
 std::ostream& operator<<(std::ostream& f, const PlateauDeJeu& pla);

@@ -222,6 +222,7 @@ unsigned int Joueur::compterNbCartesCouleur(unsigned int couleur) const {
             if (cite[i]->getType()=="BatimentRessource")
                 compteur++;
         }
+        break;
     default:
         throw "erreur couleur inconnue";
     }

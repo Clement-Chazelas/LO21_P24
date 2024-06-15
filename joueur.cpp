@@ -9,7 +9,7 @@ using namespace std;
 
 
 void Joueur::ajouterMerveille(const Merveille& mer) {
-    merveilles[nbMerveilles++]=mer; //Pas necessaire pour l'instant de gerer le nombre de merveilles du joueur (tjs = 4)
+    merveilles[nbMerveilles++]= mer; //Pas necessaire pour l'instant de gerer le nombre de merveilles du joueur (tjs = 4)
 }
 
 
@@ -103,7 +103,7 @@ unsigned int Joueur::coutAchat(Batiment* bat, const Joueur& adversaire) {
 }
 
 
-const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const bool j2) const {
+const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const Joueur& adv, const bool j2) const {
     unsigned int total=0;
     for (unsigned int i=0; i<nbBatiments; i++) {
         total+=cite[i]->getNbPointVictoire();
@@ -124,10 +124,72 @@ const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const
         else if (pla.getEmplacementPionMilitaire()<-2) total+=5;
         else if (pla.getEmplacementPionMilitaire()<0) total+=2;
     }
-    // Il reste à parcourir les jetons scientifiques !
+
+    //point des guildes :
+
+    for (unsigned int i = 0; i < nbBatiments; i++) {
+        unsigned int nbjoueur, nbadv;
+        if (cite[i]->getNom() == "Guilde des Magistrats"){
+            nbjoueur = compterNbCartesCouleur(1);
+            nbadv = adv.compterNbCartesCouleur(1);
+            if (nbjoueur > nbadv)
+                total += nbjoueur;
+        }
+        if (cite[i]->getNom() == "Guilde des Tacticiens"){
+            nbjoueur = compterNbCartesCouleur(2);
+            nbadv = adv.compterNbCartesCouleur(2);
+            if (nbjoueur > nbadv)
+                total += nbjoueur;
+        }
+        if (cite[i]->getNom() == "Guilde des Scientifiques"){
+            nbjoueur = compterNbCartesCouleur(3);
+            nbadv = adv.compterNbCartesCouleur(3);
+            if (nbjoueur > nbadv)
+                total += nbjoueur;
+        }
+        if (cite[i]->getNom() == "Guilde des Commercants"){
+            nbjoueur = compterNbCartesCouleur(4);
+            nbadv = adv.compterNbCartesCouleur(4);
+            if (nbjoueur > nbadv)
+                total += nbjoueur;
+        }
+    }
+
     return total;
 }
 
+unsigned int Joueur::compterNbCartesCouleur(unsigned int couleur) const {
+    unsigned int compteur = 0;
+    switch (couleur) {
+    case 1:
+        for (unsigned int i=0; i<nbBatiments; i++) {
+            if (cite[i]->getType()=="BatimentCivil")
+                compteur++;
+        }
+        break;
+    case 2:
+        for (unsigned int i=0; i<nbBatiments; i++) {
+            if (cite[i]->getType()=="BatimentMilitaire")
+                compteur++;
+        }
+        break;
+    case 3:
+        for (unsigned int i=0; i<nbBatiments; i++) {
+            if (cite[i]->getType()=="BatimentScientifique")
+                compteur++;
+        }
+        break;
+    case 4:
+        for (unsigned int i=0; i<nbBatiments; i++) {
+            if (cite[i]->getType()=="BatimentCommercial")
+                compteur++;
+        }
+        break;
+    default:
+        throw "erreur couleur inconnue";
+    }
+    return compteur;
+}
 
 unsigned int Joueur::checkVictoireScientifique() const {
     std::set<SymboleScientifique> science;

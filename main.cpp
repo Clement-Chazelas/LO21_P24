@@ -13,42 +13,41 @@ int mafonction() {
     Partie p("Ducasse", "Agathe", "Chazelas", "Clement", true, true);
     cout << p << endl;
 
-
-
     p.genererHuitMerveilles(); //generation random parmis un csv pour choisir 8 merveilles
     p.selectionDesMerveilles(); //Choix successifs des merveilles
 
-
     p.getSetPlateau().genererJetons();
 
-    p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
-    p.getSetPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
-    if (p.selectionDesBatiments(1)){
-        std::cout << "Fin de partie après âge 1" << std::endl;
-        return 1;
-    }
-    //Choix successifs des batiments
 
-    std::cout<<"fin age1";
-    p.genererAgeDeux();
-    p.getSetPlateau().genererStructureAge2();
-    if (p.selectionDesBatiments(2)){
-        std::cout << "Fin de partie après âge 2" << std::endl;
-        return 2;
+    int i=1;
+    bool finDePartie =false;
+
+    while (i<=3 && !finDePartie) {
+        switch (i) {
+        case 1:
+            p.genererAgeUn(); //generation random parmis un csv pour exclure 3 batiments
+            p.getSetPlateau().genererStructureAge1(); //generation de la structure plateau des batiments de l'age 1
+            break;
+        case 2:
+            p.genererAgeDeux();
+            p.getSetPlateau().genererStructureAge2();
+            break;
+        case 3:
+            p.genererAgeTrois();
+            p.getSetPlateau().genererStructureAge3();
+            break;
+        default:
+            throw "erreur";
+            break;
+        }
+
+        finDePartie = p.selectionDesBatiments(i);
+        i++;
     }
 
-    std::cout<<"fin age2";
-    p.genererAgeTrois();
-    p.getSetPlateau().genererStructureAge3();
-    if (p.selectionDesBatiments(3)){
-        std::cout << "Fin de partie après âge 3" << std::endl;
-        return 3;
-    }
-
-    std::cout<<"fin age3";
-    p.victoireCivile();
+    if (finDePartie == false)
+        p.victoireCivile();
     return 0;
-
 }
 
 int main(int argc, char *argv[]) {
@@ -101,7 +100,6 @@ int main(int argc, char *argv[]) {
 
 /*
 To Do list pour le back_end :
-    - Creer une IA simple
     - Permettre aux joueurs d'utiliser les effets des merveilles (qui sont pour la plupart déjà implémentés)
     - prendre en compte les batiments guilde dans le calcul des points de victoire
     - calculer les gains rapportés par la construction des batiments guildes

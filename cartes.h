@@ -78,8 +78,7 @@ public:
     void setChoixJeton(bool cj) {choixJeton=cj;}
 
     void ajouterProduitRessources(Ressources r);
-    void choisirBatimentADefausser();
-    void saccagerRessourceAdverse();
+    //void choisirBatimentADefausser();
 };
 
 std::ostream& operator<<(std::ostream& f, const Merveille& m);

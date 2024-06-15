@@ -175,6 +175,7 @@ int Partie::selectionDesBatiments(int age) {
             j2 = true; //a la fin de l'age deux, le dernier joueur actif est le joueur 1
 
         while (plateau.getNb_batiment_plateau()>0) {
+            bool rejouer;
             std::cout << *this << std::endl;
             if (!j2) {
                 std::cout << joueur1 << std::endl;
@@ -183,6 +184,9 @@ int Partie::selectionDesBatiments(int age) {
                     Batiment* bat(plateau.iaChoisirBatiment());
                     if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
                         joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
+                        if (bat->getType()=="BatimentGuilde") {
+                            effetGuilde(bat);
+                        }
                         if (bat->getType()=="BatimentScientifique") {
                             for (unsigned int i=0; i<joueur1.getNbBatiments(); i++) {
                                 if (joueur1.getCite()[i]->getSymbole()==bat->getSymbole()) {
@@ -204,41 +208,58 @@ int Partie::selectionDesBatiments(int age) {
                     }
                 }
                 else {
-                    bool ok2;
-                    Batiment* bat = nullptr;
-                    while (bat == nullptr)
-                         bat = plateau.choisirBatiment();
-                    //Demander au joueur de choisir une option
-                    QStringList options;
-                    options << "Construire" << "Defausser" << "Construire Merveille";
-                    QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
-                    if (choix=="Construire") {
-                        if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
-                            joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
-                            if (bat->getType()=="BatimentScientifique") {
-                                for (unsigned int i=0; i<joueur1.getNbBatiments(); i++) {
-                                    if (joueur1.getCite()[i]->getSymbole()==bat->getSymbole()) {
-                                        plateau.prendreJetonDansPlateau(joueur1);
+                    rejouer = true;
+                    while (rejouer) {
+                        rejouer = false;
+                        bool ok2;
+                        Batiment* bat = nullptr;
+                        while (bat == nullptr)
+                            bat = plateau.choisirBatiment();
+                        //Demander au joueur de choisir une option
+                        QStringList options;
+                        options << "Construire" << "Defausser" << "Construire Merveille";
+                        QString choix = QInputDialog::getItem(nullptr, "Joueur 1", "Choisissez une option:", options, 0, false, &ok2);
+                        if (choix=="Construire") {
+                            if (joueur1.coutAchat(bat, joueur2)<=joueur1.getnbPieces()) {
+                                joueur1.pertePieces(joueur1.coutAchat(bat, joueur2));
+                                if (bat->getType()=="BatimentGuilde") {
+                                    effetGuilde(bat);
+                                }
+                                if (bat->getType()=="BatimentScientifique") {
+                                    for (unsigned int i=0; i<joueur1.getNbBatiments(); i++) {
+                                        if (joueur1.getCite()[i]->getSymbole()==bat->getSymbole()) {
+                                            plateau.prendreJetonDansPlateau(joueur1);
+                                        }
                                     }
                                 }
+                                joueur1.ajouterBatiment(bat);
+                                if (deplacerPionMilitaire(bat->getNbPointsCombats()))
+                                    return 1;
+                                if (joueur1.checkVictoireScientifique()==6) {
+                                    return victoireScientifique(joueur1);
+                                }
                             }
-                            joueur1.ajouterBatiment(bat);
-                            if (deplacerPionMilitaire(bat->getNbPointsCombats()))
-                                return 1;
-                            if (joueur1.checkVictoireScientifique()==6) {
-                                return victoireScientifique(joueur1);
-                            }
+                            else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
                         }
-                        else std::cout << "Vous n'avez pas assez d'argent pour acheter le batiment" << std::endl;
+                        else if (choix=="Defausser") {
+                            joueur1.gainPieces(joueur1.gainDefausse());
+                            plateau.setDefausse(*bat);
+                        }
+                        else if (choix=="Construire Merveille") {
+                            Merveille& mervactivee=joueur1.choisirMerveilleInactive();
+                            rejouer = mervactivee.getRejouer();
+                            joueur1.gainPieces(mervactivee.getNbPiecesRapportees());
+                            joueur2.pertePieces(mervactivee.getNbPiecesSacagees());
+                            deplacerPionMilitaire(mervactivee.getNbPointsCombat());
+                            if (mervactivee.getChoixDefausse())
+                                std::cout<<"choix defausse";
+                            if (mervactivee.getChoixJeton())
+                                choixDuJeton();
+                            if (mervactivee.getBatimentSacagee() != TypeBatiment::undefined)
+                                joueur1.saccagerRessourceAdverse(mervactivee, joueur2);
+                        }
+                        std::cout << joueur1 << std::endl;
                     }
-                    else if (choix=="Defausser") {
-                        joueur1.gainPieces(joueur1.gainDefausse());
-                        plateau.setDefausse(*bat);
-                    }
-                    else if (choix=="Construire Merveille") {
-                        rejouer=joueur1.choisirMerveilleInactive();
-                    }
-                    std::cout << joueur1 << std::endl;
                 }
             }
             else {
@@ -246,9 +267,11 @@ int Partie::selectionDesBatiments(int age) {
                 plateau.afficherSelectionnable();
                 if (joueur2.robot()) {
                     Batiment* bat(plateau.iaChoisirBatiment());
-                    std::cout<<"test12"<<bat->getType();
                     if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
                         joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
+                        if (bat->getType()=="BatimentGuilde") {
+                            effetGuilde(bat);
+                        }
                         if (bat->getType()=="BatimentScientifique") {
                             for (unsigned int i=0; i<joueur2.getNbBatiments(); i++) {
                                 if (joueur2.getCite()[i]->getSymbole()==bat->getSymbole()) {
@@ -282,6 +305,9 @@ int Partie::selectionDesBatiments(int age) {
                     if (choix=="Construire") {
                         if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
                             joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
+                            if (bat->getType()=="BatimentGuilde") {
+                                effetGuilde(bat);
+                            }
                             if (bat->getType()=="BatimentScientifique") {
                                 for (unsigned int i=0; i<joueur2.getNbBatiments(); i++) {
                                     if (joueur2.getCite()[i]->getSymbole()==bat->getSymbole()) {
@@ -303,7 +329,17 @@ int Partie::selectionDesBatiments(int age) {
                         plateau.setDefausse(*bat);
                     }
                     else if (choix=="Construire Merveille") {
-                        rejouer=joueur2.choisirMerveilleInactive();
+                        Merveille& mervactivee=joueur1.choisirMerveilleInactive();
+                        rejouer = mervactivee.getRejouer();
+                        joueur1.gainPieces(mervactivee.getNbPiecesRapportees());
+                        joueur2.pertePieces(mervactivee.getNbPiecesSacagees());
+                        deplacerPionMilitaire(-mervactivee.getNbPointsCombat());
+                        if (mervactivee.getChoixDefausse())
+                            std::cout<<"choix defausse";
+                        if (mervactivee.getChoixJeton())
+                            choixDuJeton();
+                        if (mervactivee.getBatimentSacagee() != TypeBatiment::undefined)
+                            joueur1.saccagerRessourceAdverse(mervactivee, joueur2);
                     }
                     std::cout << joueur2 << std::endl;
                 }
@@ -312,14 +348,12 @@ int Partie::selectionDesBatiments(int age) {
             if (!rejouer) j2=!j2;
             else rejouer=false;
         }
-        std::cout<<"il n'y a plus de bat";
         return 0;
     }
     catch (const char* mes) {
         std::cout << mes << std::endl;
     }
 }
-
 
 void Partie::genererAgeUn() {
     // Chemin vers le fichier CSV
@@ -599,6 +633,85 @@ void Partie::genererPlateauMilitaire(){
     }
 }
 
+void Partie::effetGuilde (Batiment* bat) {
+    unsigned int nbjoueur, nbadv;
+    if (bat->getNom() == "Guilde des Magistrats"){
+        nbjoueur = joueur1.compterNbCartesCouleur(1);
+        nbadv = joueur2.compterNbCartesCouleur(1);
+        if (nbjoueur > nbadv)
+            joueur1.gainPieces(nbjoueur);
+        else if (nbadv > nbjoueur)
+            joueur2.gainPieces(nbadv);
+    }
+    if (bat->getNom() == "Guilde des Tacticiens"){
+        nbjoueur = joueur1.compterNbCartesCouleur(2);
+        nbadv = joueur2.compterNbCartesCouleur(2);
+        if (nbjoueur > nbadv)
+            joueur1.gainPieces(nbjoueur);
+        else if (nbadv > nbjoueur)
+            joueur2.gainPieces(nbadv);
+    }
+    if (bat->getNom() == "Guilde des Scientifiques"){
+        nbjoueur = joueur1.compterNbCartesCouleur(3);
+        nbadv = joueur2.compterNbCartesCouleur(3);
+        if (nbjoueur > nbadv)
+            joueur1.gainPieces(nbjoueur);
+        else if (nbadv > nbjoueur)
+            joueur2.gainPieces(nbadv);
+    }
+    if (bat->getNom() == "Guilde des Commercants"){
+        nbjoueur = joueur1.compterNbCartesCouleur(4);
+        nbadv = joueur2.compterNbCartesCouleur(4);
+        if (nbjoueur > nbadv)
+            joueur1.gainPieces(nbjoueur);
+        else if (nbadv > nbjoueur)
+            joueur2.gainPieces(nbadv);
+    }
+    if (bat->getNom() == "Guilde des Armateurs"){
+        nbjoueur = joueur1.compterNbCartesCouleur(5);
+        nbadv = joueur2.compterNbCartesCouleur(5);
+        if (nbjoueur > nbadv)
+            joueur1.gainPieces(nbjoueur);
+        else if (nbadv > nbjoueur)
+            joueur2.gainPieces(nbadv);
+    }
+}
+
+void Partie::choixDuJeton(){
+    std::cout << "Jetons de la pioche avant choix:\n";
+    for (size_t i = 0; i < plateau.getNb_jeton_pioche(); ++i) {
+        std::cout << plateau.getJetonProgresPioche()[i] << std::endl;
+    }
+
+    std::cout << "\nJetons sur le plateau avant choix:\n";
+    for (size_t i = 0; i <plateau.getNb_jeton_plateau(); ++i) {
+        std::cout << plateau.getJetonProgresPlateau()[i] << std::endl;
+    }
+
+    // Le joueur 1 prend un jeton dans la pioche
+    plateau.prendreJetonDansPioche(joueur1);
+
+    // Le joueur 2 prend un jeton sur le plateau
+    plateau.prendreJetonDansPlateau(joueur2);
+
+    // Affichage des jetons des joueurs
+    std::cout << "\nJetons de progrès du joueur 1 après choix dans la pioche:\n";
+    joueur1.afficherJetons();
+
+    std::cout << "\nJetons de progrès du joueur 2 après choix sur le plateau:\n";
+    joueur2.afficherJetons();
+
+    // Affichage des jetons restants dans la pioche et sur le plateau
+    std::cout << "\nJetons de la pioche après choix:\n";
+    for (size_t i = 0; i < plateau.getNb_jeton_pioche(); ++i) {
+        std::cout << plateau.getJetonProgresPioche()[i] << std::endl;
+    }
+
+    std::cout << "\nJetons sur le plateau après choix:\n";
+    for (size_t i = 0; i < plateau.getNb_jeton_plateau(); ++i) {
+        std::cout << plateau.getJetonProgresPlateau()[i] << std::endl;
+    }
+}
 
 int Partie::deplacerPionMilitaire(int i) {
     plateau.setPionMilitaire(i);

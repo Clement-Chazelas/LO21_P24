@@ -4,13 +4,46 @@
 #include <string>
 #include "partie.h"
 #include "utils.h"
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include "QInputDialog"
 
 using namespace std;
 
 
-int mafonction() {
+int mafonction(int argc, char *argv[]) {
 
-    Partie p("Ducasse", "Agathe", "Chazelas", "Clement", true, true);
+    QApplication a(argc, argv);
+
+    bool ok1;
+    QString windowJoueur = "Joueur 1";
+    QString prenomj1 = QInputDialog::getText(nullptr, windowJoueur, "entrez votre prenom : ", QLineEdit::Normal, "", &ok1);
+
+    bool ok2;
+    QString nomj1 = QInputDialog::getText(nullptr, windowJoueur, "entrez votre nom : ", QLineEdit::Normal, "", &ok2);
+
+    bool ok3;
+    windowJoueur = "Joueur 2";
+    QString prenomj2 = QInputDialog::getText(nullptr, windowJoueur, "entrez votre prenom : ", QLineEdit::Normal, "", &ok3);
+
+    bool ok4;
+    QString nomj2 = QInputDialog::getText(nullptr, windowJoueur, "entrez votre nom : ", QLineEdit::Normal, "", &ok4);
+
+    bool ok5;
+    windowJoueur = "Joueur 1";
+    int iaj1 = QInputDialog::getInt(nullptr, windowJoueur, "Si le joueur 1 est une IA entrez 1, sinon entrez 0:", 0, 0, 1, 1, &ok5);
+
+    bool ok6;
+    windowJoueur = "Joueur 2";
+    int iaj2 = QInputDialog::getInt(nullptr, windowJoueur, "Si le joueur 2 est une IA entrez 1, sinon entrez 0:", 0, 0, 1, 1, &ok6);
+
+     if (!ok1 || !ok2 || !ok3 || !ok4 || !ok5 || !ok6)
+        throw "erreur";
+
+    Partie p(nomj1.toStdString(), prenomj1.toStdString(), nomj2.toStdString(), prenomj2.toStdString(), iaj1, iaj2);
+
+    //Partie p("Ducasse", "Agathe", "Chazelas", "Clement", true, true);
     cout << p << endl;
 
     p.genererHuitMerveilles(); //generation random parmis un csv pour choisir 8 merveilles
@@ -47,63 +80,16 @@ int mafonction() {
 
     if (finDePartie == false)
         p.victoireCivile();
+
     return 0;
+
 }
 
 int main(int argc, char *argv[]) {
 
-    QApplication a(argc, argv);
-
-    mafonction();
+    mafonction(argc, argv);
     return 0;
 
-    /*
-    std::cout << "Jetons de la pioche avant choix:\n";
-    for (size_t i = 0; i < p.getPlateau().getNb_jeton_pioche(); ++i) {
-        std::cout << p.getPlateau().getJetonProgresPioche()[i] << std::endl;
-    }
-
-    std::cout << "\nJetons sur le plateau avant choix:\n";
-    for (size_t i = 0; i <p.getPlateau().getNb_jeton_plateau(); ++i) {
-        std::cout << p.getPlateau().getJetonProgresPlateau()[i] << std::endl;
-    }
-
-    // Le joueur 1 prend un jeton dans la pioche
-    p.getSetPlateau().prendreJetonDansPioche(p.getSetJoueur1());
-
-    // Le joueur 2 prend un jeton sur le plateau
-    p.getSetPlateau().prendreJetonDansPlateau(p.getSetJoueur2());
-
-    // Affichage des jetons des joueurs
-    std::cout << "\nJetons de progrès du joueur 1 après choix dans la pioche:\n";
-    p.getJoueur1().afficherJetons();
-
-    std::cout << "\nJetons de progrès du joueur 2 après choix sur le plateau:\n";
-    p.getJoueur2().afficherJetons();
-
-    // Affichage des jetons restants dans la pioche et sur le plateau
-    std::cout << "\nJetons de la pioche après choix:\n";
-    for (size_t i = 0; i < p.getPlateau().getNb_jeton_pioche(); ++i) {
-        std::cout << p.getPlateau().getJetonProgresPioche()[i] << std::endl;
-    }
-
-    std::cout << "\nJetons sur le plateau après choix:\n";
-    for (size_t i = 0; i < p.getPlateau().getNb_jeton_plateau(); ++i) {
-        std::cout << p.getPlateau().getJetonProgresPlateau()[i] << std::endl;
-    }
-
-
-    return 0;
-*/
 }
 
 
-/*
-To Do list pour le back_end :
-    - Permettre aux joueurs d'utiliser les effets des merveilles (qui sont pour la plupart déjà implémentés)
-    - prendre en compte les batiments guilde dans le calcul des points de victoire
-    - calculer les gains rapportés par la construction des batiments guildes
-    - concernant les jetons il reste à coder (du plus facile au plus dur) : Loi, Theologie, Mathematiques, Economie, Architecture, Maconnerie et Urbanisme (attention ce n'est pas le plus important !)
-    - Nettoyer le code
-    - Tester le code sous toutes ses coutures
-*/

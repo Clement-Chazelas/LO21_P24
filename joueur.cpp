@@ -109,7 +109,8 @@ const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const
         total+=cite[i]->getNbPointVictoire();
     }
     for (unsigned int i=0; i<nbMerveilles; i++) {
-        total+=merveilles[i].getNbPointVictoire();
+        if (merveilles[i].getActive())
+            total+=merveilles[i].getNbPointVictoire();
     }
     for (unsigned int i=0; i<jetonsProgres.size(); i++) {
         total+=jetonsProgres[i].getPointsVictoire();
@@ -153,6 +154,32 @@ const unsigned int Joueur::compterPointsVictoires(const PlateauDeJeu& pla, const
             if (nbjoueur > nbadv)
                 total += nbjoueur;
         }
+        if (cite[i]->getNom() == "Guilde des Armateurs"){
+            nbjoueur = compterNbCartesCouleur(5);
+            nbadv = adv.compterNbCartesCouleur(5);
+            if (nbjoueur > nbadv)
+                total += nbjoueur;
+        }
+        if (cite[i]->getNom() == "Guilde des Usuriers"){
+            nbjoueur = getnbPieces();
+            nbadv = adv.getnbPieces();
+            if (nbjoueur > nbadv)
+                total += nbjoueur/3;
+        }
+        if (cite[i]->getNom() == "Guilde des Batisseurs"){
+            nbjoueur = 0;
+            for (unsigned int i = 0; i< nbMerveilles; i++){
+                if (merveilles[i].getActive())
+                    nbjoueur ++;
+            }
+            nbadv = 0;
+            for (unsigned int i = 0; i< adv.getNbMerveilles(); i++){
+                if (adv.getMerveilles()[i].getActive())
+                    nbadv ++;
+            }
+            if (nbjoueur > nbadv)
+                total += 2 * nbjoueur;
+        }
     }
 
     return total;
@@ -162,29 +189,39 @@ unsigned int Joueur::compterNbCartesCouleur(unsigned int couleur) const {
     unsigned int compteur = 0;
     switch (couleur) {
     case 1:
+        //couleur bleu
         for (unsigned int i=0; i<nbBatiments; i++) {
             if (cite[i]->getType()=="BatimentCivil")
                 compteur++;
         }
         break;
     case 2:
+        //couleur rouge
         for (unsigned int i=0; i<nbBatiments; i++) {
             if (cite[i]->getType()=="BatimentMilitaire")
                 compteur++;
         }
         break;
     case 3:
+        //couleur vert
         for (unsigned int i=0; i<nbBatiments; i++) {
             if (cite[i]->getType()=="BatimentScientifique")
                 compteur++;
         }
         break;
     case 4:
+        //couleur jaune
         for (unsigned int i=0; i<nbBatiments; i++) {
             if (cite[i]->getType()=="BatimentCommercial")
                 compteur++;
         }
         break;
+    case 5:
+        //couleur grise et marron
+        for (unsigned int i=0; i<nbBatiments; i++) {
+            if (cite[i]->getType()=="BatimentRessource")
+                compteur++;
+        }
     default:
         throw "erreur couleur inconnue";
     }
@@ -202,16 +239,16 @@ unsigned int Joueur::checkVictoireScientifique() const {
 }
 
 
-bool Joueur::choisirMerveilleInactive() {
+Merveille& Joueur::choisirMerveilleInactive() {
     bool ok;
     QString merveilleChoisie = QInputDialog::getText(nullptr, QString::fromStdString(nom), "Merveille a activer :", QLineEdit::Normal, "", &ok);
     for (unsigned int i=0; i<nbMerveilles; i++) {
-        if (merveilleChoisie.toStdString()==merveilles[i].getNom()) {
-            merveilles[i].setActive(true); //il faudra verifier si la merveille n'est pas deja active
-            if (merveilles[i].getRejouer()) return true;
-            return false;
+        if (merveilleChoisie.toStdString()==merveilles[i].getNom() && !merveilles[i].getActive()) {
+            merveilles[i].setActive(true);
+            return merveilles[i];
         }
     }
+    throw "erreur : impossible d'activer la merveille";
 }
 
 void Joueur::saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire){
@@ -229,7 +266,7 @@ void Joueur::saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire){
             }
         }
         if (counter == 0)
-            throw "L'adversaire ne possède pas de ressources primaires.";
+            return; //L'adversaire ne possède pas de ressources primaires.
     }
     else if (mer.getBatimentSacagee() == TypeBatiment::Manufacturee){
         for (unsigned int i = 0; i < adversaire.getNbBatiments(); i++) {
@@ -241,7 +278,7 @@ void Joueur::saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire){
             }
         }
         if (counter == 0)
-            throw "L'adversaire ne possède pas de ressources manufacturées.";
+            return; //L'adversaire ne possède pas de ressources manufacturées.
     }
     std::cout << "\n\n----    Ressources Parmis Lesquelles choisir    ----\n" << std::endl;
     for (unsigned int i=0; i<counter; i++)

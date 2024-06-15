@@ -52,7 +52,7 @@ public:
     unsigned int coutAchat(Batiment* bat, const Joueur& adversaire);
     const unsigned int compterPointsVictoires(const PlateauDeJeu& pla, const Joueur& adv, const bool j2 = false) const;
     unsigned compterNbCartesCouleur(unsigned int couleur) const;
-    bool choisirMerveilleInactive();
+    Merveille& choisirMerveilleInactive();
     unsigned int checkVictoireScientifique() const;
     void saccagerRessourceAdverse(const Merveille& mer, Joueur& adversaire);
     void ajouterJeton(const JetonProgres& jeton);

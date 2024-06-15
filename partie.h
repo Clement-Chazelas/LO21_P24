@@ -31,6 +31,8 @@ public:
     void afficherMerveillesRestantes(bool salve2=false) const;
     void selectionDesMerveilles();
     int selectionDesBatiments(int  age);
+    void effetGuilde(Batiment* bat);
+    void choixDuJeton();
     int deplacerPionMilitaire(int i);
     int victoireMilitaire(const Joueur& gagnant);
     int victoireScientifique (const Joueur& gagnant);

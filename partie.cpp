@@ -105,8 +105,6 @@ void Partie::selectionDesMerveilles() { // Méthode a finir
         else
             joueur1.ajouterMerveille(plateau.choisirMerveille());
 
-        afficherMerveillesRestantes();
-
         for (unsigned int i=0; i<4; i++) plateau.getSelectionMerveille()[i]=plateau.getSelectionMerveille()[i+4];
 
         afficherMerveillesRestantes(true);
@@ -136,6 +134,7 @@ void Partie::selectionDesMerveilles() { // Méthode a finir
             joueur2.ajouterMerveille(plateau.iaChoisirMerveille());
         else
             joueur2.ajouterMerveille(plateau.choisirMerveille(true));
+
 
         delete[] plateau.getSelectionMerveille(); //On libere la memoire reserve pour les merveilles du plateau
         std::cout << joueur2 << std::endl;
@@ -193,7 +192,6 @@ int Partie::selectionDesBatiments(int age) {
                         }
                         joueur1.ajouterBatiment(bat);
                         if (deplacerPionMilitaire(bat->getNbPointsCombats())){
-                            std::cout<<"vic militaire test ";
                             return 1; // si deplacerPionMilitaire retourne 1 alors la methode fin de partie a été appelée
                         }
                         if (joueur1.checkVictoireScientifique()==6) {
@@ -248,6 +246,7 @@ int Partie::selectionDesBatiments(int age) {
                 plateau.afficherSelectionnable();
                 if (joueur2.robot()) {
                     Batiment* bat(plateau.iaChoisirBatiment());
+                    std::cout<<"test12"<<bat->getType();
                     if (joueur2.coutAchat(bat, joueur1)<=joueur2.getnbPieces()) {
                         joueur2.pertePieces(joueur2.coutAchat(bat, joueur1));
                         if (bat->getType()=="BatimentScientifique") {
@@ -273,7 +272,9 @@ int Partie::selectionDesBatiments(int age) {
                 }
                 else {
                     bool ok2;
-                    Batiment* bat(plateau.choisirBatiment(j2));
+                    Batiment* bat = nullptr;
+                    while (bat == nullptr)
+                        bat = plateau.choisirBatiment(j2);
                     //Demander au joueur de choisir une option
                     QStringList options;
                     options << "Construire" << "Defausser" << "Construire Merveille";
@@ -652,8 +653,8 @@ int Partie::victoireScientifique (const Joueur& gagnant){
 }
 
 void Partie::victoireCivile(){
-    const unsigned int scorej1 = joueur1.compterPointsVictoires(plateau, false);
-    const unsigned int scorej2 = joueur2.compterPointsVictoires(plateau, true);
+    const unsigned int scorej1 = joueur1.compterPointsVictoires(plateau, joueur2, false);
+    const unsigned int scorej2 = joueur2.compterPointsVictoires(plateau, joueur1, true);
     if (scorej1 == scorej2){
         std::cout<<"égalité des deux joueurs \n"<<std::endl;
     }
@@ -663,11 +664,13 @@ void Partie::victoireCivile(){
             gagnant = joueur2;
         std::cout<<"Victoire de "<<gagnant.getPrenom()<<" "<<gagnant.getNom()<<"\n"<<std::endl;
     }
-    std::cout<<"Fin de partie.\n"<<std::endl;
+    std::cout<<"score de "<<joueur1.getPrenom()<<" "<<joueur1.getNom()<<" : "<<scorej1<<std::endl;
+    std::cout<<"score de "<<joueur2.getPrenom()<<" "<<joueur2.getNom()<<" : "<<scorej2<<std::endl;
+    std::cout<<"Fin de partie"<<std::endl;
 }
 
 std::ostream& operator<<(std::ostream& f, const Partie& p) {
-    f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " PV : " << p.getJoueur1().compterPointsVictoires(p.getPlateau())
-      << " VS " << p.getJoueur2().getNom() << " PV : " << p.getJoueur2().compterPointsVictoires(p.getPlateau(), true) << "\033[0m";
+    f << "\033[1mPartie --> " << p.getJoueur1().getNom() << " PV : " << p.getJoueur1().compterPointsVictoires(p.getPlateau(), p.getJoueur2())
+      << " VS " << p.getJoueur2().getNom() << " PV : " << p.getJoueur2().compterPointsVictoires(p.getPlateau(), p.getJoueur1(), true) << "\033[0m";
     return f;
 }
